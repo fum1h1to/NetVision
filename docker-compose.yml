@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  back:
+    tty: true
+    build:
+      context: ./back
+      dockerfile: ./docker/Dockerfile
+    container_name: dark-vision-go
+    volumes:
+        - ./back:/go/src
+    ports:
+      - 8080:8080
+
+  # dockerだと動作が重いので、nodeはホスト側で動かす。
+  # front:
+  #   tty: true
+  #   environment:
+  #     - CHOKIDAR_USEPOLLING=true
+  #   build: 
+  #     context: ./front
+  #     dockerfile: ./docker/node/Dockerfile
+  #   container_name: dark-vision-node
+  #   volumes:
+  #     - ./front:/code
+  #   ports:
+  #     - 3000:3000
