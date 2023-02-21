@@ -9,7 +9,7 @@ import (
     "github.com/google/gopacket/pcap"
 )
 
-func StartCapturing() {
+func StartCapturing(dataOutput chan<- []*ExchangeStruct) {
 	log.Println("Start")
 	
     handle, err := pcap.OpenLive(configs.TARGET_DEVICENAME, 1024, false, configs.CAPTURE_DURATION*time.Millisecond)
@@ -25,6 +25,8 @@ func StartCapturing() {
 
     packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 	packetCount := 0
+	validPacketCount := 0
+	packetDatas := make([]*ExchangeStruct, configs.PACKET_LIMIT_PER_CAPTURE_DURATION)
 
 	for {
 		select {
@@ -32,12 +34,16 @@ func StartCapturing() {
 			if packetCount < configs.PACKET_LIMIT_PER_CAPTURE_DURATION {
 				data := analysisPacket(packet)
 				if IsValidExchangeStruct(data) {
-					log.Println(data)
+					packetDatas[validPacketCount] = data
+					validPacketCount++
 				}
-
 				packetCount++
 			}
 		default:
+			if validPacketCount != 0 {
+				dataOutput <- packetDatas[:validPacketCount]
+				validPacketCount = 0
+			} 
 			packetCount = 0
 		}
 	}
