@@ -4,7 +4,7 @@ import (
     "log"
     "time"
 	"DarkVision/configs"
-	"DarkVision/pkg/ip2LatLng"
+	"DarkVision/util/ip2LatLng"
     "github.com/google/gopacket"
     "github.com/google/gopacket/pcap"
 )
@@ -30,7 +30,11 @@ func StartCapturing() {
 		select {
 		case packet := <- packetSource.Packets():
 			if packetCount < configs.PACKET_LIMIT_PER_CAPTURE_DURATION {
-				analysisPacket(packet)
+				data := analysisPacket(packet)
+				if IsValidExchangeStruct(data) {
+					log.Println(data)
+				}
+
 				packetCount++
 			}
 		default:
@@ -39,8 +43,8 @@ func StartCapturing() {
 	}
 }
 
-func analysisPacket(packet gopacket.Packet) {
-	exchangeData := new(ExchangeStruct)
+func analysisPacket(packet gopacket.Packet) (exchangeData *ExchangeStruct){
+	exchangeData = new(ExchangeStruct)
 
 	if packet.NetworkLayer() != nil {
 		srcip := packet.NetworkLayer().NetworkFlow().Src().String()
@@ -59,5 +63,5 @@ func analysisPacket(packet gopacket.Packet) {
 		exchangeData.ProtocolType = packet.TransportLayer().LayerType().String()
 	}
 
-	log.Println(exchangeData)
+	return
 }

@@ -7,15 +7,22 @@ import (
 	"github.com/oschwald/geoip2-golang"
 )
 
-func GetLatLng(ip string) (lat float64, lng float64) {
-	db, err := geoip2.Open(configs.GEOIP_DB_PATH)
+var (
+	Db *geoip2.Reader
+)
+
+func init() {
+	var err error
+	Db, err = geoip2.Open(configs.GEOIP_DB_PATH)
 	if err != nil {
 		log.Fatal(err)
 	}
-	defer db.Close()
+	log.Println("ip2LatLng init success")
+}
 
+func GetLatLng(ip string) (lat float64, lng float64) {
 	parsedIp := net.ParseIP(ip)
-	record, err := db.City(parsedIp)
+	record, err := Db.City(parsedIp)
 	if err != nil {
 		log.Fatal(err)
 	}

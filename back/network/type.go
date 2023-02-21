@@ -9,3 +9,14 @@ type ExchangeStruct struct {
 	Srcport string `json:"srcport"`
 	ProtocolType string `json:"protocol_type"`
 }
+
+func IsValidExchangeStruct(exchangeData *ExchangeStruct) bool {
+	if exchangeData.Srcip == "" {
+		return false
+	}
+	if exchangeData.From.Lat == 0 && exchangeData.From.Lng == 0 {
+		return false
+	}
+
+	return true
+}
