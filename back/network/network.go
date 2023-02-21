@@ -1,36 +1,63 @@
 package network
 
 import (
-    // "fmt"
     "log"
     "time"
 	"DarkVision/configs"
+	"DarkVision/pkg/ip2LatLng"
     "github.com/google/gopacket"
-    // "github.com/google/gopacket/layers"
     "github.com/google/gopacket/pcap"
 )
 
 func StartCapturing() {
 	log.Println("Start")
-    loopbackDevice := configs.TARGET_DEVICENAME
-    if loopbackDevice == "" {
-        log.Println("No loopback devices")
-        return
-    }
-    handle, err := pcap.OpenLive(loopbackDevice, 1024, false, 1*time.Second)
+	
+    handle, err := pcap.OpenLive(configs.TARGET_DEVICENAME, 1024, false, configs.CAPTURE_DURATION*time.Millisecond)
     if err != nil {
         log.Fatal(err)
     }
     defer handle.Close()
-    // Filtering capture targets
+
+    err = handle.SetBPFFilter(configs.BPF_FILTER)
     if err != nil {
         log.Fatal(err)
     }
+
     packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
-   // Get decoded packets through chann
-    for packet := range packetSource.Packets() {
-        log.Println("S-------S")
-        log.Println(packet)
-        log.Println("E-------E")
-    }
+	packetCount := 0
+
+	for {
+		select {
+		case packet := <- packetSource.Packets():
+			if packetCount < configs.PACKET_LIMIT_PER_CAPTURE_DURATION {
+				analysisPacket(packet)
+				packetCount++
+			}
+		default:
+			packetCount = 0
+		}
+	}
+}
+
+func analysisPacket(packet gopacket.Packet) {
+	exchangeData := new(ExchangeStruct)
+
+	if packet.NetworkLayer() != nil {
+		srcip := packet.NetworkLayer().NetworkFlow().Src().String()
+		exchangeData.Srcip = srcip
+		
+		lat, lng := ip2LatLng.GetLatLng(srcip)
+		exchangeData.From.Lat = lat
+		exchangeData.From.Lng = lng
+	}
+
+	if packet.TransportLayer() != nil {
+		exchangeData.Srcport = packet.TransportLayer().TransportFlow().Src().String()
+	}
+
+	if packet.TransportLayer() != nil {
+		exchangeData.ProtocolType = packet.TransportLayer().LayerType().String()
+	}
+
+	log.Println(exchangeData)
 }
