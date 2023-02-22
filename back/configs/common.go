@@ -15,5 +15,8 @@ const (
 
 	// GeoIPのデータベースのパス
 	GEOIP_DB_PATH = "./GeoLite2-City_20230127/GeoLite2-City.mmdb"
+
+	// サーバのポート番号
+	SERVER_PORT = 8080
 	
 )	

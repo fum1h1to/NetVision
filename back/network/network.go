@@ -10,7 +10,7 @@ import (
 )
 
 func StartCapturing(dataOutput chan<- []*ExchangeStruct) {
-	log.Println("Start")
+	log.Println("Capture Start")
 	
     handle, err := pcap.OpenLive(configs.TARGET_DEVICENAME, 1024, false, configs.CAPTURE_DURATION*time.Millisecond)
     if err != nil {
