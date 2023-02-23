@@ -1,9 +1,5 @@
 package domain
 
-import (
-	"log"
-)
-
 type Hub struct {
 	Clients		map[*Client]bool
 	RegisterCh   chan *Client
@@ -37,12 +33,10 @@ func (h *Hub) RunLoop() {
 
 func (h *Hub) register(client *Client) {
 	h.Clients[client] = true
-	log.Println("Client registered")
 }
 
 func (h *Hub) unregister(client *Client) {
 	delete(h.Clients, client)
-	log.Println("Client unregistered")
 }
 
 func (h *Hub) broadCastToAllClient(message []byte) {

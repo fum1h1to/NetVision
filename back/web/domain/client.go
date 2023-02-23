@@ -1,7 +1,7 @@
 package domain
 
 import (
-	"log"
+	// "log"
 
 	"github.com/gorilla/websocket"
 )
@@ -34,16 +34,6 @@ func (c *Client) WriteLoop(unregister chan<- *Client) {
 
 		if err := w.Close(); err != nil {
 			return
-		}
-
-		// connectionがcloseされたか確認
-		_, _, err_close := c.ws.ReadMessage()
-
-		if err_close != nil {
-			if websocket.IsUnexpectedCloseError(err, websocket.CloseGoingAway, websocket.CloseAbnormalClosure) {
-				log.Printf("unexpected close error: %v", err)
-			}
-			break
 		}
 	}
 }
