@@ -5,19 +5,19 @@ import (
     "github.com/google/gopacket"
 )
 
-type packetAnalyser struct {
+type PacketAnalyser struct {
 	Ip2LatLngExchanger *ip2LatLng.Ip2LatLngExchanger
 }
 
-func CreatePacketAnalyser() *packetAnalyser {
+func CreatePacketAnalyser() *PacketAnalyser {
 	ip2LatLngExchanger := ip2LatLng.CreateIp2LatLngExchanger()
 
-	return &packetAnalyser{
+	return &PacketAnalyser{
 		Ip2LatLngExchanger: ip2LatLngExchanger,
 	}
 }
 
-func (p *packetAnalyser) analysisPacket(packet gopacket.Packet) (exchangeData *ExchangeStruct){
+func (p *PacketAnalyser) AnalysisPacket(packet gopacket.Packet) (exchangeData *ExchangeStruct){
 	exchangeData = new(ExchangeStruct)
 
 	if packet.NetworkLayer() != nil {

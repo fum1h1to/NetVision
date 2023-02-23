@@ -33,7 +33,7 @@ func StartCapturing(dataOutput chan<- []*ExchangeStruct) {
 		select {
 		case packet := <- packetSource.Packets():
 			if packetCount < configs.PACKET_LIMIT_PER_CAPTURE_DURATION {
-				data := packetAnalyser.analysisPacket(packet)
+				data := packetAnalyser.AnalysisPacket(packet)
 				if IsValidExchangeStruct(data) {
 					packetDatas[validPacketCount] = data
 					validPacketCount++
