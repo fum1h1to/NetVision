@@ -31,6 +31,7 @@ func (h *WebsocketHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	client := domain.NewClient(ws)
-	go client.WriteLoop(h.hub.UnRegisterCh)
+	go client.WriteLoop()
+	go client.CheckClose(h.hub.UnRegisterCh)
 	h.hub.RegisterCh <- client
 }
