@@ -1,10 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import Hello from "./Hello";
+import { RecoilRoot } from "recoil";
+import Top from "./view/pages/top/Top";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Hello />
+    <RecoilRoot>
+      <Top />
+    </RecoilRoot>
   </React.StrictMode>,
   document.getElementById("root")
 );
