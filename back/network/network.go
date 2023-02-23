@@ -3,8 +3,8 @@ package network
 import (
     "log"
     "time"
+
 	"DarkVision/configs"
-	"DarkVision/util/ip2LatLng"
     "github.com/google/gopacket"
     "github.com/google/gopacket/pcap"
 )
@@ -27,12 +27,13 @@ func StartCapturing(dataOutput chan<- []*ExchangeStruct) {
 	packetCount := 0
 	validPacketCount := 0
 	packetDatas := make([]*ExchangeStruct, configs.PACKET_LIMIT_PER_CAPTURE_DURATION)
+	packetAnalyser := CreatePacketAnalyser()
 
 	for {
 		select {
 		case packet := <- packetSource.Packets():
 			if packetCount < configs.PACKET_LIMIT_PER_CAPTURE_DURATION {
-				data := analysisPacket(packet)
+				data := packetAnalyser.analysisPacket(packet)
 				if IsValidExchangeStruct(data) {
 					packetDatas[validPacketCount] = data
 					validPacketCount++
@@ -47,27 +48,4 @@ func StartCapturing(dataOutput chan<- []*ExchangeStruct) {
 			packetCount = 0
 		}
 	}
-}
-
-func analysisPacket(packet gopacket.Packet) (exchangeData *ExchangeStruct){
-	exchangeData = new(ExchangeStruct)
-
-	if packet.NetworkLayer() != nil {
-		srcip := packet.NetworkLayer().NetworkFlow().Src().String()
-		exchangeData.Srcip = srcip
-		
-		lat, lng := ip2LatLng.GetLatLng(srcip)
-		exchangeData.From.Lat = lat
-		exchangeData.From.Lng = lng
-	}
-
-	if packet.TransportLayer() != nil {
-		exchangeData.Srcport = packet.TransportLayer().TransportFlow().Src().String()
-	}
-
-	if packet.TransportLayer() != nil {
-		exchangeData.ProtocolType = packet.TransportLayer().LayerType().String()
-	}
-
-	return
 }
