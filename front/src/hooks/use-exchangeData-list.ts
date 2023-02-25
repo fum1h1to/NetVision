@@ -1,24 +1,38 @@
-import { websocketAtom } from "../state/Websocket";
 import { exchangeDataListAtom } from "../state/ExchangeDatas";
 import { useRecoilCallback, useRecoilValue } from "recoil";
 import { ExchangeData } from "../models/ExchangeData";
+import useWebSocket from "react-use-websocket";
+import { useEffect, useRef } from "react";
 
 export const useExchangeDataList = (): ExchangeData[] => {
-  const socket = useRecoilValue(websocketAtom);
+  const websocketURL = "ws://localhost:8080/ws";
+  const didUnmount = useRef(false);
+  useWebSocket(websocketURL, {
+    shouldReconnect: () => {
+      return didUnmount.current === false;
+    },
+    reconnectAttempts: 10,
+    reconnectInterval: 3000,
+    onMessage: (message) => {
+      updateExchangeDataList(JSON.parse(message.data));
+    },
+  });
+
   const exchangeDataList = useRecoilValue(exchangeDataListAtom);
 
   const updateExchangeDataList = useRecoilCallback(
     ({ set }) =>
-      (exchangeData: ExchangeData) => {
-        set(exchangeDataListAtom, [...exchangeDataList, exchangeData]);
+      (exchangeData: ExchangeData[]) => {
+        console.log(exchangeData);
+        set(exchangeDataListAtom, exchangeData);
       }
   );
-  socket.onmessage = (msg) => {
-    const content = JSON.parse(msg.data as string);
-    const exchangeData: ExchangeData = content as ExchangeData;
-    // console.log(exchangeData);
-    updateExchangeDataList(exchangeData);
-  };
+
+  useEffect(() => {
+    return () => {
+      didUnmount.current = true;
+    };
+  }, []);
 
   return exchangeDataList;
 };

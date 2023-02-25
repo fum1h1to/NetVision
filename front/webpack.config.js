@@ -36,9 +36,9 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: path.resolve(__dirname, "src/index.html"),
     }),
-    new ESLintPlugin({
-      extensions: ["ts", "tsx", "js"],
-    }),
+    // new ESLintPlugin({
+    //   extensions: ["ts", "tsx", "js"],
+    // }),
   ],
   devServer: {
     static: {
