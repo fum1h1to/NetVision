@@ -1,7 +1,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import { RecoilRoot } from "recoil";
-// import TestExchangeDataList from "./view/components/TestExchangeDataList/TestExchangeDataList";
+// import TestExchangeDataList from "./view/composnents/TestExchangeDataList/TestExchangeDataList";
 import Top from "./view/pages/Top/Top";
 
 const container = document.getElementById("root")!;
