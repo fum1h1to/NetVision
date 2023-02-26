@@ -1,5 +1,5 @@
 import React from "react";
-import { useExchangeDataList } from "../../../../hooks/use-exchangeData-list";
+import { useExchangeDataList } from "../../../hooks/use-exchangeData-list";
 
 export const ExchangeDataList = () => {
   const exchangeDataList = useExchangeDataList();

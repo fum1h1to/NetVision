@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { RecoilRoot } from "recoil";
-import Top from "./view/pages/top/Top";
+import Top from "./view/pages/Top/Top";
 
 ReactDOM.render(
   <React.StrictMode>

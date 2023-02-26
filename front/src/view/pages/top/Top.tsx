@@ -1,11 +1,10 @@
 import React from "react";
-import { ExchangeDataList } from "./components/ExchangeDataList";
+import RootCanvas from "../../visualComponents/RootCanvas";
 
 export const Top = () => {
   return (
-    <div>
-      <h1>Test Output</h1>
-      <ExchangeDataList />
+    <div style={{width: "100vw", height: "100vh"}}>
+      <RootCanvas />
     </div>
   );
 };
