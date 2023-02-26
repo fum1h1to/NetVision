@@ -1,13 +1,15 @@
 import React from "react";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { RecoilRoot } from "recoil";
+// import TestExchangeDataList from "./view/components/TestExchangeDataList/TestExchangeDataList";
 import Top from "./view/pages/Top/Top";
 
-ReactDOM.render(
+const container = document.getElementById("root")!;
+const root = createRoot(container);
+root.render(
   <React.StrictMode>
     <RecoilRoot>
       <Top />
     </RecoilRoot>
-  </React.StrictMode>,
-  document.getElementById("root")
+  </React.StrictMode>
 );
