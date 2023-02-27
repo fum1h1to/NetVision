@@ -20,7 +20,7 @@ const Earth = (props: ThreeElements["mesh"]) => {
       ref={mesh}
     >
       <sphereGeometry args={[1, 32, 32]} />
-      <meshStandardMaterial map={earthTexture} />
+      <meshStandardMaterial map={earthTexture as THREE.Texture} />
     </mesh>
   );
 }
