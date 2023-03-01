@@ -1,8 +1,7 @@
+import { LatLng } from "./LatLng";
+
 export type ExchangeData = {
-  from: {
-    lat: number;
-    lng: number;
-  };
+  from: LatLng;
   srcip: string;
   srcport: string;
   protocolType: string;

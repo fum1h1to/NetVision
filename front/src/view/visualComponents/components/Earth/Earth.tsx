@@ -2,7 +2,7 @@ import * as THREE from "three";
 import React, { useRef } from "react";
 import { ThreeElements, useLoader, useFrame } from "@react-three/fiber";
 import { TextureLoader } from 'three/src/loaders/TextureLoader';
-import texture from "../../../../assets/images/earth_texture_01.jpg";
+import texture from "../../../../assets/images/earth_texture_03.jpg";
 
 const Earth = (props: {
   ele: ThreeElements["mesh"],

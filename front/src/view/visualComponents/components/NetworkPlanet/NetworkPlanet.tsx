@@ -1,79 +1,50 @@
 import React, { useEffect } from 'react';
+import { useRecoilValue } from 'recoil';
+import { useExchangeDataList } from '../../../../hooks/use-exchangeData-list';
+import { earthRadiusAtom } from '../../../../state/EarthRadius';
+import { goalAtom } from '../../../../state/Goal';
+import { latlng2Cartesian } from '../../../../util/coordinates';
 import Box from '../Box/Box';
 import Earth from '../Earth/Earth';
 import Flow from '../Flow/Flow';
 
 const NetworkPlanet = () => {
-  const [ radius, setRadius] = React.useState(8);
-  const [ goal, setGoal ] = React.useState({lat: 140, lng: 35});
-  const [ item, setItem ] = React.useState([
-    (<Flow 
-      primary={0}
-      start={{lat: 0, lng: 0}} 
-      goal={goal} 
-      radius={radius} 
-      height={2}
-      duration={1}
-      onEnd={() => {
-        setItem((items) => {
-          delete items[0];
-          return items;
-        })
-      }}
-    />),
-    (<Flow 
-      primary={1}
-      start={{lat: 90, lng: 0}} 
-      goal={goal} 
-      radius={radius} 
-      height={2}
-      duration={1}
-      onEnd={() => {
-        setItem((items) => {
-          delete items[1];
-          return items;
-        })
-      }}
-    />)
-  ]);
-  const [ itemNum, setItemNum ] = React.useState(2);
+  const radius = useRecoilValue(earthRadiusAtom);
+  const goal = useRecoilValue(goalAtom)
 
-  const theta = Math.PI * 0;
-  const phi = Math.PI * 0;
-
-  const x = radius * Math.sin(theta) * Math.cos(phi);
-  const y = radius * Math.sin(theta) * Math.sin(phi);
-  const z = radius * Math.cos(theta);
+  const [ flowPacketList, setFlowPacketList ] = React.useState([] as JSX.Element[]);
+  const packetCount  = React.useRef(0);
+  const exchangeDataList = useExchangeDataList();
 
   useEffect(() => {
-    
-    setTimeout(() => {
-      setItem((items) => {
-        let num = itemNum;
-        return items.concat((<Flow
-          primary={num}
-          start={{lat: 180, lng: 0}} 
-          goal={goal} 
-          radius={radius} 
-          height={2}
-          duration={1}
-          onEnd={() => {
-            setItem((items) => {
-              delete items[num];
-              return items;
-            })
-          }}
-        />))
+    exchangeDataList.map((data, index) => {
+      const thisCount = packetCount.current;
+      setFlowPacketList((items) => {
+        return items.concat(
+          <Flow 
+            primary={thisCount}
+            start={data.from} 
+            goal={goal} 
+            radius={radius} 
+            height={2}
+            duration={1}
+            onEnd={() => {
+              setFlowPacketList((items) => {
+                delete items[thisCount];
+                return items;
+              })
+            }}
+          />
+        )
       })
-      setItemNum(itemNum + 1);
-      console.log(item)
-    }, 3000);
-  })
+      packetCount.current += 1;
+    })
+  }, [exchangeDataList]);
 
   return (
     <>
       <Earth ele={{position: [0, 0, 0]}} radius={radius} />
-      {item.map((ele) => {
+      {flowPacketList.map((ele) => {
         if (ele) {
           return (
             <React.Fragment key={ele.props.primary}>
@@ -82,7 +53,7 @@ const NetworkPlanet = () => {
           )
         }
       })}
-      <Box position={[x, y, z]} />
+      <Box position={latlng2Cartesian(radius, 35, 140)} />
     </>
   );
 }

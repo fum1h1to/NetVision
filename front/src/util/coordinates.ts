@@ -5,12 +5,12 @@ export const cartesian2Polar = (x: number, y: number, z: number): [number, numbe
     return [r, theta, phi];
 }
 
-export const polar2Cartesian = (r: number, lat: number, lng: number): [number, number, number] => {
-    const theta = Math.PI * (lat + 90) / 180;
-    const phi = Math.PI * (lng * -1) / 180;
+export const latlng2Cartesian = (r: number, lat: number, lng: number): [number, number, number] => {
+    const theta = (lng - 180) * Math.PI / 180;
+    const phi = lat * Math.PI / 180;
 
-    const x = r * Math.sin(theta) * Math.cos(phi);
-    const y = r * Math.sin(theta) * Math.sin(phi);
-    const z = r * Math.cos(theta);
+    const x = -1 * r * Math.cos(phi) * Math.cos(theta);
+    const y = r * Math.sin(phi);
+    const z = r * Math.cos(phi) * Math.sin(theta);
     return [x, y, z];
 }

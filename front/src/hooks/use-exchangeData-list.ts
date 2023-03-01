@@ -23,6 +23,7 @@ export const useExchangeDataList = (): ExchangeData[] => {
   const updateExchangeDataList = useRecoilCallback(
     ({ set }) =>
       (exchangeData: ExchangeData[]) => {
+        // console.log(exchangeData);
         set(exchangeDataListAtom, exchangeData);
       }
   );
