@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
+import * as THREE from "three";
 import { Canvas, useThree } from "@react-three/fiber";
-import Box from "./components/Box/Box";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Earth from "./components/Earth/Earth";
+import NetworkPlanet from "./components/NetworkPlanet/NetworkPlanet";
 
 const CameraController = () => {
   const { camera, gl } = useThree();
@@ -22,13 +22,15 @@ const CameraController = () => {
 };
 
 const RootCanvas = () => {
+
   return (
     <div style={{ width: "100vw", height: "100vh" }}>
       <Canvas flat linear>
         <CameraController />
-        <ambientLight />
+        <ambientLight position={[0, 0, 0]} />
         <pointLight position={[10, 10, 10]} />
-        <Earth position={[0, 0, 0]} scale={2.5} />
+        <primitive object={new THREE.AxesHelper(10)} />
+        <NetworkPlanet />
       </Canvas>
     </div>
   );
