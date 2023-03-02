@@ -3,5 +3,5 @@ import { LatLng } from "../models/LatLng";
 
 export const goalAtom = atom<LatLng>({
   key: "goal",
-  default: { lat: 140, lng: 35 },
+  default: { lat: 35, lng: 140 },
 });
