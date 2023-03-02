@@ -29,6 +29,11 @@ func StartCapturing(dataOutput chan<- []*ExchangeStruct) {
 	packetDatas := make([]*ExchangeStruct, configs.PACKET_LIMIT_PER_CAPTURE_DURATION)
 	packetAnalyser := CreatePacketAnalyser()
 
+	ticker := time.NewTicker(configs.CAPTURE_DURATION * time.Millisecond)
+	defer func() {
+		ticker.Stop()
+	}()
+
 	for {
 		select {
 		case packet := <- packetSource.Packets():
@@ -40,7 +45,7 @@ func StartCapturing(dataOutput chan<- []*ExchangeStruct) {
 				}
 				packetCount++
 			}
-		default:
+		case <-ticker.C:
 			if validPacketCount != 0 {
 				dataOutput <- packetDatas[:validPacketCount]
 				validPacketCount = 0

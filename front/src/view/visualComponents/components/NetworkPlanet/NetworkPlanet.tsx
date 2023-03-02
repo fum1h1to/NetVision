@@ -26,7 +26,7 @@ const NetworkPlanet = () => {
             start={data.from} 
             goal={goal} 
             radius={radius}
-            height={6}
+            height={2}
             duration={2}
             onEnd={() => {
               setFlowPacketList((items) => {
@@ -46,11 +46,11 @@ const NetworkPlanet = () => {
       <Earth ele={{position: [0, 0, 0]}} radius={radius} />
       {/* <Flow 
         primary={0}
-        start={{lat: 0, lng: 0}} 
+        start={{lat: -30, lng: 140}} 
         goal={goal} 
         radius={radius} 
-        height={6}
-        duration={2}
+        height={2}
+        duration={10}
         onEnd={() => {
           setFlowPacketList((items) => {
             delete items[0];
@@ -67,7 +67,7 @@ const NetworkPlanet = () => {
           )
         }
       })}
-      <Box position={latlng2Cartesian(radius, goal.lat, goal.lng)} />
+      {/* <Box position={latlng2Cartesian(radius, goal.lat, goal.lng)} /> */}
     </>
   );
 }

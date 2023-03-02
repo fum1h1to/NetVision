@@ -24,7 +24,7 @@ export const useExchangeDataList = (): ExchangeData[] => {
     ({ set }) =>
       (exchangeData: ExchangeData[]) => {
         // console.log(exchangeData);
-        set(exchangeDataListAtom, exchangeData);
+        set(exchangeDataListAtom, exchangeData.slice(0, 40));
       }
   );
 
