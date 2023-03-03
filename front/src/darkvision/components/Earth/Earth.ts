@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import texture from "../../../assets/images/earth_texture_03.jpg";
+import texture from "./texture/earth_texture_03.jpg";
 
 export class Earth {
   private radius: number;
