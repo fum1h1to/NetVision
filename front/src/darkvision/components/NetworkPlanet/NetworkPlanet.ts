@@ -47,6 +47,7 @@ export class NetworkPlanet {
           () => { delete this.flowPacketList[now] }
         );
         this.flowPacketList.push(flow);
+        flow.sceneAdd(); 
       });
     }
 
