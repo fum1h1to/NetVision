@@ -5,12 +5,13 @@ import { remap } from '../../../assets/ts/util/remap';
 import { LatLng } from '../../models/LatLng';
 
 export class Flow {
+  private sceneParent: THREE.Scene;
   private packetGeometry: THREE.SphereGeometry;
   private packetMaterial: THREE.MeshStandardMaterial;
-  private packetMesh: THREE.Mesh;
+  public packetMesh: THREE.Mesh;
   private lineGeometry: THREE.BufferGeometry;
   private lineMaterial: THREE.LineBasicMaterial;
-  private lineMesh: THREE.Line;
+  public lineMesh: THREE.Line;
   private aliveTime: number;
   private currentTime: number;
   private orbitPoints: THREE.Vector3[];
@@ -25,7 +26,7 @@ export class Flow {
     duration: number,
     onEnd: () => void,
   ) {
-    
+    this.sceneParent = scene;
     this.currentTime = 0;
     this.aliveTime = duration * 60;
     this.onEnd = onEnd;
@@ -41,6 +42,7 @@ export class Flow {
       color: 0xffff00,
     });
     this.packetMesh = new THREE.Mesh(this.packetGeometry, this.packetMaterial);
+    this.packetMesh.position.set(startCartesian.x, startCartesian.y, startCartesian.z);
 
     // 軌道ラインの生成
     this.lineGeometry = new THREE.BufferGeometry().setFromPoints(this.orbitPoints);
@@ -52,8 +54,8 @@ export class Flow {
     });
     this.lineMesh = new THREE.Line(this.lineGeometry, this.lineMaterial);
 
-    scene.add(this.packetMesh);
-    scene.add(this.lineMesh);
+    // scene.add(this.packetMesh);
+    // scene.add(this.lineMesh);
   }
 
   private createOrbitPoints(startPoint: THREE.Vector3, endPoint: THREE.Vector3, height: number, segmentNum: number ): THREE.Vector3[] {
@@ -90,6 +92,11 @@ export class Flow {
     return points;
   }
 
+  public sceneAdd () {
+    this.sceneParent.add(this.packetMesh);
+    this.sceneParent.add(this.lineMesh);
+  }
+
   public update() {
     if (this.currentTime < this.aliveTime) {
       const point = this.orbitPoints[this.currentTime];
@@ -98,10 +105,9 @@ export class Flow {
       this.currentTime += 1;
 
     } else {
-      this.packetMesh.visible = false;
-      this.lineMesh.visible = false;
+      this.sceneParent.remove(this.packetMesh);
+      this.sceneParent.remove(this.lineMesh);
       this.onEnd();
-
     }
   }
 
