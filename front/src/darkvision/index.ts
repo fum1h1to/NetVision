@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { Earth } from './components/Earth/Earth';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { NetworkPlanet } from './components/NetworkPlanet/NetworkPlanet';
 
@@ -12,6 +11,7 @@ export class DarkVision {
   private controls: OrbitControls;
   private renderer: THREE.WebGLRenderer;
   private light: THREE.Light;
+  private networkPlanet: NetworkPlanet;
 
   constructor(outputEle: HTMLElement) {
     this.rootEle = outputEle;
@@ -45,7 +45,7 @@ export class DarkVision {
   public init() {
     window.addEventListener('resize', () => this.resize());
 
-    const networkPlanets = new NetworkPlanet(this.scene);
+    this.networkPlanet = new NetworkPlanet(this.scene);
     const axesHelper = new THREE.AxesHelper( 10 );
     this.scene.add( axesHelper );
   }
@@ -66,6 +66,7 @@ export class DarkVision {
   }
 
   private update() {
+    this.networkPlanet.update();
 
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
