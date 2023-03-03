@@ -29,7 +29,7 @@ const RootCanvas = () => {
         <CameraController />
         <ambientLight position={[0, 0, 0]} />
         <pointLight position={[10, 10, 10]} />
-        <primitive object={new THREE.AxesHelper(10)} />
+        {/* <primitive object={new THREE.AxesHelper(10)} /> */}
         <NetworkPlanet />
       </Canvas>
     </div>

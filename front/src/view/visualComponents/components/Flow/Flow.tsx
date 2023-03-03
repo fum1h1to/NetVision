@@ -1,5 +1,5 @@
 import * as THREE from "three";
-import React, { useCallback, useRef } from "react";
+import React, { LegacyRef, useCallback, useRef } from "react";
 import { ThreeElements, useFrame } from "@react-three/fiber";
 import { latlng2Cartesian } from "../../../../util/coordinates";
 import { LatLng } from "../../../../models/LatLng";
@@ -70,6 +70,7 @@ const Flow = (props: {
       mesh.current.visible = false;
       meshLine.current.visible = false;
       props.onEnd();
+      // mesh.current.position.y += delta / 10;
     }
   });
 
@@ -82,8 +83,8 @@ const Flow = (props: {
         <sphereGeometry args={[.05, 32, 32]} />
         <meshBasicMaterial color={0xffff00} />
       </mesh>
-      <line
-        ref={meshLine}
+      {/* @ts-ignore */}
+      <line ref={meshLine}
         geometry={lineGeometry}
       >
         <lineBasicMaterial attach="material" color={'#ffff00'} linewidth={50} linecap={'round'} linejoin={'round'} />

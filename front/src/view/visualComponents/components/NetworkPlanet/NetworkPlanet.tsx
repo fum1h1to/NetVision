@@ -17,27 +17,29 @@ const NetworkPlanet = () => {
   const exchangeDataList = useExchangeDataList();
 
   useEffect(() => {
-    exchangeDataList.map((data, index) => {
-      const thisCount = packetCount.current;
-      setFlowPacketList((items) => {
-        return items.concat(
-          <Flow 
-            primary={thisCount}
-            start={data.from} 
-            goal={goal} 
-            radius={radius}
-            height={2}
-            duration={2}
-            onEnd={() => {
-              setFlowPacketList((items) => {
-                delete items[thisCount];
-                return items;
-              })
-            }}
-          />
-        )
+    // console.log(flowPacketList.length);
+    setFlowPacketList((items) => {
+      exchangeDataList.map((data, index) => {
+        const thisCount = packetCount.current;
+          items.push(
+            <Flow 
+              primary={thisCount}
+              start={data.from} 
+              goal={goal} 
+              radius={radius}
+              height={2}
+              duration={2}
+              onEnd={() => {
+                setFlowPacketList((items) => {
+                  delete items[thisCount];
+                  return items;
+                })
+              }}
+            />
+          )
+        packetCount.current += 1;
       })
-      packetCount.current += 1;
+      return items;
     })
   }, [exchangeDataList]);
 
