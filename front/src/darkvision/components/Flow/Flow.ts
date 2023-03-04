@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { MAX_FPS } from '../../constant';
 import { FlowWorkerInput } from '../../models/FlowWorkerModel';
 import { LatLng } from '../../models/LatLng';
 
@@ -8,36 +9,40 @@ export class Flow {
   private start: LatLng;
   private goal: LatLng;
   private height: number;
-  private sceneParent: THREE.Scene;
-  private packetList: Flow[] = [];
+  private addTo: THREE.Scene;
   private flowWorker: Worker;
   private packetMesh: THREE.Mesh;
   private lineMesh: THREE.Line;
   private aliveTime: number;
   private currentTime: number;
   private orbitPoints: THREE.Vector3[];
+  private isCreated: boolean = false;
+  private onCreate: (packet: Flow) => void;
+  private onGoal: (packet: Flow) => void;
 
   constructor(
     id: number,
     scene: THREE.Scene,
-    packetList: Flow[],
     flowWorker: Worker,
     start: LatLng, 
     goal: LatLng,
     radius: number, 
     height: number,
     duration: number,
+    onCreate: (packet: Flow) => void,
+    onGoal: (packet: Flow) => void,
   ) {
     this.id = id;
-    this.sceneParent = scene;
-    this.packetList = packetList;
+    this.addTo = scene;
     this.flowWorker = flowWorker;
     this.start = start;
     this.goal = goal;
     this.radius = radius;
     this.height = height;
     this.currentTime = 0;
-    this.aliveTime = duration * 60;
+    this.aliveTime = duration * MAX_FPS;
+    this.onCreate = onCreate;
+    this.onGoal = onGoal;
   }
 
   public create() {
@@ -66,10 +71,11 @@ export class Flow {
       this.lineMesh = new THREE.Line(lineGeometry, lineMaterial);
 
       
-      this.sceneParent.add(this.packetMesh);
-      this.sceneParent.add(this.lineMesh);
+      this.addTo.add(this.packetMesh);
+      this.addTo.add(this.lineMesh);
 
-      this.packetList.push(this);
+      this.isCreated = true;
+      this.onCreate(this);
 
     });
     
@@ -85,23 +91,19 @@ export class Flow {
   }
 
   public update() {
-    if (this.currentTime < this.aliveTime) {
-      const point = this.orbitPoints[this.currentTime];
-      this.packetMesh.position.set(point.x, point.y, point.z);
+    if (this.isCreated) {
+      if (this.currentTime < this.aliveTime) {
+        const point = this.orbitPoints[this.currentTime];
+        this.packetMesh.position.set(point.x, point.y, point.z);
+  
+        this.currentTime += 1;
+        
+      } else {
+        this.addTo.remove(this.packetMesh);
+        this.addTo.remove(this.lineMesh);
 
-      this.currentTime += 1;
-      
-    } else {
-      this.sceneParent.remove(this.packetMesh);
-      this.sceneParent.remove(this.lineMesh);
-
-      this.packetList.splice(this.packetList.indexOf(this), 1)
-
+        this.onGoal(this);
+      }
     }
   }
-
-  public getID() {
-    return this.id;
-  }
-
 }
