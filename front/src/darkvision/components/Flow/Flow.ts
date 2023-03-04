@@ -15,8 +15,8 @@ export class Flow {
   private aliveTime: number;
   private currentTime: number;
   private orbitPoints: THREE.Vector3[];
-  private onCreateEnd: () => void;
-  private onDeath: () => void;
+  // private onCreateEnd: () => void;
+  // private onDeath: () => void;
 
   constructor(
     id: number,
@@ -26,8 +26,8 @@ export class Flow {
     radius: number, 
     height: number,
     duration: number,
-    onCreateEnd: () => void,
-    onDeath: () => void,
+    // onCreateEnd: () => void,
+    // onDeath: () => void,
   ) {
     this.id = id;
     this.sceneParent = scene;
@@ -37,14 +37,16 @@ export class Flow {
     this.height = height;
     this.currentTime = 0;
     this.aliveTime = duration * 60;
-    this.onCreateEnd = onCreateEnd;
-    this.onDeath = onDeath;
+    // this.onCreateEnd = onCreateEnd;
+    // this.onDeath = onDeath;
   }
 
   public create() {
     const worker = new FlowWorker();
 
     worker.addEventListener('message', (event) => {
+      worker.terminate();
+
       const { orbitPoints } = event.data;
       this.orbitPoints = orbitPoints;
 
@@ -69,7 +71,7 @@ export class Flow {
       this.sceneParent.add(this.packetMesh);
       this.sceneParent.add(this.lineMesh);
 
-      this.onCreateEnd();
+      // this.onCreateEnd();
       this.update();
 
     }, {once: true});
@@ -95,7 +97,7 @@ export class Flow {
     } else {
       this.sceneParent.remove(this.packetMesh);
       this.sceneParent.remove(this.lineMesh);
-      this.onDeath();
+      // this.onDeath();
 
     }
   }

@@ -56,5 +56,4 @@ _worker.onmessage = async (event: MessageEvent) => {
   }
 
   _worker.postMessage(output);
-
 };

@@ -10,6 +10,7 @@ export class NetworkPlanet {
   private readonly PACKET_GOAL: LatLng = { lat: 35, lng: 140 };
   private flowPacketWS: FlowPacketWebSocket;
   private flowPacketList: Flow[] = [];
+  private flowPacketNum: number = 0;
   private earth: Earth;
 
   constructor(scene: THREE.Scene) {
@@ -20,20 +21,17 @@ export class NetworkPlanet {
 
     this.flowPacketWS = new FlowPacketWebSocket();
 
+
     const flow = new Flow(
-      0,
+      this.flowPacketNum,
       this.parentScene,
       { lat: 0, lng: 0 },
       this.PACKET_GOAL,
       EARTH_RADIUS,
       4,
       4,
-      () => { 
-        console.log(flow.getID());
-        this.flowPacketList.push(flow); 
-      },
-      () => { delete this.flowPacketList[0] }
     );
+    this.flowPacketNum += 1;
     flow.create();
     
   }
@@ -42,7 +40,8 @@ export class NetworkPlanet {
     if (this.flowPacketWS.getIsNewFlowPacketList()) {
       const flowPacketList = this.flowPacketWS.getFlowPacketList().slice(0, 50);
       flowPacketList.map((flowPacket) => {
-        const now = this.flowPacketList.length;
+        const now = this.flowPacketNum;
+        this.flowPacketNum += 1;
         const flow = new Flow(
           now,
           this.parentScene,
@@ -51,19 +50,10 @@ export class NetworkPlanet {
           EARTH_RADIUS,
           3,
           4,
-          () => { 
-            console.log(flow.getID());
-            this.flowPacketList.push(flow); 
-          },
-          () => { delete this.flowPacketList[now] }
         );
         flow.create();
       });
     }
-
-    // this.flowPacketList.map((flowPacket) => {
-    //   flowPacket.update();
-    // });
   }
 
 }
