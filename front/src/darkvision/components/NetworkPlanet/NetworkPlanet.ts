@@ -21,6 +21,7 @@ export class NetworkPlanet {
     this.flowPacketWS = new FlowPacketWebSocket();
 
     const flow = new Flow(
+      0,
       this.parentScene,
       { lat: 0, lng: 0 },
       this.PACKET_GOAL,
@@ -42,6 +43,7 @@ export class NetworkPlanet {
       flowPacketList.map((flowPacket) => {
         const now = this.flowPacketList.length;
         const flow = new Flow(
+          now,
           this.parentScene,
           flowPacket.from,
           this.PACKET_GOAL,
@@ -51,7 +53,7 @@ export class NetworkPlanet {
           () => { delete this.flowPacketList[now] }
         );
         flow.create().then(() => {
-          console.log(now);
+          console.log(flow.getID());
           this.flowPacketList.push(flow);
           flow.sceneAdd(); 
         })

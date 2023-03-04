@@ -4,6 +4,7 @@ import { FlowWorkerInput, FlowWorkerOutput } from '../../models/FlowWorkerModel'
 import { LatLng } from '../../models/LatLng';
 
 export class Flow {
+  private id: number;
   private radius: number;
   private start: LatLng;
   private goal: LatLng;
@@ -17,6 +18,7 @@ export class Flow {
   private onEnd: () => void;
 
   constructor(
+    id: number,
     scene: THREE.Scene,
     start: LatLng, 
     goal: LatLng,
@@ -25,6 +27,7 @@ export class Flow {
     duration: number,
     onEnd: () => void,
   ) {
+    this.id = id;
     this.sceneParent = scene;
     this.start = start;
     this.goal = goal;
@@ -95,6 +98,10 @@ export class Flow {
       this.onEnd();
 
     }
+  }
+
+  public getID() {
+    return this.id;
   }
 
 }
