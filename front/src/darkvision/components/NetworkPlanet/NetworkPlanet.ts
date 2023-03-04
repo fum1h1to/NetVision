@@ -29,7 +29,11 @@ export class NetworkPlanet {
       4,
       () => {}
     );
-    this.flowPacketList.push(flow);
+    flow.create().then(() => {
+      this.flowPacketList.push(flow);
+      flow.sceneAdd(); 
+    })
+    
   }
 
   public update() {
@@ -46,8 +50,11 @@ export class NetworkPlanet {
           4,
           () => { delete this.flowPacketList[now] }
         );
-        this.flowPacketList.push(flow);
-        flow.sceneAdd(); 
+        flow.create().then(() => {
+          console.log(now);
+          this.flowPacketList.push(flow);
+          flow.sceneAdd(); 
+        })
       });
     }
 
