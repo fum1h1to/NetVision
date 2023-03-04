@@ -28,12 +28,13 @@ export class NetworkPlanet {
       EARTH_RADIUS,
       4,
       4,
-      () => {}
+      () => { 
+        console.log(flow.getID());
+        this.flowPacketList.push(flow); 
+      },
+      () => { delete this.flowPacketList[0] }
     );
-    flow.create().then(() => {
-      this.flowPacketList.push(flow);
-      flow.sceneAdd(); 
-    })
+    flow.create();
     
   }
 
@@ -50,19 +51,19 @@ export class NetworkPlanet {
           EARTH_RADIUS,
           3,
           4,
+          () => { 
+            console.log(flow.getID());
+            this.flowPacketList.push(flow); 
+          },
           () => { delete this.flowPacketList[now] }
         );
-        flow.create().then(() => {
-          console.log(flow.getID());
-          this.flowPacketList.push(flow);
-          flow.sceneAdd(); 
-        })
+        flow.create();
       });
     }
 
-    this.flowPacketList.map((flowPacket) => {
-      flowPacket.update();
-    });
+    // this.flowPacketList.map((flowPacket) => {
+    //   flowPacket.update();
+    // });
   }
 
 }

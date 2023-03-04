@@ -15,7 +15,8 @@ export class Flow {
   private aliveTime: number;
   private currentTime: number;
   private orbitPoints: THREE.Vector3[];
-  private onEnd: () => void;
+  private onCreateEnd: () => void;
+  private onDeath: () => void;
 
   constructor(
     id: number,
@@ -25,7 +26,8 @@ export class Flow {
     radius: number, 
     height: number,
     duration: number,
-    onEnd: () => void,
+    onCreateEnd: () => void,
+    onDeath: () => void,
   ) {
     this.id = id;
     this.sceneParent = scene;
@@ -35,38 +37,42 @@ export class Flow {
     this.height = height;
     this.currentTime = 0;
     this.aliveTime = duration * 60;
-    this.onEnd = onEnd;
+    this.onCreateEnd = onCreateEnd;
+    this.onDeath = onDeath;
   }
 
-  public async create() {
+  public create() {
     const worker = new FlowWorker();
 
-    const job = new Promise<void>((resolve, reject) => {
-      worker.addEventListener('message', (event) => {
-        const { orbitPoints } = event.data;
-        this.orbitPoints = orbitPoints;
+    worker.addEventListener('message', (event) => {
+      const { orbitPoints } = event.data;
+      this.orbitPoints = orbitPoints;
 
-        // パケットの生成
-        const packetGeometry = new THREE.SphereGeometry(.05, 32, 32);
-        const packetMaterial = new THREE.MeshStandardMaterial({
-          color: 0xffff00,
-        });
-        this.packetMesh = new THREE.Mesh(packetGeometry, packetMaterial);
+      // パケットの生成
+      const packetGeometry = new THREE.SphereGeometry(.05, 32, 32);
+      const packetMaterial = new THREE.MeshStandardMaterial({
+        color: 0xffff00,
+      });
+      this.packetMesh = new THREE.Mesh(packetGeometry, packetMaterial);
 
-        // 軌道ラインの生成
-        const lineGeometry = new THREE.BufferGeometry().setFromPoints(this.orbitPoints);
-        const lineMaterial = new THREE.LineBasicMaterial({
-          linewidth: 50,
-          color: 0xffff00,
-          linecap: 'round',
-          linejoin: 'round',
-        });
-        this.lineMesh = new THREE.Line(lineGeometry, lineMaterial);
+      // 軌道ラインの生成
+      const lineGeometry = new THREE.BufferGeometry().setFromPoints(this.orbitPoints);
+      const lineMaterial = new THREE.LineBasicMaterial({
+        linewidth: 50,
+        color: 0xffff00,
+        linecap: 'round',
+        linejoin: 'round',
+      });
+      this.lineMesh = new THREE.Line(lineGeometry, lineMaterial);
+
       
-        resolve();
+      this.sceneParent.add(this.packetMesh);
+      this.sceneParent.add(this.lineMesh);
 
-      }, {once: true});
-    });
+      this.onCreateEnd();
+      this.update();
+
+    }, {once: true});
     
     const workerPostMesage: FlowWorkerInput = {
       radius: this.radius,
@@ -76,13 +82,6 @@ export class Flow {
       aliveTime: this.aliveTime,
     }
     worker.postMessage(workerPostMesage);
-
-    return await job;
-  }
-
-  public sceneAdd () {
-    this.sceneParent.add(this.packetMesh);
-    this.sceneParent.add(this.lineMesh);
   }
 
   public update() {
@@ -91,11 +90,12 @@ export class Flow {
       this.packetMesh.position.set(point.x, point.y, point.z);
 
       this.currentTime += 1;
-
+      
+      requestAnimationFrame(() => this.update());
     } else {
       this.sceneParent.remove(this.packetMesh);
       this.sceneParent.remove(this.lineMesh);
-      this.onEnd();
+      this.onDeath();
 
     }
   }
