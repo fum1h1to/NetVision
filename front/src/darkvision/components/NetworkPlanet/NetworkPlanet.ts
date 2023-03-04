@@ -9,7 +9,7 @@ export class NetworkPlanet {
   private parentScene: THREE.Scene;
   private readonly PACKET_GOAL: LatLng = { lat: 35, lng: 140 };
   private flowPacketWS: FlowPacketWebSocket;
-  private flowPacketList: Flow[] = [];
+  // private flowPacketList: Flow[] = [];
   private flowPacketNum: number = 0;
   private earth: Earth;
 
