@@ -1,6 +1,7 @@
 import { LatLng } from "./LatLng";
 
 export type FlowWorkerInput = {
+  id: number;
   radius: number;
   start: LatLng;
   goal: LatLng;
@@ -9,5 +10,6 @@ export type FlowWorkerInput = {
 }
 
 export type FlowWorkerOutput = {
+  id: number;
   orbitPoints: THREE.Vector3[];
 }

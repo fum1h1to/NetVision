@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import FlowWorker from "./worker/createOrbitPoints?worker";
 import { FlowWorkerInput } from '../../models/FlowWorkerModel';
 import { LatLng } from '../../models/LatLng';
 
@@ -10,6 +9,8 @@ export class Flow {
   private goal: LatLng;
   private height: number;
   private sceneParent: THREE.Scene;
+  private packetList: Flow[] = [];
+  private flowWorker: Worker;
   private packetMesh: THREE.Mesh;
   private lineMesh: THREE.Line;
   private aliveTime: number;
@@ -19,6 +20,8 @@ export class Flow {
   constructor(
     id: number,
     scene: THREE.Scene,
+    packetList: Flow[],
+    flowWorker: Worker,
     start: LatLng, 
     goal: LatLng,
     radius: number, 
@@ -27,6 +30,8 @@ export class Flow {
   ) {
     this.id = id;
     this.sceneParent = scene;
+    this.packetList = packetList;
+    this.flowWorker = flowWorker;
     this.start = start;
     this.goal = goal;
     this.radius = radius;
@@ -36,16 +41,15 @@ export class Flow {
   }
 
   public create() {
-    const worker = new FlowWorker();
 
-    worker.addEventListener('message', (event) => {
-      worker.terminate();
+    this.flowWorker.addEventListener('message', (event) => {
+      const { id, orbitPoints } = event.data;
+      if (id !== this.id) return;
 
-      const { orbitPoints } = event.data;
       this.orbitPoints = orbitPoints;
 
       // パケットの生成
-      const packetGeometry = new THREE.SphereGeometry(.05, 2, 2);
+      const packetGeometry = new THREE.BoxGeometry(.05, .05, .05);
       const packetMaterial = new THREE.MeshStandardMaterial({
         color: 0xffff00,
       });
@@ -65,18 +69,19 @@ export class Flow {
       this.sceneParent.add(this.packetMesh);
       this.sceneParent.add(this.lineMesh);
 
-      this.update();
+      this.packetList.push(this);
 
-    }, {once: true});
+    });
     
     const workerPostMesage: FlowWorkerInput = {
+      id: this.id,
       radius: this.radius,
       start: this.start,
       goal: this.goal,
       height: this.height,
       aliveTime: this.aliveTime,
     }
-    worker.postMessage(workerPostMesage);
+    this.flowWorker.postMessage(workerPostMesage);
   }
 
   public update() {
@@ -86,10 +91,11 @@ export class Flow {
 
       this.currentTime += 1;
       
-      requestAnimationFrame(() => this.update());
     } else {
       this.sceneParent.remove(this.packetMesh);
       this.sceneParent.remove(this.lineMesh);
+
+      this.packetList.splice(this.packetList.indexOf(this), 1)
 
     }
   }
