@@ -2,18 +2,22 @@ package network
 
 import (
 	"DarkVision/util/ip2LatLng"
-    "github.com/google/gopacket"
+	"DarkVision/util/checkAbuseIP"
+  "github.com/google/gopacket"
 )
 
 type PacketAnalyser struct {
 	Ip2LatLngExchanger *ip2LatLng.Ip2LatLngExchanger
+	AbuseIPChecker *checkAbuseIP.AbuseIPChecker
 }
 
 func CreatePacketAnalyser() *PacketAnalyser {
 	ip2LatLngExchanger := ip2LatLng.CreateIp2LatLngExchanger()
+	AbuseIPChecker := checkAbuseIP.CreateAbuseIPChecker()
 
 	return &PacketAnalyser{
 		Ip2LatLngExchanger: ip2LatLngExchanger,
+		AbuseIPChecker: AbuseIPChecker,
 	}
 }
 

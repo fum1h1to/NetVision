@@ -2,7 +2,7 @@
 # 可視化するネットワークインターフェース名
 TARGET_DEVICENAME: "eth0"
 
-# msで指定。
+# キャプチャする間隔。msで指定。
 CAPTURE_DURATION: 1000
 
 # CAPTURE_DURATIONの値の間に最大で取得するパケット数。超えた場合は破棄される。
@@ -13,6 +13,12 @@ BPF_FILTER: ""
 
 # GeoIPのデータベースのパス
 GEOIP_DB_PATH: "./resources/GeoLite2-City_20230127/GeoLite2-City.mmdb"
+
+# Abuse IPDBのAPI KEY
+ABUSE_IPDB_API_KEY: 
+
+# Abuse IPDBのblacklistファイルのパス（json形式）
+ABUSE_IPDB_BLACKLIST_PATH: ./resources/AbuseIPDB/blacklist.json
 
 # サーバのポート番号
 SERVER_PORT: 8080

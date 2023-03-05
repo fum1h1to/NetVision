@@ -2,7 +2,7 @@ package configs
 
 import (
 	"log"
-	"io/ioutil"
+	"os"
 
   "gopkg.in/yaml.v2"
 )
@@ -17,10 +17,12 @@ type Config struct {
 	GeoipDbPath string `yaml:"GEOIP_DB_PATH"`
 	ServerPort int `yaml:"SERVER_PORT"`
 	ServerClientContentPath string `yaml:"SERVER_CLIENT_CONTENT_PATH"`
+	AbuseIPDBAPIKey string `yaml:"ABUSE_IPDB_API_KEY"`
+	AbuseIPDBBlacklistPath string `yaml:"ABUSE_IPDB_BLACKLIST_PATH"`
 }
 
 func LoadConfig(filePath string) (config *Config) {
-	content, err := ioutil.ReadFile(filePath)
+	content, err := os.ReadFile(filePath)
 	if err != nil {
 		log.Panicln("Error loading config file:", err)
 	}
@@ -61,4 +63,12 @@ func GetServerPort() int {
 
 func GetServerClientContentPath() string {
 	return data.ServerClientContentPath
+}
+
+func GetAbuseIPDBBlacklistPath() string {
+	return data.AbuseIPDBBlacklistPath
+}
+
+func GetAbuseIPDBAPIKey() string {
+	return data.AbuseIPDBAPIKey
 }
