@@ -13,6 +13,10 @@ export class NetworkPlanet {
   private earth: Earth;
   private flowWorker: Worker;
 
+  private flowpacketGeometry: THREE.BoxGeometry;
+  private flowpacketMaterial: THREE.MeshStandardMaterial;
+  private flowlineMaterial: THREE.LineBasicMaterial;
+
   constructor(scene: THREE.Scene) {
     this.parentScene = scene;
 
@@ -21,6 +25,20 @@ export class NetworkPlanet {
 
     this.flowPacketWS = new FlowPacketWebSocket();
     this.flowWorker = new FlowWorker();
+
+    // パケットのgeometryとmaterialの生成
+    this.flowpacketGeometry = new THREE.BoxGeometry(.05, .05, .05);
+    this.flowpacketMaterial = new THREE.MeshStandardMaterial({
+      color: 0xffff00,
+    });
+
+    // 軌道ラインのmaterialの生成
+    this.flowlineMaterial = new THREE.LineBasicMaterial({
+      linewidth: 50,
+      color: 0xffff00,
+      linecap: 'round',
+      linejoin: 'round',
+    });
 
     // const flow = new Flow(
     //   this.flowPacketNum,
@@ -56,6 +74,9 @@ export class NetworkPlanet {
           now, // id
           this.parentScene, // scene
           this.flowWorker, // flowWorker
+          this.flowpacketGeometry, // packetGeometry
+          this.flowpacketMaterial, // packetMaterial
+          this.flowlineMaterial, // lineMaterial
           flowPacket.from, // start
           PACKET_GOAL, // goal
           EARTH_RADIUS, // radius

@@ -13,7 +13,7 @@ export const WEBSOCKET_URL: string = "ws://localhost:8080/ws";
 export const WEBSOCKET_RECONNECT_INTERVAL: number = 10000; //ms
 
 // クライアント側で扱えるパケットの最大数
-export const GET_PACKET_LIMIT: number = 500;
+export const GET_PACKET_LIMIT: number = 100;
 
 // パケットの目的地
 export const PACKET_GOAL: LatLng = { lat: 35, lng: 140 };
