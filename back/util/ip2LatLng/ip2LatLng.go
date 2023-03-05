@@ -12,7 +12,7 @@ type Ip2LatLngExchanger struct {
 }
 
 func CreateIp2LatLngExchanger() *Ip2LatLngExchanger {
-	Db, err := geoip2.Open(configs.GEOIP_DB_PATH)
+	Db, err := geoip2.Open(configs.GetGeoipDbPath())
 	if err != nil {
 		log.Fatal(err)
 	}

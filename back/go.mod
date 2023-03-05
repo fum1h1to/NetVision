@@ -6,6 +6,7 @@ require (
 	github.com/google/gopacket v1.1.19
 	github.com/gorilla/websocket v1.5.0
 	github.com/oschwald/geoip2-golang v1.8.0
+	gopkg.in/yaml.v2 v2.4.0
 )
 
 require (

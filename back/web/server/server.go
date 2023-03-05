@@ -26,7 +26,7 @@ func (w *WebServer) StartServer() {
 
 	http.HandleFunc("/ws", handlers.NewWebsocketHandler(w.Hub).Handle) 
 
-	port := configs.SERVER_PORT
+	port := configs.GetServerPort()
 	log.Printf("Listening on port %d", port)
 
 	if err := http.ListenAndServe(fmt.Sprintf(":%v", port), nil); err != nil {

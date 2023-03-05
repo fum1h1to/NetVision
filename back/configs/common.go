@@ -1,21 +1,59 @@
 package configs
 
-const (
-	// 可視化するネットワークインターフェース名
-	TARGET_DEVICENAME = "eth0"
+import (
+	"log"
+	"io/ioutil"
 
-	// msで指定。
-	CAPTURE_DURATION = 1000
+  "gopkg.in/yaml.v2"
+)
 
-	// CAPTURE_DURATIONの値の間に最大で取得するパケット数。超えた場合は破棄される。
-	PACKET_LIMIT_PER_CAPTURE_DURATION = 2000
+var data *Config = LoadConfig("./config.yaml")
 
-	// BPF フィルタ
-	BPF_FILTER = ""
+type Config struct {
+	TargetDeviceName string `yaml:"TARGET_DEVICENAME"`
+	CaptureDuration int `yaml:"CAPTURE_DURATION"`
+	PacketLimitePerCaptureDuration int `yaml:"PACKET_LIMIT_PER_CAPTURE_DURATION"`
+	BpfFilter string `yaml:"BPF_FILTER"`
+	GeoipDbPath string `yaml:"GEOIP_DB_PATH"`
+	ServerPort int `yaml:"SERVER_PORT"`
+}
 
-	// GeoIPのデータベースのパス
-	GEOIP_DB_PATH = "./GeoLite2-City_20230127/GeoLite2-City.mmdb"
+func LoadConfig(filePath string) (config *Config) {
+	content, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		log.Panicln("Error loading config file:", err)
+	}
 
-	// サーバのポート番号
-	SERVER_PORT = 8080
-)	
+	config = &Config{}
+	if err := yaml.Unmarshal(content, config); err != nil {
+		log.Panicln("Error loading config file:", err)
+	}
+
+	log.Printf("Loaded config")
+	
+	return
+}
+
+func GetTargetDeviceName() string {
+	return data.TargetDeviceName
+}
+
+func GetCaptureDuration() int {
+	return data.CaptureDuration
+}
+
+func GetPacketLimitPerCaptureDuration() int {
+	return data.PacketLimitePerCaptureDuration
+}
+
+func GetBpfFilter() string {
+	return data.BpfFilter
+}
+
+func GetGeoipDbPath() string {
+	return data.GeoipDbPath
+}
+
+func GetServerPort() int {
+	return data.ServerPort
+}
