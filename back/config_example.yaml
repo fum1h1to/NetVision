@@ -12,7 +12,7 @@ PACKET_LIMIT_PER_CAPTURE_DURATION: 2000
 BPF_FILTER: ""
 
 # GeoIPのデータベースのパス
-GEOIP_DB_PATH: "./GeoLite2-City_20230127/GeoLite2-City.mmdb"
+GEOIP_DB_PATH: "./resources/GeoLite2-City_20230127/GeoLite2-City.mmdb"
 
 # サーバのポート番号
 SERVER_PORT: 8080

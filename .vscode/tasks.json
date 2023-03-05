@@ -1,0 +1,64 @@
+{
+  // See https://go.microsoft.com/fwlink/?LinkId=733558
+  // for the documentation about the tasks.json format
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "echo",
+      "type": "shell",
+      "command": "echo ${workspaceFolder}"
+    },
+    {
+      "label": "front build",
+      "type": "shell",
+      "command": "cd \"${workspaceFolder}\" && cd ./front && yarn build && echo \"front build success\"",
+    },
+    {
+      "label": "back build dark_vision",
+      "type": "shell",
+      "command": "cd \"${workspaceFolder}\" && cd ./back && go build -o ./dist/dark_vision.exe ./cmd/dark_vision/main.go",
+    },
+    {
+      "label": "back build find_device",
+      "type": "shell",
+      "command": "cd \"${workspaceFolder}\" && cd ./back && go build -o ./dist/find_device.exe ./cmd/find_device/main.go",
+    },
+    {
+      "label": "back build",
+      "type": "shell",
+      "command": "echo 'back build success'",
+      "dependsOrder": "sequence",
+      "dependsOn": [
+        "back build dark_vision",
+        "back build find_device"
+      ],
+    },
+    {
+      "label": "build front and back",
+      "type": "shell",
+      "command": "echo 'build success'",
+      "dependsOn": [
+        "front build",
+        "back build"
+      ],
+    },
+    {
+      "label": "check and clean build dir",
+      "type": "shell",
+      "command": "cd \"${workspaceFolder}\" && if [ -d \"./build\" ]; then rm -rf ./build; fi && mkdir ./build && echo 'check and clean build dir success'",
+    },
+    {
+      "label": "build",
+      "type": "shell",
+      "command": "cd \"${workspaceFolder}\" && cp -r ./front/dist/ ./build/html/ && cp -r ./back/dist/* ./back/config.yaml ./back/resources/ ./build/ | echo 'build compose success'",
+      "dependsOn": [
+        "build front and back",
+        "check and clean build dir"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      }
+    }
+  ]
+}
