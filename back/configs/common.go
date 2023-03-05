@@ -16,6 +16,7 @@ type Config struct {
 	BpfFilter string `yaml:"BPF_FILTER"`
 	GeoipDbPath string `yaml:"GEOIP_DB_PATH"`
 	ServerPort int `yaml:"SERVER_PORT"`
+	ServerClientContentPath string `yaml:"SERVER_CLIENT_CONTENT_PATH"`
 }
 
 func LoadConfig(filePath string) (config *Config) {
@@ -56,4 +57,8 @@ func GetGeoipDbPath() string {
 
 func GetServerPort() int {
 	return data.ServerPort
+}
+
+func GetServerClientContentPath() string {
+	return data.ServerClientContentPath
 }

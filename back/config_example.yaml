@@ -16,3 +16,6 @@ GEOIP_DB_PATH: "./GeoLite2-City_20230127/GeoLite2-City.mmdb"
 
 # サーバのポート番号
 SERVER_PORT: 8080
+
+# クライアント側のコンテンツの格納ディレクトリ
+SERVER_CLIENT_CONTENT_PATH: ./html

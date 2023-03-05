@@ -24,7 +24,8 @@ func CreateServer() *WebServer {
 func (w *WebServer) StartServer() {
 	go w.Hub.RunLoop()
 
-	http.HandleFunc("/ws", handlers.NewWebsocketHandler(w.Hub).Handle) 
+	http.HandleFunc("/", http.FileServer(http.Dir(configs.GetServerClientContentPath())).ServeHTTP)
+	http.HandleFunc("/ws", handlers.NewWebsocketHandler(w.Hub).Handle)
 
 	port := configs.GetServerPort()
 	log.Printf("Listening on port %d", port)
