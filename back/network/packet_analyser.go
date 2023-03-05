@@ -21,24 +21,26 @@ func CreatePacketAnalyser() *PacketAnalyser {
 	}
 }
 
-func (p *PacketAnalyser) AnalysisPacket(packet gopacket.Packet) (exchangeData *ExchangeStruct){
-	exchangeData = new(ExchangeStruct)
+func (p *PacketAnalyser) AnalysisPacket(packet gopacket.Packet) (packetData *PacketData){
+	packetData = new(PacketData)
 
 	if packet.NetworkLayer() != nil {
 		srcip := packet.NetworkLayer().NetworkFlow().Src().String()
-		exchangeData.Srcip = srcip
+		packetData.Srcip = srcip
 		
 		lat, lng := p.Ip2LatLngExchanger.GetLatLng(srcip)
-		exchangeData.From.Lat = lat
-		exchangeData.From.Lng = lng
+		packetData.From.Lat = lat
+		packetData.From.Lng = lng
+
+		packetData.AbuseIPScore = p.AbuseIPChecker.GetAbuseIPScore(srcip)
 	}
 
 	if packet.TransportLayer() != nil {
-		exchangeData.Srcport = packet.TransportLayer().TransportFlow().Src().String()
+		packetData.Srcport = packet.TransportLayer().TransportFlow().Src().String()
 	}
 
 	if packet.TransportLayer() != nil {
-		exchangeData.ProtocolType = packet.TransportLayer().LayerType().String()
+		packetData.ProtocolType = packet.TransportLayer().LayerType().String()
 	}
 
 	return

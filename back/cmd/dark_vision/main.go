@@ -12,13 +12,13 @@ func main() {
 	webserver := server.CreateServer()
 	go webserver.StartServer()
 	
-	exchangeDataOutputChan := make(chan []*network.ExchangeStruct)
-	go network.StartCapturing(exchangeDataOutputChan)
+	packetDataOutputChan := make(chan []*network.PacketData)
+	go network.StartCapturing(packetDataOutputChan)
 
 	for {
 		select {
-		case exchangeData := <- exchangeDataOutputChan:
-			json_data, _ := json.Marshal(exchangeData)
+		case packetData := <- packetDataOutputChan:
+			json_data, _ := json.Marshal(packetData)
 			webserver.Hub.BroadcastCh <- json_data
 		}
 	}

@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { EARTH_RADIUS, GET_PACKET_LIMIT, PACKET_GOAL, PACKET_GOAL_TIME, PACKET_ORBIT_HEIGHT } from '../../constant';
-import { ExchangeData } from '../../models/ExchangeData';
+import { PacketData } from '../../models/PacketData';
 import { FlowPacketWebSocket } from '../../websocket/FlowPacketWebSocket';
 import { Earth } from '../Earth/Earth';
 import { Flow } from '../Flow/Flow';
@@ -46,7 +46,7 @@ export class NetworkPlanet {
     // }, 1000);
   }
 
-  private createFlow(flowPacket: ExchangeData) {
+  private createFlow(flowPacket: PacketData) {
     const now = this.flowPacketNum;
     this.flowPacketNum += 1;
     const flow = new Flow(

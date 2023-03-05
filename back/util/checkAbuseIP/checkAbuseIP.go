@@ -75,6 +75,15 @@ func (c *AbuseIPChecker) CheckIP(ip string) bool {
 	return ok
 }
 
+func (c *AbuseIPChecker) GetAbuseIPScore(ip string) int {
+	score, ok := c.blackListMap[ip]
+	if ok {
+		return score
+	} else {
+		return 0
+	}
+}
+
 func getBlackListFromAbuseIPDB() (abuseIPData []byte) {
 	method := "GET"
 	url := "https://api.abuseipdb.com/api/v2/blacklist"

@@ -1,10 +1,10 @@
 import { WEBSOCKET_RECONNECT_INTERVAL, WEBSOCKET_URL } from "../constant";
-import { ExchangeData } from "../models/ExchangeData";
+import { PacketData } from "../models/PacketData";
 
 export class FlowPacketWebSocket {
   private isOpen: boolean = false;
   private isNewFlowPacketList: boolean = false;
-  private flowPacketList: ExchangeData[] = [];
+  private flowPacketList: PacketData[] = [];
 
   constructor() {
     this.connect();
@@ -43,7 +43,7 @@ export class FlowPacketWebSocket {
     return this.isNewFlowPacketList;
   }
 
-  public getFlowPacketList(): ExchangeData[] {
+  public getFlowPacketList(): PacketData[] {
     this.isNewFlowPacketList = false;
     return this.flowPacketList;
   }
