@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import { EARTH_RADIUS, GET_PACKET_LIMIT, PACKET_GOAL, PACKET_GOAL_TIME, PACKET_ORBIT_HEIGHT } from '../../constant';
+import { ExchangeData } from '../../models/ExchangeData';
 import { FlowPacketWebSocket } from '../../websocket/FlowPacketWebSocket';
 import { Earth } from '../Earth/Earth';
 import { Flow } from '../Flow/Flow';
@@ -8,7 +9,7 @@ import FlowWorker from "../Flow/worker/FlowWorker?worker";
 export class NetworkPlanet {
   private parentScene: THREE.Scene;
   private flowPacketWS: FlowPacketWebSocket;
-  private flowPacketList: Flow[] = [];
+  private animateFlowPacketList: Flow[] = [];
   private flowPacketNum: number = 0;
   private earth: Earth;
   private flowWorker: Worker;
@@ -39,61 +40,46 @@ export class NetworkPlanet {
       linecap: 'round',
       linejoin: 'round',
     });
-
-    // const flow = new Flow(
-    //   this.flowPacketNum,
-    //   this.parentScene,
-    //   this.flowWorker,
-    //   { lat: 0, lng: 0 },
-    //   PACKET_GOAL,
-    //   EARTH_RADIUS,
-    //   4,
-    //   4,
-    //   (packet) => {
-    //     this.flowPacketList.push(packet);
-    //   },
-    //   (packet) => {
-    //     this.flowPacketList.splice(this.flowPacketList.indexOf(packet), 1);
-    //   }
-    // );
-    // this.flowPacketNum += 1;
-    // flow.create();
     
     // setInterval(() => {
     //   console.log(this.flowPacketList);
     // }, 1000);
   }
 
+  private createFlow(flowPacket: ExchangeData) {
+    const now = this.flowPacketNum;
+    this.flowPacketNum += 1;
+    const flow = new Flow(
+      now, // id
+      this.parentScene, // scene
+      this.flowWorker, // flowWorker
+      this.flowpacketGeometry, // packetGeometry
+      this.flowpacketMaterial, // packetMaterial
+      this.flowlineMaterial, // lineMaterial
+      flowPacket.from, // start
+      PACKET_GOAL, // goal
+      EARTH_RADIUS, // radius
+      PACKET_ORBIT_HEIGHT, // height
+      PACKET_GOAL_TIME, // duration
+      (packet) => {
+        this.animateFlowPacketList.push(packet);
+      }, // onCreate
+      (packet) => {
+        this.animateFlowPacketList.splice(this.animateFlowPacketList.indexOf(packet), 1);
+      }, // onGoal
+    );
+    flow.create();
+  }
+
   public update() {
     if (this.flowPacketWS.getIsNewFlowPacketList()) {
-      const flowPacketList = this.flowPacketWS.getFlowPacketList().slice(0, GET_PACKET_LIMIT);
-      flowPacketList.map((flowPacket) => {
-        const now = this.flowPacketNum;
-        this.flowPacketNum += 1;
-        const flow = new Flow(
-          now, // id
-          this.parentScene, // scene
-          this.flowWorker, // flowWorker
-          this.flowpacketGeometry, // packetGeometry
-          this.flowpacketMaterial, // packetMaterial
-          this.flowlineMaterial, // lineMaterial
-          flowPacket.from, // start
-          PACKET_GOAL, // goal
-          EARTH_RADIUS, // radius
-          PACKET_ORBIT_HEIGHT, // height
-          PACKET_GOAL_TIME, // duration
-          (packet) => {
-            this.flowPacketList.push(packet);
-          }, // onCreate
-          (packet) => {
-            this.flowPacketList.splice(this.flowPacketList.indexOf(packet), 1);
-          }, // onGoal
-        );
-        flow.create();
+      const activeFlowPacketList = this.flowPacketWS.getFlowPacketList().slice(0, GET_PACKET_LIMIT);
+      activeFlowPacketList.map((flowPacket) => {
+        this.createFlow(flowPacket);
       });
     }
 
-    this.flowPacketList.map((flowPacket) => {
+    this.animateFlowPacketList.map((flowPacket) => {
       flowPacket.update();
     });
 
