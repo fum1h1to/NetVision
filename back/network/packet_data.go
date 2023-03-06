@@ -9,6 +9,7 @@ type PacketData struct {
 	Srcport string `json:"srcport"`
 	ProtocolType string `json:"protocolType"`
 	AbuseIPScore int `json:"abuseIPScore"`
+	PacketCount int `json:"packetCount"`
 }
 
 func IsValidPacketData(packetData *PacketData) bool {

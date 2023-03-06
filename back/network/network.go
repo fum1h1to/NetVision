@@ -47,7 +47,8 @@ func StartCapturing(dataOutput chan<- []*PacketData) {
 			}
 		case <-ticker.C:
 			if validPacketCount != 0 {
-				dataOutput <- packetDatas[:validPacketCount]
+				packetBundler := CreatePacketBundler(packetDatas[:validPacketCount])
+				dataOutput <- packetBundler.Bundle()
 				validPacketCount = 0
 			} 
 			packetCount = 0

@@ -6,4 +6,5 @@ export type PacketData = {
   srcport: string;
   protocolType: string;
   abuseIPScore: number;
+  packetCount: number;
 };
