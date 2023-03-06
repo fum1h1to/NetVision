@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { EARTH_RADIUS, GET_PACKET_LIMIT, PACKET_GOAL, PACKET_GOAL_TIME, PACKET_ORBIT_HEIGHT } from '../../constant';
+import { DEFAULT_PACKET_COLOR, EARTH_RADIUS, GET_PACKET_LIMIT, PACKET_GOAL, PACKET_GOAL_TIME, PACKET_ORBIT_HEIGHT } from '../../constant';
 import { PacketData } from '../../models/PacketData';
 import { FlowPacketWebSocket } from '../../websocket/FlowPacketWebSocket';
 import { Earth } from '../Earth/Earth';
@@ -30,13 +30,13 @@ export class NetworkPlanet {
     // パケットのgeometryとmaterialの生成
     this.flowpacketGeometry = new THREE.BoxGeometry(.05, .05, .05);
     this.flowpacketMaterial = new THREE.MeshStandardMaterial({
-      color: 0xffff00,
+      color: DEFAULT_PACKET_COLOR,
     });
 
     // 軌道ラインのmaterialの生成
     this.flowlineMaterial = new THREE.LineBasicMaterial({
       linewidth: 50,
-      color: 0xffff00,
+      color: DEFAULT_PACKET_COLOR,
       linecap: 'round',
       linejoin: 'round',
     });
@@ -46,7 +46,7 @@ export class NetworkPlanet {
     // }, 1000);
   }
 
-  private createFlow(flowPacket: PacketData) {
+  private createFlow(packetData: PacketData) {
     const now = this.flowPacketNum;
     this.flowPacketNum += 1;
     const flow = new Flow(
@@ -56,11 +56,12 @@ export class NetworkPlanet {
       this.flowpacketGeometry, // packetGeometry
       this.flowpacketMaterial, // packetMaterial
       this.flowlineMaterial, // lineMaterial
-      flowPacket.from, // start
+      packetData.from, // start
       PACKET_GOAL, // goal
       EARTH_RADIUS, // radius
       PACKET_ORBIT_HEIGHT, // height
       PACKET_GOAL_TIME, // duration
+      packetData, // packetData
       (packet) => {
         this.animateFlowPacketList.push(packet);
       }, // onCreate

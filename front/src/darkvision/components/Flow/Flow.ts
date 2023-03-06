@@ -1,7 +1,9 @@
 import * as THREE from 'three';
-import { MAX_FPS } from '../../constant';
+import { remap } from '../../../assets/ts/util/remap';
+import { ABUSEIPDB_IP_COLOR, MAX_FPS, MAX_PACKET_SCALE, MAX_SCALE_PACKET_COUNT, THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE } from '../../constant';
 import { FlowWorkerInput } from '../../models/FlowWorkerModel';
 import { LatLng } from '../../models/LatLng';
+import { PacketData } from '../../models/PacketData';
 
 export class Flow {
   private id: number;
@@ -20,6 +22,7 @@ export class Flow {
   private currentTime: number;
   private orbitPoints: THREE.Vector3[];
   private isCreated: boolean = false;
+  private packetData: PacketData;
   private onCreate: (packet: Flow) => void;
   private onGoal: (packet: Flow) => void;
 
@@ -35,6 +38,7 @@ export class Flow {
     radius: number, 
     height: number,
     duration: number,
+    packetData: PacketData,
     onCreate: (packet: Flow) => void,
     onGoal: (packet: Flow) => void,
   ) {
@@ -50,6 +54,7 @@ export class Flow {
     this.height = height;
     this.currentTime = 0;
     this.aliveTime = duration * MAX_FPS;
+    this.packetData = packetData;
     this.onCreate = onCreate;
     this.onGoal = onGoal;
   }
@@ -62,11 +67,21 @@ export class Flow {
 
     // パケットの生成
     this.packetMesh = new THREE.Mesh(this.packetGeometry, this.packetMaterial);
+    const packetCount = this.packetData.packetCount < MAX_SCALE_PACKET_COUNT ? this.packetData.packetCount : MAX_SCALE_PACKET_COUNT;
+    const scaleSize = remap(packetCount, 1, MAX_SCALE_PACKET_COUNT, 1, MAX_PACKET_SCALE);
+    this.packetMesh.scale.set(scaleSize, scaleSize, scaleSize);
+    if (this.packetData.abuseIPScore >= THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE) {
+      // @ts-ignore
+      (this.packetMesh.material as THREE.Material).color.setHex(ABUSEIPDB_IP_COLOR);
+    }
 
     // 軌道ラインの生成
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(this.orbitPoints);
     this.lineMesh = new THREE.Line(lineGeometry, this.lineMaterial);
-
+    if (this.packetData.abuseIPScore >= THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE) {
+      // @ts-ignore
+      (this.lineMesh.material as THREE.Material).color.setHex(ABUSEIPDB_IP_COLOR);
+    }
     
     this.addTo.add(this.packetMesh);
     this.addTo.add(this.lineMesh);
