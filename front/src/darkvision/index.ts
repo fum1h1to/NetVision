@@ -38,7 +38,7 @@ export class DarkVision {
     // カメラコントロールの設定
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.maxPolarAngle = Math.PI * 0.5;
-    this.controls.minDistance = 10;
+    this.controls.minDistance = 5;
     this.controls.maxDistance = 30;
 
     // ライトの設定

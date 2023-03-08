@@ -132,4 +132,12 @@ export class Flow {
     (this.lineMesh.material as THREE.Material).dispose();
     this.lineMesh.geometry.dispose();
   }
+
+  public getLatLngAndPacketCount(): LatLng {
+    return this.start;
+  }
+
+  public getPacketCount(): number { 
+    return this.packetData.packetCount
+  }
 }
