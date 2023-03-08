@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { NetworkPlanet } from './components/NetworkPlanet/NetworkPlanet';
-import { MAX_FPS } from './constant';
+import { EARTH_RADIUS, MAX_FPS } from './constant';
 
 export class DarkVision {
   private width: number;
@@ -31,6 +31,7 @@ export class DarkVision {
 
     // シーンの設定
     this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color(0x222222);
 
     // カメラの設定
     this.camera = new THREE.PerspectiveCamera(75, this.width / this.height);
@@ -38,7 +39,7 @@ export class DarkVision {
     // カメラコントロールの設定
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
     this.controls.maxPolarAngle = Math.PI * 0.5;
-    this.controls.minDistance = 5;
+    this.controls.minDistance = EARTH_RADIUS + 0.1;
     this.controls.maxDistance = 30;
 
     // ライトの設定
