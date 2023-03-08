@@ -1,6 +1,8 @@
 package network
 
 import (
+	"log"
+
 	"DarkVision/util/ip2LatLng"
 	"DarkVision/util/checkAbuseIP"
   "github.com/google/gopacket"
@@ -28,7 +30,10 @@ func (p *PacketAnalyser) AnalysisPacket(packet gopacket.Packet) (packetData *Pac
 		srcip := packet.NetworkLayer().NetworkFlow().Src().String()
 		packetData.Srcip = srcip
 		
-		lat, lng := p.Ip2LatLngExchanger.GetLatLng(srcip)
+		lat, lng, err := p.Ip2LatLngExchanger.GetLatLng(srcip)
+		if err != nil {
+			log.Printf("Error: %s", err)
+		}
 		packetData.From.Lat = lat
 		packetData.From.Lng = lng
 

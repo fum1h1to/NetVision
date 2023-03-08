@@ -13,7 +13,8 @@ func main() {
 	go webserver.StartServer()
 	
 	packetDataOutputChan := make(chan []*network.PacketData)
-	go network.StartCapturing(packetDataOutputChan)
+	packetCapture := network.CreatePacketCapture(packetDataOutputChan)
+	go packetCapture.StartCapturing()
 
 	for {
 		select {

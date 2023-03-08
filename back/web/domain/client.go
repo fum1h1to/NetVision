@@ -6,14 +6,20 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+var clientId int = 0
+
 type Client struct {
+	Id int
 	ws *websocket.Conn
 	SendCh chan []byte
 }
 
 func NewClient(ws *websocket.Conn) *Client {
+	id := clientId
+	clientId += 1
 	return &Client{
-		ws:     ws,
+		Id: id,
+		ws: ws,
 		SendCh: make(chan []byte),
 	}
 }
@@ -45,11 +51,13 @@ func (c *Client) WriteLoop() {
 
 		w, err := c.ws.NextWriter(websocket.TextMessage)
 		if err != nil {
+			log.Printf("Error: %s", err)
 			return
 		}
 		w.Write(message)
-
+		
 		if err := w.Close(); err != nil {
+			log.Printf("Error: %s", err)
 			return
 		}
 	}

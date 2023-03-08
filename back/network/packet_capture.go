@@ -9,27 +9,40 @@ import (
 	"github.com/google/gopacket/pcap"
 )
 
-func StartCapturing(dataOutput chan<- []*PacketData) {
+type PacketCapture struct {
+	DataOutputCh chan<- []*PacketData
+	PacketAnalyser *PacketAnalyser
+}
+
+func CreatePacketCapture(dataOutput chan<- []*PacketData) *PacketCapture {
+	packetAnalyser := CreatePacketAnalyser()
+
+	return &PacketCapture{
+		DataOutputCh: dataOutput,
+		PacketAnalyser: packetAnalyser,
+	}
+}
+
+func (p *PacketCapture) StartCapturing() {
 	log.Println("Capture Start")
 	
 	handle, err := pcap.OpenLive(configs.GetTargetDeviceName(), 1024, false, time.Duration(configs.GetCaptureDuration()) * time.Millisecond)
 	if err != nil {
-			log.Fatal(err)
+			log.Panicln(err)
 	}
 	defer handle.Close()
 
-	bpfFilter := createBpfFilter()
+	bpfFilter := p.createBpfFilter()
 
 	err = handle.SetBPFFilter(bpfFilter)
 	if err != nil {
-			log.Fatal(err)
+			log.Panicln(err)
 	}
 
 	packetSource := gopacket.NewPacketSource(handle, handle.LinkType())
 	packetCount := 0
 	validPacketCount := 0
 	packetDatas := make([]*PacketData, configs.GetPacketLimitPerCaptureDuration())
-	packetAnalyser := CreatePacketAnalyser()
 
 	ticker := time.NewTicker(time.Duration(configs.GetCaptureDuration()) * time.Millisecond)
 	defer func() {
@@ -40,7 +53,7 @@ func StartCapturing(dataOutput chan<- []*PacketData) {
 		select {
 		case packet := <- packetSource.Packets():
 			if packetCount < configs.GetPacketLimitPerCaptureDuration() {
-				data := packetAnalyser.AnalysisPacket(packet)
+				data := p.PacketAnalyser.AnalysisPacket(packet)
 				if IsValidPacketData(data) {
 					packetDatas[validPacketCount] = data
 					validPacketCount++
@@ -50,7 +63,7 @@ func StartCapturing(dataOutput chan<- []*PacketData) {
 		case <-ticker.C:
 			if validPacketCount != 0 {
 				packetBundler := CreatePacketBundler(packetDatas[:validPacketCount])
-				dataOutput <- packetBundler.Bundle()
+				p.DataOutputCh <- packetBundler.Bundle()
 				validPacketCount = 0
 			} 
 			packetCount = 0
@@ -58,13 +71,13 @@ func StartCapturing(dataOutput chan<- []*PacketData) {
 	}
 }
 
-func createBpfFilter() (bpfFilter string) {
+func (p *PacketCapture) createBpfFilter() (bpfFilter string) {
 	myselfIPFilter := ""
 	if !configs.GetVisibleCaptureMyself() {
 		myselfIPFilter = "not ( "
 		devices, err := pcap.FindAllDevs()
     if err != nil {
-        log.Fatal(err)
+      log.Panicln(err)
     }
 
 		for _, device := range devices {

@@ -38,10 +38,10 @@ func CreateAbuseIPChecker() *AbuseIPChecker {
 	// ファイルが存在しない場合は、AbuseIPDBから取得する
 	if err != nil {
 		if os.IsNotExist(err) {
-			log.Println("not exists")
 			content = getBlackListFromAbuseIPDB()
+			log.Println("not exists abuseIPDB blacklist file. created new file.")
 		} else {
-			log.Panicln("Error loading config file:", err)
+			log.Panicln("Error loading config file: ", err)
 		}
 	}
 
@@ -54,6 +54,7 @@ func CreateAbuseIPChecker() *AbuseIPChecker {
 		content = getBlackListFromAbuseIPDB()
 		abuseIPBlackList = &AbuseIPBlackList{}
   	json.Unmarshal(content, abuseIPBlackList)
+		log.Println("abuseIPDB blacklist file is old. updated file.")
 	}
 
 	// mapに変換

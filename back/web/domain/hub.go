@@ -37,12 +37,12 @@ func (h *Hub) RunLoop() {
 
 func (h *Hub) register(client *Client) {
 	h.Clients[client] = true
-	log.Println("Client registered")
+	log.Printf("Client %d registered", client.Id)
 }
 
 func (h *Hub) unregister(client *Client) {
 	delete(h.Clients, client)
-	log.Println("Client unregistered")
+	log.Printf("Client %d unregistered", client.Id)
 }
 
 func (h *Hub) broadCastToAllClient(message []byte) {

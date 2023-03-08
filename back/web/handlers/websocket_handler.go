@@ -26,7 +26,7 @@ func (h *WebsocketHandler) Handle(w http.ResponseWriter, r *http.Request) {
 	}
 	ws, err := upgrader.Upgrade(w, r, nil)
 	if err != nil {
-		log.Println(err)
+		log.Printf("Error: %s", err)
 		return
 	}
 

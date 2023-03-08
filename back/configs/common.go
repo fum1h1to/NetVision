@@ -33,7 +33,7 @@ func LoadConfig(filePath string) (config *Config) {
 		log.Panicln("Error loading config file:", err)
 	}
 
-	log.Printf("Loaded config")
+	log.Printf("Load config success")
 	
 	return
 }
