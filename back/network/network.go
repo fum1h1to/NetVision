@@ -18,7 +18,9 @@ func StartCapturing(dataOutput chan<- []*PacketData) {
 	}
 	defer handle.Close()
 
-	err = handle.SetBPFFilter(configs.GetBpfFilter())
+	bpfFilter := createBpfFilter()
+
+	err = handle.SetBPFFilter(bpfFilter)
 	if err != nil {
 			log.Fatal(err)
 	}
@@ -54,4 +56,40 @@ func StartCapturing(dataOutput chan<- []*PacketData) {
 			packetCount = 0
 		}
 	}
+}
+
+func createBpfFilter() (bpfFilter string) {
+	myselfIPFilter := ""
+	if !configs.GetVisibleCaptureMyself() {
+		myselfIPFilter = "not ( "
+		devices, err := pcap.FindAllDevs()
+    if err != nil {
+        log.Fatal(err)
+    }
+
+		for _, device := range devices {
+			if device.Name == configs.GetTargetDeviceName() {
+				for index, address := range device.Addresses {
+					if index == len(device.Addresses) - 1 {
+						myselfIPFilter += "src host " + address.IP.String()
+					} else {
+						myselfIPFilter += "src host " + address.IP.String() + " or "
+					}
+				}
+				break
+			}
+		}
+
+		myselfIPFilter += " )"
+	}
+
+	if configs.GetBpfFilter() == "" {
+		bpfFilter = myselfIPFilter
+	} else if myselfIPFilter == "" {
+		bpfFilter = configs.GetBpfFilter()
+	} else {
+		bpfFilter = "( " + myselfIPFilter + " ) and ( " + configs.GetBpfFilter() + " )"
+	}
+
+	return
 }

@@ -8,6 +8,9 @@ CAPTURE_DURATION: 1000
 # CAPTURE_DURATIONの値の間に最大で取得するパケット数。超えた場合は破棄される。
 PACKET_LIMIT_PER_CAPTURE_DURATION: 2000
 
+# 自分自身からの通信を可視化するかどうか
+VISIBLE_CAPTURE_MYSELF: false
+
 # BPF フィルタ
 BPF_FILTER: ""
 

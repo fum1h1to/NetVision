@@ -13,6 +13,7 @@ type Config struct {
 	TargetDeviceName string `yaml:"TARGET_DEVICENAME"`
 	CaptureDuration int `yaml:"CAPTURE_DURATION"`
 	PacketLimitePerCaptureDuration int `yaml:"PACKET_LIMIT_PER_CAPTURE_DURATION"`
+	VisibleCaptureMyself bool `yaml:"VISIBLE_CAPTURE_MYSELF"`
 	BpfFilter string `yaml:"BPF_FILTER"`
 	GeoipDbPath string `yaml:"GEOIP_DB_PATH"`
 	ServerPort int `yaml:"SERVER_PORT"`
@@ -47,6 +48,10 @@ func GetCaptureDuration() int {
 
 func GetPacketLimitPerCaptureDuration() int {
 	return data.PacketLimitePerCaptureDuration
+}
+
+func GetVisibleCaptureMyself() bool {
+	return data.VisibleCaptureMyself
 }
 
 func GetBpfFilter() string {
