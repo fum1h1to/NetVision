@@ -15,6 +15,7 @@ type Config struct {
 	PacketLimitePerCaptureDuration int `yaml:"PACKET_LIMIT_PER_CAPTURE_DURATION"`
 	VisibleCaptureMyself bool `yaml:"VISIBLE_CAPTURE_MYSELF"`
 	BpfFilter string `yaml:"BPF_FILTER"`
+	PromiscuousMode bool `yaml:"PROMISCUOUS_MODE"`
 	GeoipDbPath string `yaml:"GEOIP_DB_PATH"`
 	ServerPort int `yaml:"SERVER_PORT"`
 	ServerClientContentPath string `yaml:"SERVER_CLIENT_CONTENT_PATH"`
@@ -52,6 +53,10 @@ func GetPacketLimitPerCaptureDuration() int {
 
 func GetVisibleCaptureMyself() bool {
 	return data.VisibleCaptureMyself
+}
+
+func GetPromiscuousMode() bool {
+	return data.PromiscuousMode
 }
 
 func GetBpfFilter() string {

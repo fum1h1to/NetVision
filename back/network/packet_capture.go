@@ -26,7 +26,7 @@ func CreatePacketCapture(dataOutput chan<- []*PacketData) *PacketCapture {
 func (p *PacketCapture) StartCapturing() {
 	log.Println("Capture Start")
 	
-	handle, err := pcap.OpenLive(configs.GetTargetDeviceName(), 1024, false, time.Duration(configs.GetCaptureDuration()) * time.Millisecond)
+	handle, err := pcap.OpenLive(configs.GetTargetDeviceName(), 1024, configs.GetPromiscuousMode(), time.Duration(configs.GetCaptureDuration()) * time.Millisecond)
 	if err != nil {
 			log.Panicln(err)
 	}
