@@ -6,9 +6,6 @@ export const MAX_FPS: number = 60;
 // 地球の半径
 export const EARTH_RADIUS: number = 8;
 
-// WebSocketのURL
-export const WEBSOCKET_URL: string = "ws://localhost:8080/ws";
-
 // WebSocketの再接続間隔
 export const WEBSOCKET_RECONNECT_INTERVAL: number = 10000; //ms
 

@@ -7,6 +7,7 @@ const outDir = resolve(__dirname, 'dist');
 export default defineConfig({
     base: "/",
     root: root,
+    publicDir: "../public",
     build: {
         emptyOutDir: true,
         outDir: outDir,

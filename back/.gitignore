@@ -29,3 +29,4 @@ go.work
 resources/
 config.yaml
 dist/
+html/

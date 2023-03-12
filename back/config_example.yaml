@@ -26,6 +26,9 @@ ABUSE_IPDB_API_KEY:
 # Abuse IPDBのblacklistファイルのパス（json形式）
 ABUSE_IPDB_BLACKLIST_PATH: ./resources/AbuseIPDB/blacklist.json
 
+# サーバのIPアドレス
+SERVER_IP: localhost
+
 # サーバのポート番号
 SERVER_PORT: 8080
 

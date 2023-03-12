@@ -1,17 +1,23 @@
-import { WEBSOCKET_RECONNECT_INTERVAL, WEBSOCKET_URL } from "../constant";
+import { WEBSOCKET_RECONNECT_INTERVAL } from "../constant";
 import { PacketData } from "../models/PacketData";
 
 export class FlowPacketWebSocket {
   private isOpen: boolean = false;
   private isNewFlowPacketList: boolean = false;
   private flowPacketList: PacketData[] = [];
+  private websocketURL: string = "";
 
   constructor() {
-    this.connect();
+    fetch("/data/server.json")
+    .then((response) => response.json()).then((data) => {
+      this.websocketURL = `ws://${data.server.host}:${data.server.port}/${data.server.websocket_path}`
+      this.connect();
+    });
   }
 
-  private connect() {
-    const ws = new WebSocket(WEBSOCKET_URL);
+  private async connect() {
+
+    const ws = new WebSocket(this.websocketURL);
 
     ws.onopen = () => {
       this.isOpen = true;

@@ -17,6 +17,7 @@ type Config struct {
 	BpfFilter string `yaml:"BPF_FILTER"`
 	PromiscuousMode bool `yaml:"PROMISCUOUS_MODE"`
 	GeoipDbPath string `yaml:"GEOIP_DB_PATH"`
+	ServerIP string `yaml:"SERVER_IP"`
 	ServerPort int `yaml:"SERVER_PORT"`
 	ServerClientContentPath string `yaml:"SERVER_CLIENT_CONTENT_PATH"`
 	AbuseIPDBAPIKey string `yaml:"ABUSE_IPDB_API_KEY"`
@@ -65,6 +66,10 @@ func GetBpfFilter() string {
 
 func GetGeoipDbPath() string {
 	return data.GeoipDbPath
+}
+
+func GetServerIP() string {
+	return data.ServerIP
 }
 
 func GetServerPort() int {
