@@ -26,7 +26,7 @@ func CreateServer() *WebServer {
 func (w *WebServer) StartServer() {
 	go w.Hub.RunLoop()
 
-	w.createWebsocketData()
+	w.createServerData()
 	http.HandleFunc("/", http.FileServer(http.Dir(configs.GetServerClientContentPath())).ServeHTTP)
 	http.HandleFunc("/ws", handlers.NewWebsocketHandler(w.Hub).Handle)
 
@@ -46,7 +46,7 @@ type serverData struct {
 	} `json:"server"`
 }
 
-func (w *WebServer) createWebsocketData() {
+func (w *WebServer) createServerData() {
 	serverData := new(serverData)
 	serverData.Server.Port = configs.GetServerPort()
 	serverData.Server.Host = configs.GetServerIP()

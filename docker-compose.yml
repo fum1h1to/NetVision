@@ -6,9 +6,9 @@ services:
     build:
       context: ./back
       dockerfile: ./docker/Dockerfile
-    container_name: dark-vision-go
+    container_name: dev-dark-vision-go
     volumes:
-        - ./back:/go/src
+      - ./back:/go/src
     ports:
       - 8080:8080
 

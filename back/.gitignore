@@ -29,4 +29,5 @@ go.work
 resources/
 config.yaml
 dist/
-html/
+test-data
+dev/
