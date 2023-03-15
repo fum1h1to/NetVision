@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { DEFAULT_FLOW_COUNTER_COLOR, DEFAULT_PACKET_COLOR, EARTH_RADIUS, FLOW_COUNTER_HEIGHT_RATE, GET_PACKET_LIMIT, PACKET_GOAL, PACKET_GOAL_TIME, PACKET_ORBIT_HEIGHT } from '../../constant';
+import { DEFAULT_PACKET_COLOR, EARTH_RADIUS, GET_PACKET_LIMIT, PACKET_GOAL, PACKET_GOAL_TIME, PACKET_ORBIT_HEIGHT } from '../../constant';
 import { PacketData } from '../../models/PacketData';
 import { FlowPacketWebSocket } from '../../websocket/FlowPacketWebSocket';
 import { Earth } from '../Earth/Earth';
@@ -19,9 +19,6 @@ export class NetworkPlanet {
   private flowpacketGeometry: THREE.BoxGeometry;
   private flowpacketMaterial: THREE.MeshStandardMaterial;
   private flowlineMaterial: THREE.LineBasicMaterial;
-
-  private flowCounterGeometry: THREE.BoxGeometry;
-  private flowCounterMaterial: THREE.MeshStandardMaterial;
 
   constructor(scene: THREE.Scene) {
     this.parentScene = scene;
@@ -46,17 +43,9 @@ export class NetworkPlanet {
       linejoin: 'round',
     });
 
-    // flowCounterのgeometryとmaterialの生成
-    this.flowCounterGeometry = new THREE.BoxGeometry(.05, .05, FLOW_COUNTER_HEIGHT_RATE);
-    this.flowCounterMaterial = new THREE.MeshStandardMaterial({
-      color: DEFAULT_FLOW_COUNTER_COLOR,
-    });
-
     this.flowCounterManager = new FlowCounterManager(
       scene,
-      EARTH_RADIUS,
-      this.flowCounterGeometry,
-      this.flowCounterMaterial,
+      EARTH_RADIUS
     );
     
     // setInterval(() => {
