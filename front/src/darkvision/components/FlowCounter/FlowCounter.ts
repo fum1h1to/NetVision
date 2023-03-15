@@ -1,32 +1,47 @@
 import * as THREE  from 'three'
 import { latlng2Cartesian } from '../../../assets/ts/util/coordinates';
-import { FLOW_COUNTER_HEIGHT_RATE, FLOW_COUNTER_MAX_HEIGHT } from '../../constant';
+import { CLICKED_FLOW_COUNTER_COLOR, DEFAULT_FLOW_COUNTER_COLOR, FLOW_COUNTER_HEIGHT_RATE, FLOW_COUNTER_MAX_HEIGHT } from '../../constant';
 import { ClickableObject } from '../../global/ClickManager';
 import { LatLng } from '../../models/LatLng';
+import { FlowCounterDialog } from './FlowCounterDialog';
 
 export class FlowCounter extends THREE.Mesh implements ClickableObject {
   private parentScene: THREE.Scene;
   private radius: number;
   private count: number;
   private latlng: LatLng;
+  private srcip: string;
 
   constructor(
     parentScene: THREE.Scene, // このオブジェクトを描画するScene
     radius: number, // FlowCounterの位置を決めるための半径
     count: number, // FlowCounterの数の初期値
     latlng: LatLng, // FlowCounterの位置
+    srcip: string, // srcip
     geometry: THREE.BoxGeometry,
     material: THREE.MeshStandardMaterial,
   ) {
-    super(geometry, material)
+    super(geometry, material.clone())
     this.parentScene = parentScene;
     this.radius = radius;
     this.count = count;
     this.latlng = latlng;
+    this.srcip = srcip;
   }
 
-  public onClick() {
-    console.log('click');
+  public onClick(camera: THREE.Camera) {
+    const dialog = new FlowCounterDialog(this, camera, () => {
+      this.onDialogClose();
+    });
+    console.log(this.material)
+    // @ts-ignore
+    this.material.color.setHex(CLICKED_FLOW_COUNTER_COLOR);
+    dialog.animateStart();
+  }
+
+  public onDialogClose() {
+    // @ts-ignore
+    this.material.color.setHex(DEFAULT_FLOW_COUNTER_COLOR);
   }
 
   public setup() {
@@ -63,4 +78,11 @@ export class FlowCounter extends THREE.Mesh implements ClickableObject {
     return point;
   }
  
+  public getSrcIP(): string {
+    return this.srcip;
+  }
+
+  public getCount(): number {
+    return this.count;
+  }
 }

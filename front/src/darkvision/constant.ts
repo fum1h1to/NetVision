@@ -38,6 +38,9 @@ export const FLOW_COUNTER_MAX_HEIGHT: number = 5;
 // パケット出現場所に表示するオブジェクトの色
 export const DEFAULT_FLOW_COUNTER_COLOR: number = 0x0000ff;
 
+// パケット出現場所に表示するオブジェクトをクリックした時の色
+export const CLICKED_FLOW_COUNTER_COLOR: number = 0x00ff00;
+
 // AbuseIPDBに登録されているIPアドレスの色
 export const ABUSEIPDB_IP_COLOR: number = 0xff0000;
 

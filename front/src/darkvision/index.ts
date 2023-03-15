@@ -4,6 +4,8 @@ import { NetworkPlanet } from './components/NetworkPlanet/NetworkPlanet';
 import { EARTH_RADIUS, MAX_FPS } from './constant';
 import { ClickManager } from './global/ClickManager';
 
+import './index.css';
+
 export class DarkVision {
   private width: number;
   private height: number;
@@ -20,6 +22,8 @@ export class DarkVision {
     this.frame = 0;
     this.rootEle = outputEle;
     globalThis.OUTPUT_ELEMENT = outputEle;
+
+    this.rootEle.classList.add('darkVision-rootEle');
 
     // 幅と高さの取得
     this.width = outputEle.clientWidth;

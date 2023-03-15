@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
 export interface ClickableObject extends THREE.Object3D {
-  onClick: () => void;
+  onClick: (camera: THREE.Camera) => void;
 }
 
 // 3D空間内のオブジェクトをクリックした時の挙動
@@ -56,7 +56,10 @@ export class ClickManager {
     this.raycaster.setFromCamera(this.mouse, this.camera);
     const intersects = this.raycaster.intersectObjects([...this.clickableObjectsMap.values()], false);
     if (intersects.length > 0) {
-      this.clickableObjectsMap.get(intersects[0].object.id)?.onClick();
+      const obj = this.clickableObjectsMap.get(intersects[0].object.id)
+      if (obj) {
+        obj.onClick(this.camera);
+      }
     }
 
     this.clicked = false;

@@ -24,12 +24,12 @@ export class FlowCounterManager {
     });
   }
 
-  public addFlowCounter(latlng: LatLng, num: number) {
+  public addFlowCounter(srcip: string, latlng: LatLng, num: number) {
     const latlng_string = this.latlng2string(latlng);
     let flowCounter = this.flowCountMap.get(latlng_string);
 
     if (flowCounter === undefined) {
-      flowCounter = new FlowCounter(this.parentScene, this.radius, num, latlng, this.flowCounterGeometry, this.flowCounterMaterial)
+      flowCounter = new FlowCounter(this.parentScene, this.radius, num, latlng, srcip, this.flowCounterGeometry, this.flowCounterMaterial)
       flowCounter.setup();
 
       this.flowCountMap.set(latlng_string, flowCounter);

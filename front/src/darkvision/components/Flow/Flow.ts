@@ -140,4 +140,8 @@ export class Flow {
   public getPacketCount(): number { 
     return this.packetData.packetCount
   }
+
+  public getIp(): string {
+    return this.packetData.srcip;
+  }
 }

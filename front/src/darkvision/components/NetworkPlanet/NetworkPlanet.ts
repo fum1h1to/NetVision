@@ -72,7 +72,7 @@ export class NetworkPlanet {
       packetData, // packetData
       (packet) => {
         this.animateFlowPacketList.push(packet);
-        this.flowCounterManager.addFlowCounter(packet.getLatLngAndPacketCount(), packet.getPacketCount());
+        this.flowCounterManager.addFlowCounter(packet.getIp(), packet.getLatLngAndPacketCount(), packet.getPacketCount());
       }, // onCreate
       (packet) => {
         this.animateFlowPacketList.splice(this.animateFlowPacketList.indexOf(packet), 1);

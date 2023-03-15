@@ -1,0 +1,38 @@
+.darkVision-flowCounterDialog {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-block;
+  background: #fff;
+}
+
+.darkVision-flowCounterDialog__close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  background: #fff;
+  transform: translateY(-100%);
+  cursor: pointer;
+}
+.darkVision-flowCounterDialog__close:before,
+.darkVision-flowCounterDialog__close:after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 2px;
+  height: 20px;
+  background: #333;
+}
+.darkVision-flowCounterDialog__close:before {
+  transform: translate(-50%,-50%) rotate(45deg);
+}
+.darkVision-flowCounterDialog__close:after {
+  transform: translate(-50%,-50%) rotate(-45deg);
+}
+
+.darkVision-flowCounterDialog th,td {
+  padding: 5px 10px;
+}
