@@ -46,8 +46,8 @@ export class Flow {
     this.addTo = scene;
     this.flowWorker = flowWorker;
     this.packetGeometry = packetGeometry;
-    this.packetMaterial = packetMaterial;
-    this.lineMaterial = lineMaterial;
+    this.packetMaterial = packetMaterial.clone();
+    this.lineMaterial = lineMaterial.clone();
     this.start = start;
     this.goal = goal;
     this.radius = radius;
