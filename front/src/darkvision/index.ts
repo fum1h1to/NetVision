@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 import { NetworkPlanet } from './components/NetworkPlanet/NetworkPlanet';
 import { EARTH_RADIUS, MAX_FPS } from './constant';
+import { ClickManager } from './global/ClickManager';
 
 export class DarkVision {
   private width: number;
@@ -18,6 +19,7 @@ export class DarkVision {
   constructor(outputEle: HTMLElement) {
     this.frame = 0;
     this.rootEle = outputEle;
+    globalThis.OUTPUT_ELEMENT = outputEle;
 
     // 幅と高さの取得
     this.width = outputEle.clientWidth;
@@ -45,6 +47,9 @@ export class DarkVision {
     // ライトの設定
     this.light = new THREE.AmbientLight(0xffffff, 0.8);
     this.scene.add(this.light);
+
+    // クリックマネージャーの設定
+    globalThis.clickManager = new ClickManager(outputEle, this.camera);
   }
 
   public init() {
@@ -76,6 +81,8 @@ export class DarkVision {
     this.frame %= 60;
     if (this.frame % Math.floor(60 / MAX_FPS) === 1) return;
     
+    clickManager.checkClickedObject();
+
     this.networkPlanet.update();
     
     this.controls.update();

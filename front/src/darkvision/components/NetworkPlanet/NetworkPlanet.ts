@@ -20,6 +20,7 @@ export class NetworkPlanet {
   private flowpacketMaterial: THREE.MeshStandardMaterial;
   private flowlineMaterial: THREE.LineBasicMaterial;
 
+
   constructor(scene: THREE.Scene) {
     this.parentScene = scene;
 
