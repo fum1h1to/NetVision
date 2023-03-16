@@ -33,7 +33,7 @@ export class FlowCounter extends THREE.Mesh implements ClickableObject {
     const dialog = new FlowCounterDialog(this, camera, () => {
       this.onDialogClose();
     });
-    console.log(this.material)
+    
     // @ts-ignore
     this.material.color.setHex(CLICKED_FLOW_COUNTER_COLOR);
     dialog.animateStart();

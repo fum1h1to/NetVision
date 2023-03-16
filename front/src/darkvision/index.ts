@@ -1,7 +1,8 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
+import { latlng2Cartesian } from '../assets/ts/util/coordinates';
 import { NetworkPlanet } from './components/NetworkPlanet/NetworkPlanet';
-import { EARTH_RADIUS, MAX_FPS } from './constant';
+import { EARTH_RADIUS, MAX_FPS, PACKET_GOAL } from './constant';
 import { ClickManager } from './global/ClickManager';
 
 import './index.css';
@@ -41,10 +42,12 @@ export class DarkVision {
 
     // カメラの設定
     this.camera = new THREE.PerspectiveCamera(75, this.width / this.height);
+    const cameraPos = latlng2Cartesian(EARTH_RADIUS + 7, PACKET_GOAL.lat, PACKET_GOAL.lng);
+    this.camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
 
     // カメラコントロールの設定
     this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.maxPolarAngle = Math.PI * 0.5;
+    this.controls.maxPolarAngle = 180 * Math.PI / 180;
     this.controls.minDistance = EARTH_RADIUS + 0.1;
     this.controls.maxDistance = 30;
 
@@ -60,8 +63,8 @@ export class DarkVision {
     window.addEventListener('resize', () => this.resize());
 
     this.networkPlanet = new NetworkPlanet(this.scene);
-    const axesHelper = new THREE.AxesHelper( 10 );
-    this.scene.add( axesHelper );
+    // const axesHelper = new THREE.AxesHelper( 10 );
+    // this.scene.add( axesHelper );
   }
 
   private resize() {
