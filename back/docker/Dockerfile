@@ -5,5 +5,4 @@ WORKDIR /go/src
 ADD ./go.mod /go/src
 RUN go mod tidy
 RUN go install github.com/cosmtrek/air@v1.29.0
-
-CMD ["./docker/startup.sh"]
+CMD ["./docker/dev-startup.sh"]

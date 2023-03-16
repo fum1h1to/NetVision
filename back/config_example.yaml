@@ -1,4 +1,3 @@
-# ファイル名をconfig.yamlに変更して実行
 # 可視化するネットワークインターフェース名
 TARGET_DEVICENAME: "eth0"
 

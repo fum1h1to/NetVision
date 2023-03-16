@@ -50,7 +50,7 @@ func (w *WebServer) createServerData() {
 	serverData := new(serverData)
 	serverData.Server.Port = configs.GetServerPort()
 	serverData.Server.Host = configs.GetServerIP()
-	serverData.Server.WebsocketPath = "/ws"
+	serverData.Server.WebsocketPath = "ws"
 
 	jsonData, err := json.Marshal(serverData)
 	if err != nil {

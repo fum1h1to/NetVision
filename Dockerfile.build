@@ -1,0 +1,20 @@
+FROM golang:1.19.1 as back-builder
+WORKDIR /go/src
+ADD ./back /go/src
+RUN go mod tidy
+RUN make build
+
+FROM node:16.17.1 as front-builder
+RUN mkdir /code
+WORKDIR /code
+ADD ./front /code/
+RUN yarn install
+RUN yarn build
+
+FROM alpine:3.14.2
+RUN apk add --no-cache ca-certificates
+RUN mkdir /build
+RUN mkdir /build/html
+WORKDIR /build
+COPY --from=back-builder /go/src/dist /build
+COPY --from=front-builder /code/dist /build/html
