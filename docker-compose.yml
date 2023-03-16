@@ -12,16 +12,19 @@ services:
     ports:
       - 8080:8080
 
-  # dockerだと動作が重いので、nodeはホスト側で動かす。
-  # front:
-  #   tty: true
-  #   environment:
-  #     - CHOKIDAR_USEPOLLING=true
-  #   build: 
-  #     context: ./front
-  #     dockerfile: ./docker/node/Dockerfile
-  #   container_name: dark-vision-node
-  #   volumes:
-  #     - ./front:/code
-  #   ports:
-  #     - 3000:3000
+  front:
+    tty: true
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    build: 
+      context: ./front
+      dockerfile: ./docker/Dockerfile
+    container_name: dev-dark-vision-node
+    volumes:
+      - ./front:/code
+      - front_node_modules:/code/node_modules
+    ports:
+      - 5173:5173
+
+volumes:
+  front_node_modules:
