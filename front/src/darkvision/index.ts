@@ -1,100 +1,30 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { latlng2Cartesian } from './util/coordinates';
-import { NetworkPlanet } from './components/NetworkPlanet/NetworkPlanet';
-import { EARTH_RADIUS, MAX_FPS, PACKET_GOAL } from './constant';
-import { ClickManager } from './global/ClickManager';
+import { Setting } from './htmlComponents/Setting/Setting';
+import { DarkVisionCore } from './core/DarkVisionCore';
 
 import './index.css';
-import { Setting } from './htmlComponents/Setting/Setting';
+import { ConstantManager } from './global/ConstantManager';
 
 export class DarkVision {
-  private width: number;
-  private height: number;
-  private rootEle: HTMLElement;
-  private scene: THREE.Scene;
-  private camera: THREE.PerspectiveCamera;
-  private controls: OrbitControls;
-  private renderer: THREE.WebGLRenderer;
-  private light: THREE.Light;
-  private networkPlanet: NetworkPlanet;
-  private frame: number;
+  private darkVisionCore: DarkVisionCore | null;
 
   constructor(outputEle: HTMLElement) {
-    this.frame = 0;
-    this.rootEle = outputEle;
     globalThis.OUTPUT_ELEMENT = outputEle;
+    globalThis.OUTPUT_ELEMENT.classList.add('darkVision-rootEle');
 
-    this.rootEle.classList.add('darkVision-rootEle');
-    const settingEle = new Setting().insertTo(this.rootEle);
+    const constantManager = new ConstantManager();
+    globalThis.constantManager = constantManager;
 
-    // 幅と高さの取得
-    this.width = outputEle.clientWidth;
-    this.height = outputEle.clientHeight;
+  }
+
+  public async init() {
+    await globalThis.constantManager.init();
+
+    this.darkVisionCore = new DarkVisionCore(globalThis.OUTPUT_ELEMENT);
+    this.darkVisionCore.init();
+    this.darkVisionCore.start();
     
-    // レンダラーの設定
-    this.renderer = new THREE.WebGLRenderer();
-    this.renderer.setSize(this.width, this.height);
-    outputEle.appendChild(this.renderer.domElement);
-    this.renderer.setPixelRatio(window.devicePixelRatio);
+    new Setting().insertTo(globalThis.OUTPUT_ELEMENT);
 
-    // シーンの設定
-    this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x222222);
-
-    // カメラの設定
-    this.camera = new THREE.PerspectiveCamera(75, this.width / this.height);
-    const cameraPos = latlng2Cartesian(EARTH_RADIUS + 7, PACKET_GOAL.lat, PACKET_GOAL.lng);
-    this.camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
-
-    // カメラコントロールの設定
-    this.controls = new OrbitControls(this.camera, this.renderer.domElement);
-    this.controls.maxPolarAngle = 180 * Math.PI / 180;
-    this.controls.minDistance = EARTH_RADIUS + 0.1;
-    this.controls.maxDistance = 30;
-
-    // ライトの設定
-    this.light = new THREE.AmbientLight(0xffffff, 0.8);
-    this.scene.add(this.light);
-
-    // クリックマネージャーの設定
-    globalThis.clickManager = new ClickManager(outputEle, this.camera);
   }
 
-  public init() {
-    window.addEventListener('resize', () => this.resize());
-
-    this.networkPlanet = new NetworkPlanet(this.scene);
-    // const axesHelper = new THREE.AxesHelper( 10 );
-    // this.scene.add( axesHelper );
-  }
-
-  private resize() {
-    this.width = this.rootEle.clientWidth;
-    this.height = this.rootEle.clientHeight;
-
-    this.renderer.setPixelRatio(window.devicePixelRatio);
-    this.renderer.setSize(this.width, this.height);
-
-    this.camera.aspect = this.width / this.height;
-    this.camera.updateProjectionMatrix();
-  }
-
-  public start() {
-    this.update();
-  }
-
-  private update() {
-    requestAnimationFrame(() => this.update());
-    this.frame += 1;
-    this.frame %= 60;
-    if (this.frame % Math.floor(60 / MAX_FPS) === 1) return;
-    
-    clickManager.checkClickedObject();
-
-    this.networkPlanet.update();
-    
-    this.controls.update();
-    this.renderer.render(this.scene, this.camera);
-  }
 }

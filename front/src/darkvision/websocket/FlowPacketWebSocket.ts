@@ -1,4 +1,3 @@
-import { WEBSOCKET_RECONNECT_INTERVAL } from "../constant";
 import { PacketData } from "../models/PacketData";
 
 export class FlowPacketWebSocket {
@@ -32,7 +31,7 @@ export class FlowPacketWebSocket {
       this.isOpen = false;
       setTimeout(() => {
         this.connect();
-      }, WEBSOCKET_RECONNECT_INTERVAL);
+      }, globalThis.constantManager.getWEBSOCKET_RECONNECT_INTERVAL());
     }
 
     ws.onerror = () => {

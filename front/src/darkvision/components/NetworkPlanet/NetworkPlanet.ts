@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { DEFAULT_PACKET_COLOR, EARTH_RADIUS, GET_PACKET_LIMIT, PACKET_GOAL, PACKET_GOAL_TIME, PACKET_ORBIT_HEIGHT } from '../../constant';
 import { PacketData } from '../../models/PacketData';
 import { FlowPacketWebSocket } from '../../websocket/FlowPacketWebSocket';
 import { Earth } from '../Earth/Earth';
@@ -24,7 +23,7 @@ export class NetworkPlanet {
   constructor(scene: THREE.Scene) {
     this.parentScene = scene;
 
-    this.earth = new Earth(scene, EARTH_RADIUS, new THREE.Vector3(0, 0, 0));
+    this.earth = new Earth(scene, globalThis.constantManager.getEARTH_RADIUS(), new THREE.Vector3(0, 0, 0));
     scene.add(this.earth.mesh);
 
     this.flowPacketWS = new FlowPacketWebSocket();
@@ -33,20 +32,20 @@ export class NetworkPlanet {
     // パケットのgeometryとmaterialの生成
     this.flowpacketGeometry = new THREE.BoxGeometry(.05, .05, .05);
     this.flowpacketMaterial = new THREE.MeshStandardMaterial({
-      color: DEFAULT_PACKET_COLOR,
+      color: globalThis.constantManager.getDEFAULT_PACKET_COLOR(),
     });
 
     // 軌道ラインのmaterialの生成
     this.flowlineMaterial = new THREE.LineBasicMaterial({
       linewidth: 50,
-      color: DEFAULT_PACKET_COLOR,
+      color: globalThis.constantManager.getDEFAULT_PACKET_COLOR(),
       linecap: 'round',
       linejoin: 'round',
     });
 
     this.flowCounterManager = new FlowCounterManager(
       scene,
-      EARTH_RADIUS
+      globalThis.constantManager.getEARTH_RADIUS()
     );
     
     // setInterval(() => {
@@ -65,10 +64,10 @@ export class NetworkPlanet {
       this.flowpacketMaterial, // packetMaterial
       this.flowlineMaterial, // lineMaterial
       packetData.from, // start
-      PACKET_GOAL, // goal
-      EARTH_RADIUS, // radius
-      PACKET_ORBIT_HEIGHT, // height
-      PACKET_GOAL_TIME, // duration
+      globalThis.constantManager.getPACKET_GOAL(), // goal
+      globalThis.constantManager.getEARTH_RADIUS(), // radius
+      globalThis.constantManager.getPACKET_ORBIT_HEIGHT(), // height
+      globalThis.constantManager.getPACKET_GOAL_TIME(), // duration
       packetData, // packetData
       (packet) => {
         this.animateFlowPacketList.push(packet);
@@ -83,7 +82,7 @@ export class NetworkPlanet {
 
   public update() {
     if (this.flowPacketWS.getIsNewFlowPacketList()) {
-      const activeFlowPacketList = this.flowPacketWS.getFlowPacketList().slice(0, GET_PACKET_LIMIT);
+      const activeFlowPacketList = this.flowPacketWS.getFlowPacketList().slice(0, globalThis.constantManager.getGET_PACKET_LIMIT());
       activeFlowPacketList.map((flowPacket) => {
         this.createFlow(flowPacket);
       });

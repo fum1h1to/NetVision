@@ -1,5 +1,4 @@
 import * as THREE  from 'three'
-import { DEFAULT_FLOW_COUNTER_COLOR, FLOW_COUNTER_HEIGHT_RATE } from '../../constant';
 import { LatLng } from '../../models/LatLng'
 import { FlowCounter } from '../FlowCounter/FlowCounter';
 
@@ -18,9 +17,9 @@ export class FlowCounterManager {
     this.radius = radius;
 
     // flowCounterのgeometryとmaterialの生成
-    this.flowCounterGeometry = new THREE.BoxGeometry(.05, .05, FLOW_COUNTER_HEIGHT_RATE);
+    this.flowCounterGeometry = new THREE.BoxGeometry(.05, .05, globalThis.constantManager.getFLOW_COUNTER_HEIGHT_RATE());
     this.flowCounterMaterial = new THREE.MeshStandardMaterial({
-      color: DEFAULT_FLOW_COUNTER_COLOR,
+      color: globalThis.constantManager.getDEFAULT_FLOW_COUNTER_COLOR(),
     });
   }
 

@@ -1,6 +1,5 @@
 import * as THREE  from 'three'
 import { latlng2Cartesian } from '../../util/coordinates';
-import { CLICKED_FLOW_COUNTER_COLOR, DEFAULT_FLOW_COUNTER_COLOR, FLOW_COUNTER_HEIGHT_RATE, FLOW_COUNTER_MAX_HEIGHT } from '../../constant';
 import { ClickableObject } from '../../global/ClickManager';
 import { LatLng } from '../../models/LatLng';
 import { FlowCounterDialog } from './FlowCounterDialog';
@@ -64,10 +63,10 @@ export class FlowCounter extends THREE.Mesh implements ClickableObject {
   }
 
   private setScaleAndPosition(): THREE.Vector3 {
-    let height = FLOW_COUNTER_HEIGHT_RATE * this.count;
-    if (FLOW_COUNTER_MAX_HEIGHT < FLOW_COUNTER_HEIGHT_RATE * this.count) {
-      height = FLOW_COUNTER_MAX_HEIGHT;
-      this.scale.z = FLOW_COUNTER_MAX_HEIGHT / FLOW_COUNTER_HEIGHT_RATE;
+    let height = globalThis.constantManager.getFLOW_COUNTER_HEIGHT_RATE() * this.count;
+    if (globalThis.constantManager.getFLOW_COUNTER_MAX_HEIGHT() < globalThis.constantManager.getFLOW_COUNTER_HEIGHT_RATE() * this.count) {
+      height = globalThis.constantManager.getFLOW_COUNTER_MAX_HEIGHT();
+      this.scale.z = globalThis.constantManager.getFLOW_COUNTER_MAX_HEIGHT() / globalThis.constantManager.getFLOW_COUNTER_HEIGHT_RATE();
       
     } else {
       this.scale.z = this.count;
