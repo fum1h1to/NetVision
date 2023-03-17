@@ -111,6 +111,10 @@ export class ConstantManager {
     return this.GET_PACKET_LIMIT;
   }
 
+  public setPACKET_GOAL(PACKET_GOAL: LatLng) {
+    this.PACKET_GOAL = PACKET_GOAL;
+  }
+
   public getPACKET_GOAL():LatLng {
     return this.PACKET_GOAL;
   }

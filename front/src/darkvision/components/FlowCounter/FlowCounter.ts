@@ -34,13 +34,13 @@ export class FlowCounter extends THREE.Mesh implements ClickableObject {
     });
 
     // @ts-ignore
-    this.material.color.setHex(CLICKED_FLOW_COUNTER_COLOR);
+    this.material.color.setHex(globalThis.constantManager.getCLICKED_FLOW_COUNTER_COLOR());
     dialog.animateStart();
   }
 
   public onDialogClose() {
     // @ts-ignore
-    this.material.color.setHex(DEFAULT_FLOW_COUNTER_COLOR);
+    this.material.color.setHex(globalThis.constantManager.getDEFAULT_FLOW_COUNTER_COLOR());
   }
 
   public setup() {
