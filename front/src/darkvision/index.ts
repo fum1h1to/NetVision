@@ -3,6 +3,7 @@ import { DarkVisionCore } from './core/DarkVisionCore';
 
 import './index.css';
 import { ConstantManager } from './global/ConstantManager';
+import { Information } from './htmlComponents/Information/Information';
 
 export class DarkVision {
   private darkVisionCore: DarkVisionCore | null;
@@ -23,6 +24,7 @@ export class DarkVision {
     this.darkVisionCore.init();
     this.darkVisionCore.start();
     
+    new Information().insertTo(globalThis.OUTPUT_ELEMENT);
     new Setting().insertTo(globalThis.OUTPUT_ELEMENT);
 
   }
