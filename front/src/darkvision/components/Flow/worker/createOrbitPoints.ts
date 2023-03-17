@@ -1,7 +1,7 @@
 import * as THREE from 'three';
-import { latlng2Cartesian } from '../../../../assets/ts/util/coordinates';
-import { easeOutQuart } from '../../../../assets/ts/util/easing';
-import { remap } from '../../../../assets/ts/util/remap';
+import { latlng2Cartesian } from '../../../util/coordinates';
+import { easeOutQuart } from '../../../util/easing';
+import { remap } from '../../../util/remap';
 import { FlowWorkerOutput } from '../../../models/FlowWorkerModel';
 import { LatLng } from '../../../models/LatLng';
 

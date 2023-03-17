@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
-import { latlng2Cartesian } from '../assets/ts/util/coordinates';
+import { latlng2Cartesian } from './util/coordinates';
 import { NetworkPlanet } from './components/NetworkPlanet/NetworkPlanet';
 import { EARTH_RADIUS, MAX_FPS, PACKET_GOAL } from './constant';
 import { ClickManager } from './global/ClickManager';

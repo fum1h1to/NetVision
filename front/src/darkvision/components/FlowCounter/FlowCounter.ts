@@ -1,5 +1,5 @@
 import * as THREE  from 'three'
-import { latlng2Cartesian } from '../../../assets/ts/util/coordinates';
+import { latlng2Cartesian } from '../../util/coordinates';
 import { CLICKED_FLOW_COUNTER_COLOR, DEFAULT_FLOW_COUNTER_COLOR, FLOW_COUNTER_HEIGHT_RATE, FLOW_COUNTER_MAX_HEIGHT } from '../../constant';
 import { ClickableObject } from '../../global/ClickManager';
 import { LatLng } from '../../models/LatLng';
@@ -33,7 +33,7 @@ export class FlowCounter extends THREE.Mesh implements ClickableObject {
     const dialog = new FlowCounterDialog(this, camera, () => {
       this.onDialogClose();
     });
-    
+
     // @ts-ignore
     this.material.color.setHex(CLICKED_FLOW_COUNTER_COLOR);
     dialog.animateStart();

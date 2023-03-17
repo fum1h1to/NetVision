@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { remap } from '../../../assets/ts/util/remap';
+import { remap } from '../../util/remap';
 import { ABUSEIPDB_IP_COLOR, MAX_FPS, MAX_PACKET_SCALE, MAX_SCALE_PACKET_COUNT, THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE } from '../../constant';
 import { FlowWorkerInput } from '../../models/FlowWorkerModel';
 import { LatLng } from '../../models/LatLng';
