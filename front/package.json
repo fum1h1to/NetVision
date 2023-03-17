@@ -11,12 +11,14 @@
   "devDependencies": {
     "autoprefixer": "^10.4.14",
     "postcss": "^8.4.21",
+    "sass": "^1.59.3",
     "tailwindcss": "^3.2.7",
     "typescript": "^4.9.3",
     "vite": "^4.1.0"
   },
   "dependencies": {
     "@types/three": "^0.149.0",
+    "flowbite": "^1.6.4",
     "three": "^0.150.1"
   }
 }

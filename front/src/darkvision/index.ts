@@ -6,6 +6,7 @@ import { EARTH_RADIUS, MAX_FPS, PACKET_GOAL } from './constant';
 import { ClickManager } from './global/ClickManager';
 
 import './index.css';
+import { Setting } from './htmlComponents/Setting/Setting';
 
 export class DarkVision {
   private width: number;
@@ -25,6 +26,7 @@ export class DarkVision {
     globalThis.OUTPUT_ELEMENT = outputEle;
 
     this.rootEle.classList.add('darkVision-rootEle');
+    const settingEle = new Setting().insertTo(this.rootEle);
 
     // 幅と高さの取得
     this.width = outputEle.clientWidth;

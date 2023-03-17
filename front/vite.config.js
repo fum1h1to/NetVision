@@ -1,5 +1,6 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import autoPrefixer from 'autoprefixer';
 
 const root = resolve(__dirname, 'src');
 const outDir = resolve(__dirname, 'dist');
