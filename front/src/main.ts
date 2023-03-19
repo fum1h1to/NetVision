@@ -1,4 +1,4 @@
-import { NetVision } from "./darkvision";
+import { NetVision } from "./netvision";
 
 const outputEle = document.getElementById('netVision')!;
 window.addEventListener('load', () => {

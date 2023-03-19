@@ -21,7 +21,7 @@
 ### クライアント側
 2. コンテナ内のシェルへ
   ```
-  docker exec -it dev-dark-vision-node bash
+  docker exec -it dev-net-vision-node bash
   ```
 
 3. 開発環境の起動
@@ -38,7 +38,7 @@
 
 3. コンテナ内のシェルへ
   ```
-  docker exec -it dev-dark-vision-go bash
+  docker exec -it dev-net-vision-go bash
   ```
 
 4. 開発環境の起動
