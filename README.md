@@ -3,7 +3,7 @@
 
 制作中
 
-現在こんな感じ
+現状はこんな感じ
 ![image-01](https://github.com/fum1h1to/230220_NetVision/blob/readme-images/md_images/image-01.png?raw=true)
 
 # buildや開発環境構築
