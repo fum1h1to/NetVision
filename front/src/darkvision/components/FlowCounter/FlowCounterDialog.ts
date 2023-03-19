@@ -22,7 +22,7 @@ export class FlowCounterDialog {
     const { sx, sy } = this.getXY(globalThis.OUTPUT_ELEMENT, flowCounter);
     
     this.dialogEle = document.createElement('div');
-    this.dialogEle.className = 'darkVision-flowCounterDialog';
+    this.dialogEle.className = 'netVision-flowCounterDialog';
     this.dialogEle.style.transform = `translate(${sx}px, ${sy}px)`;
 
     this.dialogEle.innerHTML = this.makeHtmlElement(flowCounter.getSrcIP(), flowCounter.getCount());
@@ -32,7 +32,7 @@ export class FlowCounterDialog {
 
   private makeHtmlElement(srcip: string, count: number): string {
     return `
-    <div class="darkVision-flowCounterDialog__close js-flowCounterDialog-close"></div>
+    <div class="netVision-flowCounterDialog__close js-flowCounterDialog-close"></div>
     <table>
       <tr>
         <th>srcip</th>

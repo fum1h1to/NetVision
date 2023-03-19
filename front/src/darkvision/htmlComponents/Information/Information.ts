@@ -19,8 +19,8 @@ export class Information {
 
     return (
       `
-      <div class="darkVision-information dark">
-      <div class="darkVision-information__cont overflow-x-auto shadow-md sm:rounded-lg">
+      <div class="netVision-information dark">
+      <div class="netVision-information__cont overflow-x-auto shadow-md sm:rounded-lg">
         <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
           <caption class="p-5 text-lg font-semibold text-left text-gray-900 bg-white dark:text-white dark:bg-gray-800">
             Information

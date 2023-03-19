@@ -1,8 +1,8 @@
-import { DarkVision } from "./darkvision";
+import { NetVision } from "./darkvision";
 
-const outputEle = document.getElementById('darkVision')!;
+const outputEle = document.getElementById('netVision')!;
 window.addEventListener('load', () => {
-  const darkVision = new DarkVision(outputEle);
-  darkVision.init();
+  const netVision = new NetVision(outputEle);
+  netVision.init();
   
 });

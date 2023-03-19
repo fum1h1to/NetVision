@@ -1,16 +1,16 @@
 import { Setting } from './htmlComponents/Setting/Setting';
-import { DarkVisionCore } from './core/DarkVisionCore';
+import { NetVisionCore } from './core/NetVisionCore';
 
 import './index.css';
 import { ConstantManager } from './global/ConstantManager';
 import { Information } from './htmlComponents/Information/Information';
 
-export class DarkVision {
-  private darkVisionCore: DarkVisionCore | null;
+export class NetVision {
+  private netVisionCore: NetVisionCore | null;
 
   constructor(outputEle: HTMLElement) {
     globalThis.OUTPUT_ELEMENT = outputEle;
-    globalThis.OUTPUT_ELEMENT.classList.add('darkVision-rootEle');
+    globalThis.OUTPUT_ELEMENT.classList.add('netVision-rootEle');
 
     const constantManager = new ConstantManager();
     globalThis.constantManager = constantManager;
@@ -20,9 +20,9 @@ export class DarkVision {
   public async init() {
     await globalThis.constantManager.init();
 
-    this.darkVisionCore = new DarkVisionCore(globalThis.OUTPUT_ELEMENT);
-    this.darkVisionCore.init();
-    this.darkVisionCore.start();
+    this.netVisionCore = new NetVisionCore(globalThis.OUTPUT_ELEMENT);
+    this.netVisionCore.init();
+    this.netVisionCore.start();
     
     new Information().insertTo(globalThis.OUTPUT_ELEMENT);
     new Setting().insertTo(globalThis.OUTPUT_ELEMENT);

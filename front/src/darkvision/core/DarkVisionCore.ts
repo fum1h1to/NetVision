@@ -4,7 +4,7 @@ import { latlng2Cartesian } from '../util/coordinates';
 import { NetworkPlanet } from '../components/NetworkPlanet/NetworkPlanet';
 import { ClickManager } from '../global/ClickManager';
 
-export class DarkVisionCore {
+export class NetVisionCore {
   private width: number;
   private height: number;
   private rootEle: HTMLElement;
