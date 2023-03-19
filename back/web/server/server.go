@@ -7,9 +7,9 @@ import (
 	"net/http"
 	"os"
 
-	"DarkVision/configs"
-	"DarkVision/web/domain"
-	"DarkVision/web/handlers"
+	"NetVision/configs"
+	"NetVision/web/domain"
+	"NetVision/web/handlers"
 )
 
 type WebServer struct {

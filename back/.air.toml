@@ -9,9 +9,9 @@ tmp_dir = "dev"
 # Just plain old shell command. You could use `make` as well.
 cmd = "make develop"
 # Binary file yields from `cmd`.
-bin = "cd dev && ./dark_vision"
+bin = "cd dev && ./net_vision"
 # Customize binary, can setup environment variables when run your app.
-full_bin = "cd dev && APP_ENV=dev APP_USER=air ./dark_vision"
+full_bin = "cd dev && APP_ENV=dev APP_USER=air ./net_vision"
 # Watch these filename extensions.
 include_ext = ["go", "tpl", "tmpl", "html"]
 # Ignore these filename extensions or directories.

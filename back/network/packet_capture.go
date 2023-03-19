@@ -4,7 +4,7 @@ import (
 	"log"
 	"time"
 
-	"DarkVision/configs"
+	"NetVision/configs"
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/pcap"
 )

@@ -6,7 +6,7 @@ services:
     build:
       context: ./back
       dockerfile: ./docker/Dockerfile
-    container_name: dev-dark-vision-go
+    container_name: dev-net-vision-go
     volumes:
       - ./back:/go/src
     ports:
@@ -19,7 +19,7 @@ services:
     build: 
       context: ./front
       dockerfile: ./docker/Dockerfile
-    container_name: dev-dark-vision-node
+    container_name: dev-net-vision-node
     volumes:
       - ./front:/code
       - front_node_modules:/code/node_modules

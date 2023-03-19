@@ -3,8 +3,8 @@ package network
 import (
 	"log"
 
-	"DarkVision/util/ip2LatLng"
-	"DarkVision/util/checkAbuseIP"
+	"NetVision/util/ip2LatLng"
+	"NetVision/util/checkAbuseIP"
   "github.com/google/gopacket"
 )
 

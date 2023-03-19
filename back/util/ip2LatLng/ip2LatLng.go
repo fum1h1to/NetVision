@@ -3,7 +3,7 @@ package ip2LatLng
 import (
 	"log"
 	"net"
-	"DarkVision/configs"
+	"NetVision/configs"
 	"github.com/oschwald/geoip2-golang"
 )
 

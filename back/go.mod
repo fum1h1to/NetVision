@@ -1,4 +1,4 @@
-module DarkVision
+module NetVision
 
 go 1.19
 

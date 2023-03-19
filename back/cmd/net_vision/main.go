@@ -4,8 +4,8 @@ import (
 	// "fmt"
 	"encoding/json"
 
-	"DarkVision/network"
-	"DarkVision/web/server"
+	"NetVision/network"
+	"NetVision/web/server"
 )
 
 func main() {

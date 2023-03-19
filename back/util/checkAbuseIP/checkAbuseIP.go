@@ -8,7 +8,7 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"DarkVision/configs"
+	"NetVision/configs"
 )
 
 type AbuseIPBlackList struct {
