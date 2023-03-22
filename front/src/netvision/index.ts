@@ -27,6 +27,10 @@ export class NetVision {
     new Information().insertTo(globalThis.OUTPUT_ELEMENT);
     new Setting().insertTo(globalThis.OUTPUT_ELEMENT);
 
+    setTimeout((() => {
+      location.reload();
+    }), globalThis.constantManager.getAPPLICATION_RELOAD_INTERVAL() * 60 * 60 * 1000);
+
   }
 
 }
