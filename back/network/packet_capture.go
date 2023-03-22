@@ -74,7 +74,6 @@ func (p *PacketCapture) StartCapturing() {
 func (p *PacketCapture) createBpfFilter() (bpfFilter string) {
 	myselfIPFilter := ""
 	if !configs.GetVisibleCaptureMyself() {
-		myselfIPFilter = "not ( "
 		devices, err := pcap.FindAllDevs()
     if err != nil {
       log.Panicln(err)
@@ -82,6 +81,11 @@ func (p *PacketCapture) createBpfFilter() (bpfFilter string) {
 
 		for _, device := range devices {
 			if device.Name == configs.GetTargetDeviceName() {
+				if len(device.Addresses) == 0 {
+					break
+				}
+				
+				myselfIPFilter = "not ( "
 				for index, address := range device.Addresses {
 					if index == len(device.Addresses) - 1 {
 						myselfIPFilter += "src host " + address.IP.String()
@@ -89,11 +93,12 @@ func (p *PacketCapture) createBpfFilter() (bpfFilter string) {
 						myselfIPFilter += "src host " + address.IP.String() + " or "
 					}
 				}
+				
+				myselfIPFilter += " )"
 				break
 			}
 		}
 
-		myselfIPFilter += " )"
 	}
 
 	if configs.GetBpfFilter() == "" {
