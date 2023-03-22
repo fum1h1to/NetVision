@@ -21,6 +21,7 @@ type Config struct {
 	ServerPort int `yaml:"SERVER_PORT"`
 	ServerClientContentPath string `yaml:"SERVER_CLIENT_CONTENT_PATH"`
 	AbuseIPDBAPIKey string `yaml:"ABUSE_IPDB_API_KEY"`
+	AbuseIPDBUpdateDuration int `yaml:"ABUSE_IPDB_UPDATE_DURATION"`
 	AbuseIPDBBlacklistPath string `yaml:"ABUSE_IPDB_BLACKLIST_PATH"`
 }
 
@@ -86,4 +87,8 @@ func GetAbuseIPDBBlacklistPath() string {
 
 func GetAbuseIPDBAPIKey() string {
 	return data.AbuseIPDBAPIKey
+}
+
+func GetAbuseIPDBUpdateDuration() int {
+	return data.AbuseIPDBUpdateDuration
 }

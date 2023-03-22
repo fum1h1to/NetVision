@@ -50,3 +50,7 @@ func (p *PacketAnalyser) AnalysisPacket(packet gopacket.Packet) (packetData *Pac
 
 	return
 }
+
+func (p *PacketAnalyser) UpdateAbuseIPChecker() {
+	p.AbuseIPChecker.UpdateBlackList()
+}

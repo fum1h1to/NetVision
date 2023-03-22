@@ -22,6 +22,9 @@ GEOIP_DB_PATH: "./resources/GeoLite2-City_20230127/GeoLite2-City.mmdb"
 # Abuse IPDBのAPI KEY
 ABUSE_IPDB_API_KEY: 
 
+# 何時間おきにAbuseIPDBのブラックリストを更新するか
+ABUSE_IPDB_UPDATE_DURATION: 24
+
 # Abuse IPDBのblacklistファイルのパス（json形式）
 ABUSE_IPDB_BLACKLIST_PATH: ./resources/AbuseIPDB/blacklist.json
 

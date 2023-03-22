@@ -49,6 +49,11 @@ func (p *PacketCapture) StartCapturing() {
 		ticker.Stop()
 	}()
 
+	abuseIPCheckerTicker := time.NewTicker(time.Duration(configs.GetAbuseIPDBUpdateDuration()) * time.Hour)
+	defer func() {
+		abuseIPCheckerTicker.Stop()
+	}()
+
 	for {
 		select {
 		case packet := <- packetSource.Packets():
@@ -67,6 +72,9 @@ func (p *PacketCapture) StartCapturing() {
 				validPacketCount = 0
 			} 
 			packetCount = 0
+				
+		case <-abuseIPCheckerTicker.C:
+			p.PacketAnalyser.UpdateAbuseIPChecker()
 		}
 	}
 }

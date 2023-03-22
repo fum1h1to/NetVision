@@ -7,6 +7,8 @@ import (
 	"io"
 	"encoding/json"
 	"net/http"
+	"path"
+	"errors"
 
 	"NetVision/configs"
 )
@@ -33,12 +35,29 @@ type AbuseIPChecker struct {
 
 func CreateAbuseIPChecker() *AbuseIPChecker {
 
+	if configs.GetAbuseIPDBAPIKey() == "" {
+		
+		log.Println("no use abuseIPDB")
+		return &AbuseIPChecker{
+			abuseIPBlackList: nil,
+			blackListMap: make(map[string]int),
+		}
+	}
+
 	content, err := os.ReadFile(configs.GetAbuseIPDBBlacklistPath())
 
 	// ファイルが存在しない場合は、AbuseIPDBから取得する
 	if err != nil {
 		if os.IsNotExist(err) {
-			content = getBlackListFromAbuseIPDB()
+			content, err := getBlackListFromAbuseIPDB()
+			if err != nil {
+				log.Println("Error get blacklist from AbuseIPDB. So no use AbuseIPDB:", err)
+				return &AbuseIPChecker{
+					abuseIPBlackList: nil,
+					blackListMap: make(map[string]int),
+				}
+			}
+			saveBlackList(content)
 			log.Println("not exists abuseIPDB blacklist file. created new file.")
 		} else {
 			log.Panicln("Error loading config file: ", err)
@@ -51,10 +70,15 @@ func CreateAbuseIPChecker() *AbuseIPChecker {
 	// ファイルの更新日時を確認、1日以上経過している場合は、AbuseIPDBから取得する
 	utc, _ := time.LoadLocation("UTC")
 	if time.Now().In(utc).Sub(abuseIPBlackList.Meta.GeneratedAt).Hours() >= 24 {
-		content = getBlackListFromAbuseIPDB()
-		abuseIPBlackList = &AbuseIPBlackList{}
-  	json.Unmarshal(content, abuseIPBlackList)
-		log.Println("abuseIPDB blacklist file is old. updated file.")
+		content, err := getBlackListFromAbuseIPDB()
+		if err != nil {
+			log.Println("Error get blacklist from AbuseIPDB. So no update was made:", err)
+		} else {
+			saveBlackList(content)
+			abuseIPBlackList = &AbuseIPBlackList{}
+			json.Unmarshal(content, abuseIPBlackList)
+			log.Println("abuseIPDB blacklist file is old. updated file.")
+		}
 	}
 
 	// mapに変換
@@ -85,12 +109,35 @@ func (c *AbuseIPChecker) GetAbuseIPScore(ip string) int {
 	}
 }
 
-func getBlackListFromAbuseIPDB() (abuseIPData []byte) {
+func (c *AbuseIPChecker) UpdateBlackList() {
+
+	if configs.GetAbuseIPDBAPIKey() != "" {
+		content, err := getBlackListFromAbuseIPDB()
+		if err != nil {
+			log.Println("Error get blacklist from AbuseIPDB. So no update was made:", err)
+			return
+		}
+		saveBlackList(content)
+		abuseIPBlackList := &AbuseIPBlackList{}
+		json.Unmarshal(content, abuseIPBlackList)
+		blackListMap := make(map[string]int)
+		for _, v := range abuseIPBlackList.Data {
+			blackListMap[v.IPAddress] = v.AbuseConfidenceScore
+		}
+
+		c.abuseIPBlackList = abuseIPBlackList
+		c.blackListMap = blackListMap
+		
+		log.Println("update abuseIPDB blacklist")
+	}
+}
+
+func getBlackListFromAbuseIPDB() (abuseIPData []byte, err error) {
 	method := "GET"
 	url := "https://api.abuseipdb.com/api/v2/blacklist"
 	req, err := http.NewRequest(method, url, nil)
 	if err != nil {
-		log.Panicln(err)
+		return nil, err
 	}
 
 	// クエリパラメータの設定
@@ -107,26 +154,33 @@ func getBlackListFromAbuseIPDB() (abuseIPData []byte) {
 	client := &http.Client{}
 	res, err := client.Do(req)
 	if err != nil {
-		log.Panicln(err)
+		return nil, err
 	}
 	defer res.Body.Close()
 
 	abuseIPData, err = io.ReadAll(res.Body)
 	if err != nil {
-		log.Panicln(err)
+		return nil, err
 	}
 
 	abuseIPBlackList := &AbuseIPBlackList{}
   json.Unmarshal(abuseIPData, abuseIPBlackList)
 	if len(abuseIPBlackList.Errors) > 0 {
-		log.Panicln(abuseIPBlackList.Errors[0].Detail)
-	}
-	
-	// ファイル出力
-	err_f := os.WriteFile(configs.GetAbuseIPDBBlacklistPath(), abuseIPData, 0644)
-	if err_f != nil {
-		log.Panicln(err_f)
+		return nil, errors.New(abuseIPBlackList.Errors[0].Detail)
 	}
 
-	return 
+	return abuseIPData, nil
+}
+
+func saveBlackList(abuseIPData []byte) {
+	dir, _ := path.Split(configs.GetAbuseIPDBBlacklistPath())
+	err := os.MkdirAll(dir, 0755)
+	if err != nil && !os.IsExist(err) {
+		log.Panicln(err)
+	}
+
+	err = os.WriteFile(configs.GetAbuseIPDBBlacklistPath(), abuseIPData, 0644)
+	if err != nil {
+		log.Panicln(err)
+	}
 }
