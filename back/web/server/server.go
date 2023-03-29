@@ -27,6 +27,7 @@ func (w *WebServer) StartServer() {
 	go w.Hub.RunLoop()
 
 	w.createServerData()
+	w.createClientSettingData()
 	http.HandleFunc("/", http.FileServer(http.Dir(configs.GetServerClientContentPath())).ServeHTTP)
 	http.HandleFunc("/ws", handlers.NewWebsocketHandler(w.Hub).Handle)
 
@@ -58,6 +59,63 @@ func (w *WebServer) createServerData() {
 		return
 	}
 	err = os.WriteFile(configs.GetServerClientContentPath() + "/data/server.json", jsonData, 0644)
+	if err != nil {
+		log.Panicln("Error: ", err)
+		return
+	}
+}
+
+type clientSettingData struct {
+	ApplicationReloadInterval  int `json:"APPLICATION_RELOAD_INTERVAL"`
+	MaxFps                     int `json:"MAX_FPS"`
+	EarthRadius                int `json:"EARTH_RADIUS"`
+	WebsocketReconnectInterval int `json:"WEBSOCKET_RECONNECT_INTERVAL"`
+	GetPacketLimit             int `json:"GET_PACKET_LIMIT"`
+	PacketGoal                 struct {
+		Lat float64 `json:"lat"`
+		Lng float64 `json:"lng"`
+	} `json:"PACKET_GOAL"`
+	PacketOrbitHeight                 int     `json:"PACKET_ORBIT_HEIGHT"`
+	PacketGoalTime                    int     `json:"PACKET_GOAL_TIME"`
+	MaxPacketScale                    int     `json:"MAX_PACKET_SCALE"`
+	MaxScalePacketCount               int     `json:"MAX_SCALE_PACKET_COUNT"`
+	DefaultPacketColor                string  `json:"DEFAULT_PACKET_COLOR"`
+	FlowCounterHeightRate             float64 `json:"FLOW_COUNTER_HEIGHT_RATE"`
+	FlowCounterMaxHeight              int     `json:"FLOW_COUNTER_MAX_HEIGHT"`
+	DefaultFlowCounterColor           string  `json:"DEFAULT_FLOW_COUNTER_COLOR"`
+	ClickedFlowCounterColor           string  `json:"CLICKED_FLOW_COUNTER_COLOR"`
+	AbuseipdbIPColor                  string  `json:"ABUSEIPDB_IP_COLOR"`
+	ThresholdAbuseipdbConfidenceScore int     `json:"THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE"`
+}
+
+func (w *WebServer) createClientSettingData() {
+	clientSettingData := new(clientSettingData)
+
+	clientSettingData.ApplicationReloadInterval = configs.GetApplicationReloadInterval()
+	clientSettingData.MaxFps = configs.GetMaxFps()
+	clientSettingData.EarthRadius = configs.GetEarthRadius()
+	clientSettingData.WebsocketReconnectInterval = configs.GetWebsocketReconnectInterval()
+	clientSettingData.GetPacketLimit = configs.GetPacketLimit()
+	clientSettingData.PacketGoal.Lat = configs.GetPacketGoalLat()
+	clientSettingData.PacketGoal.Lng = configs.GetPacketGoalLng()
+	clientSettingData.PacketOrbitHeight = configs.GetPacketOrbitHeight()
+	clientSettingData.PacketGoalTime = configs.GetPacketGoalTime()
+	clientSettingData.MaxPacketScale = configs.GetMaxPacketScale()
+	clientSettingData.MaxScalePacketCount = configs.GetMaxScalePacketCount()
+	clientSettingData.DefaultPacketColor = configs.GetDefaultPacketColor()
+	clientSettingData.FlowCounterHeightRate = configs.GetFlowCounterHeightRate()
+	clientSettingData.FlowCounterMaxHeight = configs.GetFlowCounterMaxHeight()
+	clientSettingData.DefaultFlowCounterColor = configs.GetDefaultFlowCounterColor()
+	clientSettingData.ClickedFlowCounterColor = configs.GetClickedFlowCounterColor()
+	clientSettingData.AbuseipdbIPColor = configs.GetAbuseIPDBPacketColor()
+	clientSettingData.ThresholdAbuseipdbConfidenceScore = configs.GetAbuseIPDBThresholdConfidenceScore()
+	
+	jsonData, err := json.Marshal(clientSettingData)
+	if err != nil {
+		log.Panicln("Error: ", err)
+		return
+	}
+	err = os.WriteFile(configs.GetServerClientContentPath() + "/data/setting.json", jsonData, 0644)
 	if err != nil {
 		log.Panicln("Error: ", err)
 		return
