@@ -1,3 +1,58 @@
+#---------------------------------
+# Serverの設定
+#---------------------------------
+# サーバのIPアドレス
+SERVER_IP: localhost
+
+# サーバのポート番号
+SERVER_PORT: 8080
+
+# クライアント側のコンテンツの格納ディレクトリ
+SERVER_CLIENT_CONTENT_PATH: ./html
+
+
+#---------------------------------
+# クライアント側アプリの設定
+#---------------------------------
+# 何時間ごとにアプリケーションをリロードするか
+APPLICATION_RELOAD_INTERVAL: 24
+
+# FPSの最大値
+MAX_FPS: 60
+
+# WebSocketの再接続間隔（ms）
+WEBSOCKET_RECONNECT_INTERVAL: 10000
+
+
+#---------------------------------
+# GeoIPの設定
+#---------------------------------
+# GeoIPのデータベースのパス
+GEOIP_DB_PATH: "./resources/GeoLite2-City_20230127/GeoLite2-City.mmdb"
+
+
+#---------------------------------
+# AbuseIPの設定
+#---------------------------------
+# Abuse IPDBのAPI KEY
+ABUSE_IPDB_API_KEY: 
+
+# 何時間おきにAbuseIPDBのブラックリストを更新するか
+ABUSE_IPDB_UPDATE_DURATION: 24
+
+# Abuse IPDBのblacklistファイルのパス（json形式）
+ABUSE_IPDB_BLACKLIST_PATH: ./resources/AbuseIPDB/blacklist.json
+
+# AbuseIPDBに登録されているIPアドレスの色
+ABUSE_IPDB_PACKET_COLOR: "0xff0000"
+
+# AbuseIPからのパケットのConfidenceScoreがどの程度だったら色を変えるか（0~100）
+ABUSE_IPDB_THRESHOLD_CONFIDENCE_SCORE: 50
+
+
+#---------------------------------
+# ネットワーク周りの設定
+#---------------------------------
 # 可視化するネットワークインターフェース名
 TARGET_DEVICENAME: "eth0"
 
@@ -16,23 +71,40 @@ BPF_FILTER: ""
 # プロミスキャスモードを有効にするかどうか
 PROMISCUOUS_MODE: true
 
-# GeoIPのデータベースのパス
-GEOIP_DB_PATH: "./resources/GeoLite2-City_20230127/GeoLite2-City.mmdb"
+# ---------- 見た目の設定 ----------
+# 地球の半径
+EARTH_RADIUS: 8
 
-# Abuse IPDBのAPI KEY
-ABUSE_IPDB_API_KEY: 
+# パケットの目的地
+PACKET_GOAL: 
+  lat: 35
+  lng: 140
 
-# 何時間おきにAbuseIPDBのブラックリストを更新するか
-ABUSE_IPDB_UPDATE_DURATION: 24
+# クライアント側の最大パケット生成数
+PACKET_LIMIT: 300
 
-# Abuse IPDBのblacklistファイルのパス（json形式）
-ABUSE_IPDB_BLACKLIST_PATH: ./resources/AbuseIPDB/blacklist.json
+# パケットの軌道の高さ
+PACKET_ORBIT_HEIGHT: 3
 
-# サーバのIPアドレス
-SERVER_IP: localhost
+# パケットが目的地まで到達する時間
+PACKET_GOAL_TIME: 5
 
-# サーバのポート番号
-SERVER_PORT: 8080
+# 一つのIPアドレスから一度に来るパケットの数をscaleで表現するときの最大値と、その時のpacketCountの大きさ
+# 例えば、MAX_SCALE_PACKET_COUNTが100、MAX_PACKET_SCALEが10の時、packetCountが50のものはscaleが5になる。
+MAX_PACKET_SCALE: 5
+MAX_SCALE_PACKET_COUNT: 5
 
-# クライアント側のコンテンツの格納ディレクトリ
-SERVER_CLIENT_CONTENT_PATH: ./html
+# デフォルトのパケットの色
+DEFAULT_PACKET_COLOR: "0xffff00"
+
+# パケット出現場所に表示するオブジェクトがどの程度の割合で大きくなるか
+FLOW_COUNTER_HEIGHT_RATE: 0.01
+
+# パケット出現場所に表示するオブジェクトの最大高さ
+FLOW_COUNTER_MAX_HEIGHT: 5
+
+# パケット出現場所に表示するオブジェクトの色
+DEFAULT_FLOW_COUNTER_COLOR: "0x0000ff"
+
+# パケット出現場所に表示するオブジェクトをクリックした時の色
+CLICKED_FLOW_COUNTER_COLOR: "0x00ff00"
