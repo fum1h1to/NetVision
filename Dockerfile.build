@@ -1,4 +1,6 @@
 FROM golang:1.19.1 as back-builder
+RUN apt update && apt upgrade -y 
+RUN apt install -y libpcap-dev flex bison
 WORKDIR /go/src
 ADD ./back /go/src
 RUN go mod tidy
