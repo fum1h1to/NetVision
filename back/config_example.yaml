@@ -27,7 +27,10 @@ WEBSOCKET_RECONNECT_INTERVAL: 10000
 #---------------------------------
 # GeoIPの設定
 #---------------------------------
-# GeoIPのデータベースのパス
+# GeoIPのデータベースをダウンロードしてきた後に出力するパス
+GEOIP_DB_OUTPUT_PATH: "./resources/GeoIP"
+
+# 自分でGeoIPを用意する場合のGeoIPのデータベースのパス（存在しなければ、ダウンロードされる）
 GEOIP_DB_PATH: "./resources/GeoLite2-City_20230127/GeoLite2-City.mmdb"
 
 
