@@ -18,6 +18,7 @@ type Config struct {
 	MaxFps int `yaml:"MAX_FPS"`
 	WebsocketReconnectInterval int `yaml:"WEBSOCKET_RECONNECT_INTERVAL"`
 
+	GeoipDbOutputPath string `yaml:"GEOIP_DB_OUTPUT_PATH"`
 	GeoipDbPath string `yaml:"GEOIP_DB_PATH"`
 
 	AbuseIPDBUpdateDuration int `yaml:"ABUSE_IPDB_UPDATE_DURATION"`
@@ -85,6 +86,10 @@ func GetMaxFps() int {
 }
 func GetWebsocketReconnectInterval() int {
 	return data.WebsocketReconnectInterval
+}
+
+func GetGeoipDbOutputPath() string {
+	return data.GeoipDbOutputPath
 }
 
 func GetGeoipDbPath() string {
