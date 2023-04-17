@@ -34,10 +34,12 @@
 
 ### バックエンド側
 2. ```back/dev```を作成し開発に必要なファイルなどを追加
-  - GeoLite2のデータベース
-  - AbuseIPDBのAPI Key
   - config.yaml（config_example.yamlからコピーなどして用意）
   - dev/html/data/配下にserver.jsonというファイルを作成
+
+  必要であれば
+  
+  - AbuseIPDBのAPI Key
 
 3. コンテナ内のシェルへ
   ```

@@ -6,3 +6,5 @@ docker build --no-cache -f ./Dockerfile.build -t fum1h1to/net-vision-builder:bui
 docker create --name netvision-builder fum1h1to/net-vision-builder:build
 docker cp netvision-builder:/build ./
 docker rm netvision-builder
+
+mkdir -p ./build/resources/GeoIP
