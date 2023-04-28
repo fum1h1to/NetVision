@@ -140,6 +140,7 @@ const (
 
 func GetDefaultTargetDeviceName() (deviceName string, err error) {
 	if configs.GetTargetDeviceName() != "" {
+		log.Println("Capture Interface: " + configs.GetTargetDeviceName())
 		return configs.GetTargetDeviceName(), nil
 	}
 
