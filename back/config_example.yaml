@@ -56,8 +56,8 @@ ABUSE_IPDB_THRESHOLD_CONFIDENCE_SCORE: 50
 #---------------------------------
 # ネットワーク周りの設定
 #---------------------------------
-# 可視化するネットワークインターフェース名
-TARGET_DEVICENAME: "eth0"
+# 可視化するネットワークインターフェース名（デフォルトはWifi）
+TARGET_DEVICENAME:
 
 # キャプチャする間隔。msで指定。
 CAPTURE_DURATION: 1000

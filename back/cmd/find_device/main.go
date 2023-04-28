@@ -18,7 +18,7 @@ func main() {
     for _, device := range devices {
         fmt.Println("\nName: ", device.Name)
         fmt.Println("Description: ", device.Description)
-        fmt.Println("Devices addresses: ", device.Description)
+        fmt.Printf("Devices Flags: %08b\n", device.Flags)
         for _, address := range device.Addresses {
             fmt.Println("- IP address: ", address.IP)
             fmt.Println("- Subnet mask: ", address.Netmask)
