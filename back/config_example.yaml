@@ -59,6 +59,12 @@ ABUSE_IPDB_THRESHOLD_CONFIDENCE_SCORE: 50
 # Spamhausのデータをダウンロードしてきた後に出力するパス
 SPAMHAUS_DATA_OUTPUT_PATH: "./resources/Spamhaus/"
 
+# Spamhausの設定に登録されているIPアドレスの色
+SPAMHAUS_PACKET_COLOR: "0x800080"
+
+# 何時間おきにSpamhausのDROPリストを更新するか
+SPAMHAUS_UPDATE_DURATION: 24
+
 
 #---------------------------------
 # www.blocklist.deの設定
@@ -68,6 +74,9 @@ BLOCKLIST_DE_DATA_OUTPUT_PATH: "./resources/blocklist-de/"
 
 # www.blocklist.deに登録されているIPアドレスの色
 BLOCKLIST_DE_PACKET_COLOR: "0xffff00"
+
+# 何時間おきにwww.blocklist.deのリストを更新するか
+BLOCKLIST_DE_UPDATE_DURATION: 24
 
 
 #---------------------------------

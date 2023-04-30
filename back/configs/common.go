@@ -28,9 +28,12 @@ type Config struct {
 	AbuseIPDBThresholdConfidenceScore int `yaml:"ABUSE_IPDB_THRESHOLD_CONFIDENCE_SCORE"`
 
 	SpamhausDataOutputPath string `yaml:"SPAMHAUS_DATA_OUTPUT_PATH"`
+	SpamhausPacketColor string `yaml:"SPAMHAUS_PACKET_COLOR"`
+	SpamhausUpdateDuration int `yaml:"SPAMHAUS_UPDATE_DURATION"`
 
 	BlocklistDeDataOutputPath string `yaml:"BLOCKLIST_DE_DATA_OUTPUT_PATH"`
 	BlocklistDePacketColor string `yaml:"BLOCKLIST_DE_PACKET_COLOR"`
+	BlocklistDeUpdateDuration int `yaml:"BLOCKLIST_DE_UPDATE_DURATION"`
 
 	TargetDeviceName string `yaml:"TARGET_DEVICENAME"`
 	CaptureDuration int `yaml:"CAPTURE_DURATION"`
@@ -120,13 +123,21 @@ func GetAbuseIPDBThresholdConfidenceScore() int {
 func GetSpamhausDataOutputPath() string {
 	return data.SpamhausDataOutputPath
 }
+func GetSpamhausPacketColor() string {
+	return data.SpamhausPacketColor
+}
+func GetSpamhausUpdateDuration() int {
+	return data.SpamhausUpdateDuration
+}
 
 func GetBlocklistDeDataOutputPath() string {
 	return data.BlocklistDeDataOutputPath
 }
-
 func GetBlocklistDePacketColor() string {
 	return data.BlocklistDePacketColor
+}
+func GetBlocklistDeUpdateDuration() int {
+	return data.BlocklistDeUpdateDuration
 }
 
 func GetTargetDeviceName() string {

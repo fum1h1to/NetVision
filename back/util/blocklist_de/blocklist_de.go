@@ -57,8 +57,6 @@ func (b *BlocklistDeManager) UpdateBlackList() {
 	content, err := getBlackListFromBlocklistDe()
 	if err != nil {
 		log.Println("Error get blacklist from blocklist.de. So no update was made:", err)
-		
-		global.SetUseBlocklistDe(false)
 		return
 	}
 
@@ -70,7 +68,8 @@ func (b *BlocklistDeManager) UpdateBlackList() {
 	}
 
 	b.blackListMap = blacklistMap
-		
+	
+	global.SetUseBlocklistDe(true)
 	log.Println("update blocklist.de blacklist")
 
 }

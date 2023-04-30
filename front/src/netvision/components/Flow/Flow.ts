@@ -69,6 +69,10 @@ export class Flow {
     const packetCount = this.packetData.packetCount < globalThis.constantManager.getMAX_SCALE_PACKET_COUNT() ? this.packetData.packetCount : globalThis.constantManager.getMAX_SCALE_PACKET_COUNT();
     const scaleSize = remap(packetCount, 1, globalThis.constantManager.getMAX_SCALE_PACKET_COUNT(), 1, globalThis.constantManager.getMAX_PACKET_SCALE());
     this.packetMesh.scale.set(scaleSize, scaleSize, scaleSize);
+    if (this.packetData.isSpamhausContain) {
+      // @ts-ignore
+      (this.packetMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getSPAMHAUS_IP_COLOR());
+    }
     if (this.packetData.isBlocklistDeContain) {
       // @ts-ignore
       (this.packetMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getBLOCKLIST_DE_IP_COLOR());
@@ -81,6 +85,10 @@ export class Flow {
     // 軌道ラインの生成
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(this.orbitPoints);
     this.lineMesh = new THREE.Line(lineGeometry, this.lineMaterial);
+    if (this.packetData.isSpamhausContain) {
+      // @ts-ignore
+      (this.lineMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getSPAMHAUS_IP_COLOR());
+    }
     if (this.packetData.isBlocklistDeContain) {
       // @ts-ignore
       (this.lineMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getBLOCKLIST_DE_IP_COLOR());

@@ -86,6 +86,7 @@ type clientSettingData struct {
 	ClickedFlowCounterColor           string  `json:"CLICKED_FLOW_COUNTER_COLOR"`
 	IsAbuseipdbUse										bool    `json:"IS_ABUSEIPDB_USE"`
 	AbuseipdbIPColor                  string  `json:"ABUSEIPDB_IP_COLOR"`
+	SpamhausIPColor									 	string  `json:"SPAMHAUS_IP_COLOR"`
 	BlocklistDeIPColor								string  `json:"BLOCKLIST_DE_IP_COLOR"`
 	ThresholdAbuseipdbConfidenceScore int     `json:"THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE"`
 }
@@ -115,6 +116,7 @@ func (w *WebServer) createClientSettingData() {
 		clientSettingData.IsAbuseipdbUse = true
 	}
 	clientSettingData.AbuseipdbIPColor = configs.GetAbuseIPDBPacketColor()
+	clientSettingData.SpamhausIPColor = configs.GetSpamhausPacketColor()
 	clientSettingData.BlocklistDeIPColor = configs.GetBlocklistDePacketColor()
 	clientSettingData.ThresholdAbuseipdbConfidenceScore = configs.GetAbuseIPDBThresholdConfidenceScore()
 	

@@ -60,6 +60,16 @@ func (p *PacketCapture) StartCapturing() {
 		abuseIPCheckerTicker.Stop()
 	}()
 
+	spamhausManagerTicker := time.NewTicker(time.Duration(configs.GetSpamhausUpdateDuration()) * time.Hour)
+	defer func() {
+		spamhausManagerTicker.Stop()
+	}()
+
+	blocklistDeManagerTicker := time.NewTicker(time.Duration(configs.GetBlocklistDeUpdateDuration()) * time.Hour)
+	defer func() {
+		blocklistDeManagerTicker.Stop()
+	}()
+
 	for {
 		select {
 		case packet := <- packetSource.Packets():
@@ -81,6 +91,13 @@ func (p *PacketCapture) StartCapturing() {
 				
 		case <-abuseIPCheckerTicker.C:
 			p.PacketAnalyser.UpdateAbuseIPChecker()
+
+		case <-spamhausManagerTicker.C:
+			p.PacketAnalyser.UpdateSpamhausManager()
+
+		case <-blocklistDeManagerTicker.C:
+			p.PacketAnalyser.UpdateBlocklistDeManager()
+
 		}
 	}
 }

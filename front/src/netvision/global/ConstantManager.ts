@@ -51,6 +51,9 @@ export class ConstantManager {
   // AbuseIPDBに登録されているIPアドレスの色
   private ABUSEIPDB_IP_COLOR: number
 
+  // SpamhausのDROPリストに登録されているIPアドレスの色
+  private SPAMHAUS_IP_COLOR: number
+
   // www.blocklist.deに登録されているIPアドレスの色
   private BLOCKLIST_DE_IP_COLOR: number
 
@@ -76,6 +79,7 @@ export class ConstantManager {
     this.CLICKED_FLOW_COUNTER_COLOR = 0x00ff00;
     this.IS_ABUSEIPDB_USE = false;
     this.ABUSEIPDB_IP_COLOR = 0xff0000;
+    this.SPAMHAUS_IP_COLOR = 0x800080;
     this.BLOCKLIST_DE_IP_COLOR = 0xffff00;
     this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE = 50;
   }
@@ -101,6 +105,7 @@ export class ConstantManager {
       this.CLICKED_FLOW_COUNTER_COLOR = Number(data.CLICKED_FLOW_COUNTER_COLOR)
       this.IS_ABUSEIPDB_USE = data.IS_ABUSEIPDB_USE
       this.ABUSEIPDB_IP_COLOR = Number(data.ABUSEIPDB_IP_COLOR)
+      this.SPAMHAUS_IP_COLOR = Number(data.SPAMHAUS_IP_COLOR)
       this.BLOCKLIST_DE_IP_COLOR = Number(data.BLOCKLIST_DE_IP_COLOR)
       this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE = data.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE
 
@@ -180,6 +185,10 @@ export class ConstantManager {
 
   public getABUSEIPDB_IP_COLOR(): number {
     return this.ABUSEIPDB_IP_COLOR;
+  }
+
+  public getSPAMHAUS_IP_COLOR(): number {
+    return this.SPAMHAUS_IP_COLOR;
   }
 
   public getBLOCKLIST_DE_IP_COLOR(): number {

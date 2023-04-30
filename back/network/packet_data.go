@@ -10,6 +10,7 @@ type PacketData struct {
 	ProtocolType string `json:"protocolType"`
 	AbuseIPScore int `json:"abuseIPScore"`
 	PacketCount int `json:"packetCount"`
+	IsSpamhausContain bool `json:"isSpamhausContain"`
 	IsBlocklistDeContain bool `json:"isBlocklistDeContain"`
 }
 
