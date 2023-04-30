@@ -24,7 +24,6 @@ func CreatePacketCapture(dataOutput chan<- []*PacketData) *PacketCapture {
 }
 
 func (p *PacketCapture) StartCapturing() {
-	log.Println("Capture Start")
 	
 	deviceName, err := GetDefaultTargetDeviceName()
 	if err != nil {
@@ -36,8 +35,10 @@ func (p *PacketCapture) StartCapturing() {
 			log.Panicln(err)
 	}
 	defer handle.Close()
+	
+	log.Println("Capture Start")
 
-	bpfFilter := p.createBpfFilter()
+	bpfFilter := p.createBpfFilter(deviceName)
 
 	err = handle.SetBPFFilter(bpfFilter)
 	if err != nil {
@@ -57,6 +58,16 @@ func (p *PacketCapture) StartCapturing() {
 	abuseIPCheckerTicker := time.NewTicker(time.Duration(configs.GetAbuseIPDBUpdateDuration()) * time.Hour)
 	defer func() {
 		abuseIPCheckerTicker.Stop()
+	}()
+
+	spamhausManagerTicker := time.NewTicker(time.Duration(configs.GetSpamhausUpdateDuration()) * time.Hour)
+	defer func() {
+		spamhausManagerTicker.Stop()
+	}()
+
+	blocklistDeManagerTicker := time.NewTicker(time.Duration(configs.GetBlocklistDeUpdateDuration()) * time.Hour)
+	defer func() {
+		blocklistDeManagerTicker.Stop()
 	}()
 
 	for {
@@ -80,11 +91,18 @@ func (p *PacketCapture) StartCapturing() {
 				
 		case <-abuseIPCheckerTicker.C:
 			p.PacketAnalyser.UpdateAbuseIPChecker()
+
+		case <-spamhausManagerTicker.C:
+			p.PacketAnalyser.UpdateSpamhausManager()
+
+		case <-blocklistDeManagerTicker.C:
+			p.PacketAnalyser.UpdateBlocklistDeManager()
+
 		}
 	}
 }
 
-func (p *PacketCapture) createBpfFilter() (bpfFilter string) {
+func (p *PacketCapture) createBpfFilter(targetDeviceName string) (bpfFilter string) {
 	myselfIPFilter := ""
 	if !configs.GetVisibleCaptureMyself() {
 		devices, err := pcap.FindAllDevs()
@@ -93,7 +111,7 @@ func (p *PacketCapture) createBpfFilter() (bpfFilter string) {
     }
 
 		for _, device := range devices {
-			if device.Name == configs.GetTargetDeviceName() {
+			if device.Name == targetDeviceName {
 				if len(device.Addresses) == 0 {
 					break
 				}

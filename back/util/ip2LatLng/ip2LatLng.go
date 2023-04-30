@@ -30,7 +30,7 @@ func downloadGeoipDb() (err error) {
 		os.MkdirAll(geoipDbDir, 0755)
 	}
 
-	dbDate := time.Now().Format("2006-01")
+	dbDate := time.Now().UTC().Format("2006-01")
 
 	method := "GET"
 	url := "https://download.db-ip.com/free/dbip-city-lite-" + dbDate + ".mmdb.gz"
