@@ -44,6 +44,9 @@ export class ConstantManager {
 
   // パケット出現場所に表示するオブジェクトをクリックした時の色
   private CLICKED_FLOW_COUNTER_COLOR: number
+
+  // AbuseIPDBを使用するかどうか
+  private IS_ABUSEIPDB_USE: boolean
   
   // AbuseIPDBに登録されているIPアドレスの色
   private ABUSEIPDB_IP_COLOR: number
@@ -71,6 +74,7 @@ export class ConstantManager {
     this.FLOW_COUNTER_MAX_HEIGHT = 5;
     this.DEFAULT_FLOW_COUNTER_COLOR = 0x0000ff;
     this.CLICKED_FLOW_COUNTER_COLOR = 0x00ff00;
+    this.IS_ABUSEIPDB_USE = false;
     this.ABUSEIPDB_IP_COLOR = 0xff0000;
     this.BLOCKLIST_DE_IP_COLOR = 0xffff00;
     this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE = 50;
@@ -95,6 +99,7 @@ export class ConstantManager {
       this.FLOW_COUNTER_MAX_HEIGHT = data.FLOW_COUNTER_MAX_HEIGHT
       this.DEFAULT_FLOW_COUNTER_COLOR = Number(data.DEFAULT_FLOW_COUNTER_COLOR)
       this.CLICKED_FLOW_COUNTER_COLOR = Number(data.CLICKED_FLOW_COUNTER_COLOR)
+      this.IS_ABUSEIPDB_USE = data.IS_ABUSEIPDB_USE
       this.ABUSEIPDB_IP_COLOR = Number(data.ABUSEIPDB_IP_COLOR)
       this.BLOCKLIST_DE_IP_COLOR = Number(data.BLOCKLIST_DE_IP_COLOR)
       this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE = data.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE
@@ -167,6 +172,10 @@ export class ConstantManager {
 
   public getCLICKED_FLOW_COUNTER_COLOR(): number {
     return this.CLICKED_FLOW_COUNTER_COLOR;
+  }
+
+  public getIS_ABUSEIPDB_USE(): boolean {
+    return this.IS_ABUSEIPDB_USE;
   }
 
   public getABUSEIPDB_IP_COLOR(): number {

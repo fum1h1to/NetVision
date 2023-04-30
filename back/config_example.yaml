@@ -67,7 +67,7 @@ SPAMHAUS_DATA_OUTPUT_PATH: "./resources/Spamhaus/"
 BLOCKLIST_DE_DATA_OUTPUT_PATH: "./resources/blocklist-de/"
 
 # www.blocklist.deに登録されているIPアドレスの色
-BLOCKLIST_DE_PACKET_COLOR: "0x00ff00"
+BLOCKLIST_DE_PACKET_COLOR: "0xffff00"
 
 
 #---------------------------------
