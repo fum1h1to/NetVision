@@ -10,6 +10,7 @@ type PacketData struct {
 	ProtocolType string `json:"protocolType"`
 	AbuseIPScore int `json:"abuseIPScore"`
 	PacketCount int `json:"packetCount"`
+	IsBlocklistDeContain bool `json:"isBlocklistDeContain"`
 }
 
 func IsValidPacketData(packetData *PacketData) bool {

@@ -69,6 +69,10 @@ export class Flow {
     const packetCount = this.packetData.packetCount < globalThis.constantManager.getMAX_SCALE_PACKET_COUNT() ? this.packetData.packetCount : globalThis.constantManager.getMAX_SCALE_PACKET_COUNT();
     const scaleSize = remap(packetCount, 1, globalThis.constantManager.getMAX_SCALE_PACKET_COUNT(), 1, globalThis.constantManager.getMAX_PACKET_SCALE());
     this.packetMesh.scale.set(scaleSize, scaleSize, scaleSize);
+    if (this.packetData.isBlocklistDeContain) {
+      // @ts-ignore
+      (this.packetMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getBLOCKLIST_DE_IP_COLOR());
+    }
     if (this.packetData.abuseIPScore >= globalThis.constantManager.getTHRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE()) {
       // @ts-ignore
       (this.packetMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getABUSEIPDB_IP_COLOR());

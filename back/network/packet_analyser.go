@@ -5,6 +5,7 @@ import (
 
 	"NetVision/util/ip2LatLng"
 	"NetVision/util/checkAbuseIP"
+	"NetVision/util/blocklist_de"
 	"NetVision/util/global"
   "github.com/google/gopacket"
 )
@@ -12,15 +13,18 @@ import (
 type PacketAnalyser struct {
 	Ip2LatLngExchanger *ip2LatLng.Ip2LatLngExchanger
 	AbuseIPChecker *checkAbuseIP.AbuseIPChecker
+	BlocklistDeManager *blocklist_de.BlocklistDeManager
 }
 
 func CreatePacketAnalyser() *PacketAnalyser {
 	ip2LatLngExchanger := ip2LatLng.CreateIp2LatLngExchanger()
 	AbuseIPChecker := checkAbuseIP.CreateAbuseIPChecker()
+	BlocklistDeManager := blocklist_de.CreateBlocklistDeManager()
 
 	return &PacketAnalyser{
 		Ip2LatLngExchanger: ip2LatLngExchanger,
 		AbuseIPChecker: AbuseIPChecker,
+		BlocklistDeManager: BlocklistDeManager,
 	}
 }
 
@@ -42,6 +46,12 @@ func (p *PacketAnalyser) AnalysisPacket(packet gopacket.Packet) (packetData *Pac
 			packetData.AbuseIPScore = p.AbuseIPChecker.GetAbuseIPScore(srcip)
 		} else {
 			packetData.AbuseIPScore = 0
+		}
+
+		if global.GetUseBlocklistDe() {
+			packetData.IsBlocklistDeContain = p.BlocklistDeManager.IsBlackList(srcip)
+		} else {
+			packetData.IsBlocklistDeContain = false
 		}
 	}
 

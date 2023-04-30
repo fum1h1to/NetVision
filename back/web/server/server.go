@@ -85,6 +85,7 @@ type clientSettingData struct {
 	DefaultFlowCounterColor           string  `json:"DEFAULT_FLOW_COUNTER_COLOR"`
 	ClickedFlowCounterColor           string  `json:"CLICKED_FLOW_COUNTER_COLOR"`
 	AbuseipdbIPColor                  string  `json:"ABUSEIPDB_IP_COLOR"`
+	BlocklistDeIPColor								string  `json:"BLOCKLIST_DE_IP_COLOR"`
 	ThresholdAbuseipdbConfidenceScore int     `json:"THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE"`
 }
 
@@ -108,6 +109,7 @@ func (w *WebServer) createClientSettingData() {
 	clientSettingData.DefaultFlowCounterColor = configs.GetDefaultFlowCounterColor()
 	clientSettingData.ClickedFlowCounterColor = configs.GetClickedFlowCounterColor()
 	clientSettingData.AbuseipdbIPColor = configs.GetAbuseIPDBPacketColor()
+	clientSettingData.BlocklistDeIPColor = configs.GetBlocklistDePacketColor()
 	clientSettingData.ThresholdAbuseipdbConfidenceScore = configs.GetAbuseIPDBThresholdConfidenceScore()
 	
 	jsonData, err := json.Marshal(clientSettingData)

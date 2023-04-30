@@ -7,4 +7,5 @@ export type PacketData = {
   protocolType: string;
   abuseIPScore: number;
   packetCount: number;
+  isBlocklistDeContain: boolean;
 };

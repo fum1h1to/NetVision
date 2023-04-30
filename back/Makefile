@@ -11,7 +11,7 @@ build:
 	GOOS=windows GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR)/NetVision_windows_amd64.exe ./cmd/net_vision/main.go
 	GOOS=windows GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR)/find_device_windows_amd64.exe ./cmd/find_device/main.go
 
-	GOOS=linux GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR)/NetVision_linux_amd64.exe ./cmd/net_vision/main.go
-	GOOS=linux GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR)/find_device_linux_amd64.exe ./cmd/find_device/main.go
+	GOOS=linux GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR)/NetVision_linux_amd64 ./cmd/net_vision/main.go
+	GOOS=linux GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR)/find_device_linux_amd64 ./cmd/find_device/main.go
 
 	cp config_example.yaml $(BUILD_OUTPUT_DIR)/config.yaml

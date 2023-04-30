@@ -54,6 +54,23 @@ ABUSE_IPDB_THRESHOLD_CONFIDENCE_SCORE: 50
 
 
 #---------------------------------
+# Spamhausの設定
+#---------------------------------
+# Spamhausのデータをダウンロードしてきた後に出力するパス
+SPAMHAUS_DATA_OUTPUT_PATH: "./resources/Spamhaus/"
+
+
+#---------------------------------
+# www.blocklist.deの設定
+#---------------------------------
+# www.blocklist.deのデータをダウンロードしてきた後に出力するパス
+BLOCKLIST_DE_DATA_OUTPUT_PATH: "./resources/blocklist-de/"
+
+# www.blocklist.deに登録されているIPアドレスの色
+BLOCKLIST_DE_PACKET_COLOR: "0x00ff00"
+
+
+#---------------------------------
 # ネットワーク周りの設定
 #---------------------------------
 # 可視化するネットワークインターフェース名（デフォルトはWifi）
@@ -98,7 +115,7 @@ MAX_PACKET_SCALE: 5
 MAX_SCALE_PACKET_COUNT: 5
 
 # デフォルトのパケットの色
-DEFAULT_PACKET_COLOR: "0xffff00"
+DEFAULT_PACKET_COLOR: "0x00ff00"
 
 # パケット出現場所に表示するオブジェクトがどの程度の割合で大きくなるか
 FLOW_COUNTER_HEIGHT_RATE: 0.01

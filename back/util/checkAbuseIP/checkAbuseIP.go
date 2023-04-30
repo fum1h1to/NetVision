@@ -134,6 +134,7 @@ func (c *AbuseIPChecker) UpdateBlackList() {
 		c.abuseIPBlackList = abuseIPBlackList
 		c.blackListMap = blackListMap
 		
+		global.SetUseBlocklistDe(true)
 		log.Println("update abuseIPDB blacklist")
 	}
 }
