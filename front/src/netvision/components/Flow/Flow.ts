@@ -81,6 +81,10 @@ export class Flow {
     // 軌道ラインの生成
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(this.orbitPoints);
     this.lineMesh = new THREE.Line(lineGeometry, this.lineMaterial);
+    if (this.packetData.isBlocklistDeContain) {
+      // @ts-ignore
+      (this.lineMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getBLOCKLIST_DE_IP_COLOR());
+    }
     if (this.packetData.abuseIPScore >= globalThis.constantManager.getTHRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE()) {
       // @ts-ignore
       (this.lineMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getABUSEIPDB_IP_COLOR());
