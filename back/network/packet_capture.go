@@ -24,7 +24,6 @@ func CreatePacketCapture(dataOutput chan<- []*PacketData) *PacketCapture {
 }
 
 func (p *PacketCapture) StartCapturing() {
-	log.Println("Capture Start")
 	
 	deviceName, err := GetDefaultTargetDeviceName()
 	if err != nil {
@@ -36,6 +35,8 @@ func (p *PacketCapture) StartCapturing() {
 			log.Panicln(err)
 	}
 	defer handle.Close()
+	
+	log.Println("Capture Start")
 
 	bpfFilter := p.createBpfFilter()
 

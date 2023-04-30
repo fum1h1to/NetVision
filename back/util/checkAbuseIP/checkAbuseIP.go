@@ -11,6 +11,7 @@ import (
 	"errors"
 
 	"NetVision/configs"
+	"NetVision/util/global"
 )
 
 type AbuseIPBlackList struct {
@@ -38,6 +39,8 @@ func CreateAbuseIPChecker() *AbuseIPChecker {
 	if configs.GetAbuseIPDBAPIKey() == "" {
 		
 		log.Println("no use abuseIPDB")
+
+		global.SetUseAbuseIPDB(false)
 		return &AbuseIPChecker{
 			abuseIPBlackList: nil,
 			blackListMap: make(map[string]int),
@@ -52,6 +55,8 @@ func CreateAbuseIPChecker() *AbuseIPChecker {
 			content, err := getBlackListFromAbuseIPDB()
 			if err != nil {
 				log.Println("Error get blacklist from AbuseIPDB. So no use AbuseIPDB:", err)
+				
+				global.SetUseAbuseIPDB(false)
 				return &AbuseIPChecker{
 					abuseIPBlackList: nil,
 					blackListMap: make(map[string]int),
@@ -88,7 +93,8 @@ func CreateAbuseIPChecker() *AbuseIPChecker {
 	}
 
 	log.Println("abuseIPDB init success")
-
+	
+	global.SetUseAbuseIPDB(true)
 	return &AbuseIPChecker{
 		abuseIPBlackList: abuseIPBlackList,
 		blackListMap: blackListMap,

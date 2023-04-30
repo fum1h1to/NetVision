@@ -5,6 +5,7 @@ import (
 
 	"NetVision/util/ip2LatLng"
 	"NetVision/util/checkAbuseIP"
+	"NetVision/util/global"
   "github.com/google/gopacket"
 )
 
@@ -37,7 +38,11 @@ func (p *PacketAnalyser) AnalysisPacket(packet gopacket.Packet) (packetData *Pac
 		packetData.From.Lat = lat
 		packetData.From.Lng = lng
 
-		packetData.AbuseIPScore = p.AbuseIPChecker.GetAbuseIPScore(srcip)
+		if global.GetUseAbuseIPDB() {
+			packetData.AbuseIPScore = p.AbuseIPChecker.GetAbuseIPScore(srcip)
+		} else {
+			packetData.AbuseIPScore = 0
+		}
 	}
 
 	if packet.TransportLayer() != nil {
