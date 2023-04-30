@@ -38,7 +38,7 @@ func (p *PacketCapture) StartCapturing() {
 	
 	log.Println("Capture Start")
 
-	bpfFilter := p.createBpfFilter()
+	bpfFilter := p.createBpfFilter(deviceName)
 
 	err = handle.SetBPFFilter(bpfFilter)
 	if err != nil {
@@ -85,7 +85,7 @@ func (p *PacketCapture) StartCapturing() {
 	}
 }
 
-func (p *PacketCapture) createBpfFilter() (bpfFilter string) {
+func (p *PacketCapture) createBpfFilter(targetDeviceName string) (bpfFilter string) {
 	myselfIPFilter := ""
 	if !configs.GetVisibleCaptureMyself() {
 		devices, err := pcap.FindAllDevs()
@@ -94,7 +94,7 @@ func (p *PacketCapture) createBpfFilter() (bpfFilter string) {
     }
 
 		for _, device := range devices {
-			if device.Name == configs.GetTargetDeviceName() {
+			if device.Name == targetDeviceName {
 				if len(device.Addresses) == 0 {
 					break
 				}
