@@ -104,6 +104,9 @@ PROMISCUOUS_MODE: true
 # 地球の半径
 EARTH_RADIUS: 8
 
+# 地球を回転させるかどうか
+EARTH_ROTATE: false
+
 # パケットの目的地
 PACKET_GOAL: 
   lat: 35

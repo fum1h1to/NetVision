@@ -1,6 +1,9 @@
+import { NetVisionCore } from "../core/NetVisionCore"
 import { LatLng } from "../models/LatLng"
 
 export class ConstantManager {
+  private netVisionCore: NetVisionCore | null;
+
   // 何時間ごとにアプリケーションをリロードするか
   private APPLICATION_RELOAD_INTERVAL: number
 
@@ -9,6 +12,9 @@ export class ConstantManager {
 
   // 地球の半径
   private EARTH_RADIUS: number
+
+  // 地球を回転させるかどうか
+  private EARTH_ROTATE: boolean
 
   // WebSocketの再接続間隔（ms）
   private WEBSOCKET_RECONNECT_INTERVAL: number
@@ -65,6 +71,7 @@ export class ConstantManager {
     this.APPLICATION_RELOAD_INTERVAL = 24;
     this.MAX_FPS = 60;
     this.EARTH_RADIUS = 8;
+    this.EARTH_ROTATE = false;
     this.WEBSOCKET_RECONNECT_INTERVAL = 10000;
     this.GET_PACKET_LIMIT = 300;
     this.PACKET_GOAL = { lat: 35, lng: 140 };
@@ -91,6 +98,7 @@ export class ConstantManager {
       this.APPLICATION_RELOAD_INTERVAL = data.APPLICATION_RELOAD_INTERVAL
       this.MAX_FPS = data.MAX_FPS
       this.EARTH_RADIUS = data.EARTH_RADIUS
+      this.EARTH_ROTATE = data.EARTH_ROTATE
       this.WEBSOCKET_RECONNECT_INTERVAL = data.WEBSOCKET_RECONNECT_INTERVAL
       this.GET_PACKET_LIMIT = data.GET_PACKET_LIMIT
       this.PACKET_GOAL = data.PACKET_GOAL
@@ -114,6 +122,10 @@ export class ConstantManager {
       console.log(error);
     });
   }
+
+  public setNetVisionCore(netVisionCore: NetVisionCore) {
+    this.netVisionCore = netVisionCore;
+  }
   
   public getAPPLICATION_RELOAD_INTERVAL(): number {
     return this.APPLICATION_RELOAD_INTERVAL;
@@ -125,6 +137,15 @@ export class ConstantManager {
 
   public getEARTH_RADIUS(): number {
     return this.EARTH_RADIUS;
+  }
+
+  public getEARTH_ROTATE(): boolean {
+    return this.EARTH_ROTATE;
+  }
+
+  public setEARTH_ROTATE(EARTH_ROTATE: boolean) {
+    this.netVisionCore?.setEarthRotate(EARTH_ROTATE);
+    this.EARTH_ROTATE = EARTH_ROTATE;
   }
 
   public getWEBSOCKET_RECONNECT_INTERVAL(): number {

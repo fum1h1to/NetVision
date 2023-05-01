@@ -23,7 +23,6 @@ export class Information {
   }
 
   private toColorString(color: number): string {
-    console.log(color);
     return `#${color.toString(16).padStart(6, '0')}`;
   }
 
