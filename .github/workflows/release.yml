@@ -2,7 +2,7 @@ name: release
 
 on:
   push:
-    branches:
+    tags:
       - 'v*'
 
 jobs:
@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: set version
-      run: echo "VERSION=${GITHUB_REF#refs/heads/}" >> $GITHUB_ENV
+      run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
     
     - uses: actions/checkout@v3
     - name: run build.sh
