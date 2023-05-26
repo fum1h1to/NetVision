@@ -36,7 +36,7 @@ export class NetVisionCore {
 
     // カメラの設定
     this.camera = new THREE.PerspectiveCamera(75, this.width / this.height);
-    const cameraPos = latlng2Cartesian(globalThis.constantManager.getEARTH_RADIUS() + 7, globalThis.constantManager.getPACKET_GOAL().lat, globalThis.constantManager.getPACKET_GOAL().lng);
+    const cameraPos = latlng2Cartesian(globalThis.constantManager.getEARTH_RADIUS() + 7, globalThis.constantManager.getPACKET_GOAL().lat - 7, globalThis.constantManager.getPACKET_GOAL().lng + 1);
     this.camera.position.set(cameraPos.x, cameraPos.y, cameraPos.z);
 
     // カメラコントロールの設定
@@ -44,6 +44,8 @@ export class NetVisionCore {
     this.controls.maxPolarAngle = 180 * Math.PI / 180;
     this.controls.minDistance = globalThis.constantManager.getEARTH_RADIUS() + 0.1;
     this.controls.maxDistance = 30;
+    this.controls.autoRotate = globalThis.constantManager.getEARTH_ROTATE();
+    this.controls.autoRotateSpeed = -1;
 
     // ライトの設定
     this.light = new THREE.AmbientLight(0xffffff, 0.8);
@@ -88,5 +90,9 @@ export class NetVisionCore {
     
     this.controls.update();
     this.renderer.render(this.scene, this.camera);
+  }
+
+  public setEarthRotate(rotate: boolean) {
+    this.controls.autoRotate = rotate;
   }
 }

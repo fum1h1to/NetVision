@@ -43,6 +43,7 @@ type Config struct {
 	PromiscuousMode bool `yaml:"PROMISCUOUS_MODE"`
 
 	EarthRadius int `yaml:"EARTH_RADIUS"`
+	EarthRotate bool `yaml:"EARTH_ROTATE"`
 	PacketGoal struct {
 		Lat float64 `yaml:"lat"`
 		Lng float64 `yaml:"lng"`
@@ -161,6 +162,9 @@ func GetPromiscuousMode() bool {
 
 func GetEarthRadius() int {
 	return data.EarthRadius
+}
+func GetEarthRotate() bool {
+	return data.EarthRotate
 }
 func GetPacketGoalLat() float64 {
 	return data.PacketGoal.Lat

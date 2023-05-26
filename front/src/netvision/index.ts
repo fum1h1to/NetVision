@@ -21,6 +21,7 @@ export class NetVision {
     await globalThis.constantManager.init();
 
     this.netVisionCore = new NetVisionCore(globalThis.OUTPUT_ELEMENT);
+    globalThis.constantManager.setNetVisionCore(this.netVisionCore);
     this.netVisionCore.init();
     this.netVisionCore.start();
     
