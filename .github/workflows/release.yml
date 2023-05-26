@@ -24,8 +24,8 @@ jobs:
     - name: Zip output
       run: |
         cd build
-        zip release-windows windows/*
-        zip release-linux linux/*
+        zip -r release-windows windows/*
+        zip -r release-linux linux/*
     
     - name: create tag
       run: |
