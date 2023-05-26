@@ -8,14 +8,24 @@ on:
         required: true
 
 jobs:
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      is_release: ${{ steps.check_branch.outputs.is_release }}
+    steps:
+    - name: Check if branch is release
+      id: check_branch
+      run: echo "::set-output name=is_release::$(if [[ '${{ github.ref }}' == 'refs/heads/release' ]]; then echo 'true'; else echo 'false'; fi)"
+
   build:
-    if: ${GITHUB_REF#refs/heads/} == 'release'
+    needs: setup
+    if: needs.setup.outputs.is_release == 'true'
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
     - name: run build.sh
       run: ./build.sh
-      
+
     - name: Zip output
       run: |
         cd build
@@ -54,5 +64,3 @@ jobs:
         asset_path: ./build/release-linux.zip
         asset_name: NetVision-${{ github.event.inputs.version }}-linux.zip
         asset_content_type: application/zip
-      
-        
