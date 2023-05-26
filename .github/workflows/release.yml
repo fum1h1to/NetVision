@@ -1,0 +1,58 @@
+name: release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: set version
+      run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
+    
+    - uses: actions/checkout@v3
+    - name: run build.sh
+      run: ./build.sh
+      
+    - name: Zip output
+      run: |
+        cd build
+        zip release-windows windows/*
+        zip release-linux linux/*
+    
+    - name: Create release
+      id: create_release
+      uses: actions/create-release@v1.0.0
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        draft: false
+        prerelease: false
+    
+    - name: Upload Release Asset - windows
+      id: upload-release-asset-win
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/release-windows.zip
+        asset_name: NetVision-${{ env.VERSION }}-win.zip
+        asset_content_type: application/zip
+        
+    - name: Upload Release Asset - linux
+      id: upload-release-asset-linux
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./build/release-linux.zip
+        asset_name: NetVision-${{ env.VERSION }}-linux.zip
+        asset_content_type: application/zip
+      
+        
