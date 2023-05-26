@@ -1,16 +1,18 @@
 name: release
 
 on:
-  create:
-    tags:
-      - 'v*'
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'version'
+        required: true 
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: set version
-      run: echo "VERSION=${GITHUB_REF##*/}" >> $GITHUB_ENV
+    - name: check branche
+      if: ${GITHUB_REF#refs/heads/} == 'release'
     
     - uses: actions/checkout@v3
     - name: run build.sh
@@ -41,7 +43,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./build/release-windows.zip
-        asset_name: NetVision-${{ env.VERSION }}-win.zip
+        asset_name: NetVision-${{ github.event.inputs.version }}-win.zip
         asset_content_type: application/zip
         
     - name: Upload Release Asset - linux
@@ -52,7 +54,7 @@ jobs:
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
         asset_path: ./build/release-linux.zip
-        asset_name: NetVision-${{ env.VERSION }}-linux.zip
+        asset_name: NetVision-${{ github.event.inputs.version }}-linux.zip
         asset_content_type: application/zip
       
         
