@@ -11,17 +11,15 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-    - name: Extract branch name
-      shell: bash
-      run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
-    
     - name: check branch
       run: exit 1
-      if: ${{ env.BRANCH_NAME }} != 'release'
+      if: github.ref != 'refs/heads/release'
     
     - uses: actions/checkout@v3
     - name: run build.sh
-      run: ./build.sh
+      run: |
+        chmod +x ./build.sh
+        ./build.sh
 
     - name: Zip output
       run: |
@@ -29,14 +27,19 @@ jobs:
         zip release-windows windows/*
         zip release-linux linux/*
     
+    - name: create tag
+      run: |
+        git tag ${{ github.event.inputs.version }}
+        git push origin ${{ github.event.inputs.version }}
+    
     - name: Create release
       id: create_release
       uses: actions/create-release@v1.0.0
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
+        tag_name: ${{ github.event.inputs.version }}
+        release_name: Release ${{ github.event.inputs.version }}
         draft: false
         prerelease: false
     
