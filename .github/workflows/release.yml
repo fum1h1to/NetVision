@@ -8,25 +8,11 @@ on:
         required: true
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    outputs:
-      is_release: ${{ steps.check_branch.outputs.is_release }}
-    steps:
-    - name: Check if branch is release
-      id: check_branch
-      run: |
-        if [[ '${{ github.ref }}' == 'refs/heads/release' ]]; then 
-          echo 'is_release=true' >> $GITHUB_ENV
-        else 
-          echo 'is_release=false' >> $GITHUB_ENV
-        fi
-
   build:
-    needs: setup
-    if: needs.setup.outputs.is_release == 'true'
+    if: ${GITHUB_REF#refs/heads/} == 'release'
     runs-on: ubuntu-latest
     steps:
+    
     - uses: actions/checkout@v3
     - name: run build.sh
       run: ./build.sh
