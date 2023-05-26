@@ -5,15 +5,13 @@ on:
     inputs:
       version:
         description: 'version'
-        required: true 
+        required: true
 
 jobs:
   build:
+    if: ${{ GITHUB_REF#refs/heads/ }} == 'release'
     runs-on: ubuntu-latest
     steps:
-    - name: check branche
-      if: ${GITHUB_REF#refs/heads/} == 'release'
-    
     - uses: actions/checkout@v3
     - name: run build.sh
       run: ./build.sh
