@@ -15,7 +15,12 @@ jobs:
     steps:
     - name: Check if branch is release
       id: check_branch
-      run: echo "::set-output name=is_release::$(if [[ '${{ github.ref }}' == 'refs/heads/release' ]]; then echo 'true'; else echo 'false'; fi)"
+      run: |
+        if [[ '${{ github.ref }}' == 'refs/heads/release' ]]; then 
+          echo 'is_release=true' >> $GITHUB_ENV
+        else 
+          echo 'is_release=false' >> $GITHUB_ENV
+        fi
 
   build:
     needs: setup
