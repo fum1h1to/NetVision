@@ -45,7 +45,7 @@ export class NetVisionCore {
     this.controls.minDistance = globalThis.constantManager.getEARTH_RADIUS() + 0.1;
     this.controls.maxDistance = 30;
     this.controls.autoRotate = globalThis.constantManager.getEARTH_ROTATE();
-    this.controls.autoRotateSpeed = 1;
+    this.controls.autoRotateSpeed = -1;
 
     // ライトの設定
     this.light = new THREE.AmbientLight(0xffffff, 0.8);
