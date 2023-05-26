@@ -9,9 +9,15 @@ on:
 
 jobs:
   build:
-    if: ${GITHUB_REF#refs/heads/} == 'release'
     runs-on: ubuntu-latest
     steps:
+    - name: Extract branch name
+      shell: bash
+      run: echo "BRANCH_NAME=$(echo ${GITHUB_REF#refs/heads/})" >> $GITHUB_ENV
+    
+    - name: check branch
+      run: exit 1
+      if: ${{ env.BRANCH_NAME }} != 'release'
     
     - uses: actions/checkout@v3
     - name: run build.sh
