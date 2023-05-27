@@ -32,7 +32,7 @@ jobs:
     
     - name: create tag
       run: |
-        git tag ${{ github.event.inputs.version }} &{{ env.BRANCH_NAME }}
+        git tag ${{ github.event.inputs.version }} ${{ env.BRANCH_NAME }}
         git push origin ${{ github.event.inputs.version }}
     
     - name: Create release
