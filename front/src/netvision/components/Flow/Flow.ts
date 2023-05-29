@@ -6,10 +6,14 @@ import { easeOutQuart } from '../../util/easing';
 import { latlng2Cartesian } from '../../util/coordinates';
 
 export class Flow {
+  private LINE_SEGMENT_NUM: number = 20;
+
   private id: number;
   private radius: number;
   private start: LatLng;
+  private startCartesian: THREE.Vector3;
   private goal: LatLng;
+  private goalCartesian: THREE.Vector3;
   private height: number;
   private addTo: THREE.Scene;
   private packetGeometry: THREE.BoxGeometry;
@@ -19,11 +23,15 @@ export class Flow {
   private lineMesh: THREE.Line;
   private aliveTime: number;
   private currentTime: number;
-  private orbitPoints: THREE.Vector3[];
   private isCreated: boolean = false;
   private packetData: PacketData;
   private onCreate: (packet: Flow) => void;
   private onGoal: (packet: Flow) => void;
+
+  private o_startVec: THREE.Vector3;
+  private o_endVec: THREE.Vector3;
+  private o_axis: THREE.Vector3;
+  private o_angle: number;
 
   constructor(
     id: number,
@@ -54,48 +62,47 @@ export class Flow {
     this.packetData = packetData;
     this.onCreate = onCreate;
     this.onGoal = onGoal;
+
+    this.startCartesian = latlng2Cartesian(this.radius, this.start.lat, this.start.lng);
+    this.goalCartesian = latlng2Cartesian(this.radius, this.goal.lat, this.goal.lng);
+    this.o_startVec = this.startCartesian.clone();
+    this.o_endVec = this.goalCartesian.clone();
+    this.o_axis = this.o_startVec.clone().cross(this.o_endVec);
+    this.o_axis.normalize();
+    this.o_angle = this.o_startVec.angleTo(this.o_endVec);
   }
 
-  public createOrbitPoints(startPoint: THREE.Vector3, endPoint: THREE.Vector3, height: number, segmentNum: number) {
+  public createOrbitPoints(segmentNum: number) {
     const points: THREE.Vector3[] = [];
-
-    const startVec = startPoint.clone();
-    const endVec = endPoint.clone();
-    
-    const axis = startVec.clone().cross(endVec);
-    axis.normalize();
-
-    const angle = startVec.angleTo(endVec);
-
-    const twoSegmentNum = segmentNum / 2;
+    const devideSegmentNum = segmentNum / 2;
 
     for (let i = 0; i < segmentNum - 1; i++) {
 
       const q = new THREE.Quaternion();
-      q.setFromAxisAngle(axis, angle / segmentNum * i);
+      q.setFromAxisAngle(this.o_axis, this.o_angle / segmentNum * i);
 
       let heightValue: number;
-      if (i < twoSegmentNum) {
-        let v = remap(i, 0, twoSegmentNum, 0, 1);
-        heightValue = height * easeOutQuart(v);
+      if (i < devideSegmentNum) {
+        let v = remap(i, 0, devideSegmentNum, 0, 1);
+        heightValue = this.height * easeOutQuart(v);
       } else {
-        let v = remap(i, twoSegmentNum, segmentNum, 1, 0);
-        heightValue = height * easeOutQuart(v);
+        let v = remap(i, devideSegmentNum, segmentNum, 1, 0);
+        heightValue = this.height * easeOutQuart(v);
       }
 
-      const vertex = startVec.clone().multiplyScalar(1 + (heightValue / 50)).applyQuaternion(q);
+      const vertex = this.o_startVec.clone().multiplyScalar(1 + (heightValue / 50)).applyQuaternion(q);
       points.push(vertex);
     }
 
-    points.push(endPoint);
+    points.push(this.goalCartesian);
     return points;
   }
 
   public create() {
 
-    const startCartesian = latlng2Cartesian(this.radius, this.start.lat, this.start.lng);
-    const goalCartesian = latlng2Cartesian(this.radius, this.goal.lat, this.goal.lng);
-    this.orbitPoints = this.createOrbitPoints(startCartesian, goalCartesian, this.height, this.aliveTime);
+    this.startCartesian = latlng2Cartesian(this.radius, this.start.lat, this.start.lng);
+    this.goalCartesian = latlng2Cartesian(this.radius, this.goal.lat, this.goal.lng);
+    const orbitPointsLine = this.createOrbitPoints(this.LINE_SEGMENT_NUM);
 
     // パケットの生成
     this.packetMesh = new THREE.Mesh(this.packetGeometry, this.packetMaterial);
@@ -116,7 +123,7 @@ export class Flow {
     }
 
     // 軌道ラインの生成
-    const lineGeometry = new THREE.BufferGeometry().setFromPoints(this.orbitPoints);
+    const lineGeometry = new THREE.BufferGeometry().setFromPoints(orbitPointsLine);
     this.lineMesh = new THREE.Line(lineGeometry, this.lineMaterial);
     if (this.packetData.isSpamhausContain) {
       // @ts-ignore
@@ -138,10 +145,30 @@ export class Flow {
     this.onCreate(this);
   }
 
+  public getNowPoint(currentTime: number): THREE.Vector3 {
+    const segmentNum = this.aliveTime;
+    const devideSegmentNum = segmentNum / 2;
+
+    const q = new THREE.Quaternion();
+    q.setFromAxisAngle(this.o_axis, this.o_angle / segmentNum * currentTime);
+
+    let heightValue: number;
+    if (currentTime < devideSegmentNum) {
+      let v = remap(currentTime, 0, devideSegmentNum, 0, 1);
+      heightValue = this.height * easeOutQuart(v);
+    } else {
+      let v = remap(currentTime, devideSegmentNum, segmentNum, 1, 0);
+      heightValue = this.height * easeOutQuart(v);
+    }
+
+    const vertex = this.o_startVec.clone().multiplyScalar(1 + (heightValue / 50)).applyQuaternion(q);
+    return vertex;
+  }
+
   public update() {
     if (this.isCreated) {
       if (this.currentTime < this.aliveTime) {
-        const point = this.orbitPoints[this.currentTime];
+        const point = this.getNowPoint(this.currentTime);
         this.packetMesh.position.set(point.x, point.y, point.z);
   
         this.currentTime += 1;
@@ -176,5 +203,9 @@ export class Flow {
 
   public getIp(): string {
     return this.packetData.srcip;
+  }
+
+  public getId(): number {
+    return this.id;
   }
 }
