@@ -3,7 +3,6 @@ import { PacketData } from '../../models/PacketData';
 import { FlowPacketWebSocket } from '../../websocket/FlowPacketWebSocket';
 import { Earth } from '../Earth/Earth';
 import { Flow } from '../Flow/Flow';
-import FlowWorker from "../Flow/worker/FlowWorker?worker";
 import { FlowCounterManager } from '../FlowCounterManager/FlowCounterManager';
 
 export class NetworkPlanet {
@@ -12,7 +11,6 @@ export class NetworkPlanet {
   private animateFlowPacketList: Flow[] = [];
   private flowPacketNum: number = 0;
   private earth: Earth;
-  private flowWorker: Worker;
   private flowCounterManager: FlowCounterManager;
 
   private flowpacketGeometry: THREE.BoxGeometry;
@@ -27,7 +25,6 @@ export class NetworkPlanet {
     scene.add(this.earth.mesh);
 
     this.flowPacketWS = new FlowPacketWebSocket();
-    this.flowWorker = new FlowWorker();
 
     // パケットのgeometryとmaterialの生成
     this.flowpacketGeometry = new THREE.BoxGeometry(.05, .05, .05);
@@ -59,7 +56,6 @@ export class NetworkPlanet {
     const flow = new Flow(
       now, // id
       this.parentScene, // scene
-      this.flowWorker, // flowWorker
       this.flowpacketGeometry, // packetGeometry
       this.flowpacketMaterial, // packetMaterial
       this.flowlineMaterial, // lineMaterial

@@ -1,8 +1,9 @@
 import * as THREE from 'three';
 import { remap } from '../../util/remap';
-import { FlowWorkerInput } from '../../models/FlowWorkerModel';
 import { LatLng } from '../../models/LatLng';
 import { PacketData } from '../../models/PacketData';
+import { easeOutQuart } from '../../util/easing';
+import { latlng2Cartesian } from '../../util/coordinates';
 
 export class Flow {
   private id: number;
@@ -11,7 +12,6 @@ export class Flow {
   private goal: LatLng;
   private height: number;
   private addTo: THREE.Scene;
-  private flowWorker: Worker;
   private packetGeometry: THREE.BoxGeometry;
   private packetMaterial: THREE.MeshStandardMaterial;
   private packetMesh: THREE.Mesh;
@@ -28,7 +28,6 @@ export class Flow {
   constructor(
     id: number,
     scene: THREE.Scene,
-    flowWorker: Worker,
     packetGeometry: THREE.BoxGeometry,
     packetMaterial: THREE.MeshStandardMaterial,
     lineMaterial: THREE.LineBasicMaterial,
@@ -43,7 +42,6 @@ export class Flow {
   ) {
     this.id = id;
     this.addTo = scene;
-    this.flowWorker = flowWorker;
     this.packetGeometry = packetGeometry;
     this.packetMaterial = packetMaterial.clone();
     this.lineMaterial = lineMaterial.clone();
@@ -58,11 +56,46 @@ export class Flow {
     this.onGoal = onGoal;
   }
 
-  private onMessage = (event: MessageEvent) => {
-    const { id, orbitPoints } = event.data;
-    if (id !== this.id) return;
+  public createOrbitPoints(startPoint: THREE.Vector3, endPoint: THREE.Vector3, height: number, segmentNum: number) {
+    const points: THREE.Vector3[] = [];
 
-    this.orbitPoints = orbitPoints;
+    const startVec = startPoint.clone();
+    const endVec = endPoint.clone();
+    
+    const axis = startVec.clone().cross(endVec);
+    axis.normalize();
+
+    const angle = startVec.angleTo(endVec);
+
+    const twoSegmentNum = segmentNum / 2;
+
+    for (let i = 0; i < segmentNum - 1; i++) {
+
+      const q = new THREE.Quaternion();
+      q.setFromAxisAngle(axis, angle / segmentNum * i);
+
+      let heightValue: number;
+      if (i < twoSegmentNum) {
+        let v = remap(i, 0, twoSegmentNum, 0, 1);
+        heightValue = height * easeOutQuart(v);
+      } else {
+        let v = remap(i, twoSegmentNum, segmentNum, 1, 0);
+        heightValue = height * easeOutQuart(v);
+      }
+
+      const vertex = startVec.clone().multiplyScalar(1 + (heightValue / 50)).applyQuaternion(q);
+      points.push(vertex);
+    }
+
+    points.push(endPoint);
+    return points;
+  }
+
+  public create() {
+
+    const startCartesian = latlng2Cartesian(this.radius, this.start.lat, this.start.lng);
+    const goalCartesian = latlng2Cartesian(this.radius, this.goal.lat, this.goal.lng);
+    this.orbitPoints = this.createOrbitPoints(startCartesian, goalCartesian, this.height, this.aliveTime);
 
     // パケットの生成
     this.packetMesh = new THREE.Mesh(this.packetGeometry, this.packetMaterial);
@@ -105,20 +138,6 @@ export class Flow {
     this.onCreate(this);
   }
 
-  public create() {
-    this.flowWorker.addEventListener('message', this.onMessage);
-    
-    const workerPostMesage: FlowWorkerInput = {
-      id: this.id,
-      radius: this.radius,
-      start: this.start,
-      goal: this.goal,
-      height: this.height,
-      aliveTime: this.aliveTime,
-    }
-    this.flowWorker.postMessage(workerPostMesage);
-  }
-
   public update() {
     if (this.isCreated) {
       if (this.currentTime < this.aliveTime) {
@@ -136,7 +155,6 @@ export class Flow {
   }
 
   private remove() {
-    this.flowWorker.removeEventListener('message', this.onMessage);
 
     this.addTo.remove(this.packetMesh);
     this.addTo.remove(this.lineMesh);
