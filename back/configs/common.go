@@ -13,6 +13,7 @@ type Config struct {
 	ServerIP string `yaml:"SERVER_IP"`
 	ServerPort int `yaml:"SERVER_PORT"`
 	ServerClientContentPath string `yaml:"SERVER_CLIENT_CONTENT_PATH"`
+	ServerAutoOpenBrowser bool `yaml:"SERVER_AUTO_OPEN_BROWSER"`
 
 	ApplicationReloadInterval int `yaml:"APPLICATION_RELOAD_INTERVAL"`
 	MaxFps int `yaml:"MAX_FPS"`
@@ -85,6 +86,9 @@ func GetServerPort() int {
 }
 func GetServerClientContentPath() string {
 	return data.ServerClientContentPath
+}
+func GetServerAutoOpenBrowser() bool {
+	return data.ServerAutoOpenBrowser
 }
 
 func GetApplicationReloadInterval() int {
