@@ -7,6 +7,8 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/skratchdot/open-golang/open"
+
 	"NetVision/configs"
 	"NetVision/web/domain"
 	"NetVision/web/handlers"
@@ -33,6 +35,15 @@ func (w *WebServer) StartServer() {
 
 	port := configs.GetServerPort()
 	log.Printf("Listening on port %d", port)
+
+	if configs.GetServerAutoOpenBrowser() {
+		err := open.Run(fmt.Sprintf("http://%s:%d/", configs.GetServerIP(), port))
+		if err != nil {
+			log.Printf("Error: failed to open browser.\nplease open browser manually -> http://%s:%d/", configs.GetServerIP(), port)
+		} else {
+			log.Println("browser start")
+		}
+	}
 
 	if err := http.ListenAndServe(fmt.Sprintf(":%v", port), nil); err != nil {
 		log.Panicln("Server Error:", err)
