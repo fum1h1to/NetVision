@@ -1,54 +1,24 @@
-# 230220_NetVision
+# NetVision
 ネットワークの通信をリアルタイムに可視化するシステム
 
-制作中
+あなたのパソコンのネットワーク通信を3Dグラフィックス上で直感的に可視化します。
 
-現状こんな感じ
 ![image-01](https://github.com/fum1h1to/230220_NetVision/blob/readme-images/md_images/image-01.png?raw=true)
 
-# buildや開発環境構築
-## build
-1. コマンドの実行
-  ```
-  ./build.sh
-  ```
+# 使用方法
+1. NetVisionのダウンロード
 
-※VSCodeで開発している場合、Ctrl + Shift + Bでも実行可能
+[こちら](https://github.com/fum1h1to/NetVision/releases)からNetVisionをインストール
 
-## 開発環境の構築
-1. コンテナの作成
-  ```
-  docker-compose up -d
-  ```
+2. Npcapまたはlibpcapのインストール
 
-### クライアント側
-2. コンテナ内のシェルへ
-  ```
-  docker exec -it dev-net-vision-node bash
-  ```
+Npcapかlibpcapをインストールしてください。
 
-3. 開発環境の起動
-  ```
-  yarn dev --host
-  ```
+3. NetVisionの起動
 
-### バックエンド側
-2. ```back/dev```を作成し開発に必要なファイルなどを追加
-  - config.yaml（config_example.yamlからコピーなどして用意）
-  - dev/html/data/配下にserver.jsonというファイルを作成
+1でダウンロードしたzipファイルを解凍し、`NetVision_windows_amd64.exe` or `NetVision_linux_amd64`をコマンドラインまたは、ダブルクリックで起動する。
 
-  必要であれば
-  
-  - AbuseIPDBのAPI Key
+ブラウザが起動し、可視化画面を見ることができます。
 
-3. コンテナ内のシェルへ
-  ```
-  docker exec -it dev-net-vision-go bash
-  ```
-
-4. 開発環境の起動
-  ```
-  air -c .air.toml
-  ```
-
-※ホットリロード効くと思いますが、効かなかった場合、airをいちいち止めて起動する必要があります。
+# 開発について
+buildや開発環境の構築については`doc`フォルダを見てください。
