@@ -78,7 +78,6 @@ func (w *WebServer) createServerData() {
 
 type clientSettingData struct {
 	ApplicationReloadInterval  int `json:"APPLICATION_RELOAD_INTERVAL"`
-	MaxFps                     int `json:"MAX_FPS"`
 	EarthRadius                int `json:"EARTH_RADIUS"`
 	EarthRotate                bool `json:"EARTH_ROTATE"`
 	WebsocketReconnectInterval int `json:"WEBSOCKET_RECONNECT_INTERVAL"`
@@ -107,7 +106,6 @@ func (w *WebServer) createClientSettingData() {
 	clientSettingData := new(clientSettingData)
 
 	clientSettingData.ApplicationReloadInterval = configs.GetApplicationReloadInterval()
-	clientSettingData.MaxFps = configs.GetMaxFps()
 	clientSettingData.EarthRadius = configs.GetEarthRadius()
 	clientSettingData.EarthRotate = configs.GetEarthRotate()
 	clientSettingData.WebsocketReconnectInterval = configs.GetWebsocketReconnectInterval()

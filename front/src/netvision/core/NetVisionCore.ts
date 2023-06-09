@@ -15,7 +15,6 @@ export class NetVisionCore {
   private light: THREE.Light;
   private networkPlanet: NetworkPlanet;
 
-  private timeStep: number = 0;
   private lastFrameTime: number = 0;
   private currentFrameTime: number = 0;
 
@@ -55,8 +54,6 @@ export class NetVisionCore {
 
     // クリックマネージャーの設定
     globalThis.clickManager = new ClickManager(outputEle, this.camera);
-
-    this.timeStep = 1000 / globalThis.constantManager.getMAX_FPS();
   }
 
   public init() {
@@ -88,7 +85,6 @@ export class NetVisionCore {
     requestAnimationFrame(() => this.update());
 
     this.currentFrameTime = performance.now();
-    if (this.currentFrameTime - this.lastFrameTime < this.timeStep) return;
     globalThis.constantManager.setDelta((this.currentFrameTime - this.lastFrameTime) / 1000);
     this.lastFrameTime = this.currentFrameTime;
     
