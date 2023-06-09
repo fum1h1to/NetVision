@@ -66,6 +66,8 @@ export class ConstantManager {
   // AbuseIPからのパケットのConfidenceScoreがどの程度だったら色を変えるか（0~100）
   private THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE: number
 
+  private delta: number;
+
   constructor() {
     // デフォルト値の設定
     this.APPLICATION_RELOAD_INTERVAL = 24;
@@ -89,6 +91,8 @@ export class ConstantManager {
     this.SPAMHAUS_IP_COLOR = 0x800080;
     this.BLOCKLIST_DE_IP_COLOR = 0xffff00;
     this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE = 50;
+
+    this.delta = 0;
   }
 
   public async init() {
@@ -218,6 +222,14 @@ export class ConstantManager {
 
   public getTHRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE(): number {
     return this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE;
+  }
+
+
+  public setDelta(delta: number) {
+    this.delta = delta;
+  }
+  public getDelta(): number {
+    return this.delta;
   }
 
 }

@@ -58,7 +58,7 @@ export class Flow {
     this.radius = radius;
     this.height = height;
     this.currentTime = 0;
-    this.aliveTime = duration * globalThis.constantManager.getMAX_FPS();
+    this.aliveTime = duration
     this.packetData = packetData;
     this.onCreate = onCreate;
     this.onGoal = onGoal;
@@ -146,18 +146,19 @@ export class Flow {
   }
 
   public getNowPoint(currentTime: number): THREE.Vector3 {
-    const segmentNum = this.aliveTime;
+    const segmentNum = 100;
     const devideSegmentNum = segmentNum / 2;
+    const currentTimeSeg = remap(currentTime, 0, this.aliveTime, 0, segmentNum);
 
     const q = new THREE.Quaternion();
-    q.setFromAxisAngle(this.o_axis, this.o_angle / segmentNum * currentTime);
+    q.setFromAxisAngle(this.o_axis, this.o_angle / segmentNum * currentTimeSeg);
 
     let heightValue: number;
-    if (currentTime < devideSegmentNum) {
-      let v = remap(currentTime, 0, devideSegmentNum, 0, 1);
+    if (currentTimeSeg < devideSegmentNum) {
+      let v = remap(currentTimeSeg, 0, devideSegmentNum, 0, 1);
       heightValue = this.height * easeOutQuart(v);
     } else {
-      let v = remap(currentTime, devideSegmentNum, segmentNum, 1, 0);
+      let v = remap(currentTimeSeg, devideSegmentNum, segmentNum, 1, 0);
       heightValue = this.height * easeOutQuart(v);
     }
 
@@ -171,7 +172,7 @@ export class Flow {
         const point = this.getNowPoint(this.currentTime);
         this.packetMesh.position.set(point.x, point.y, point.z);
   
-        this.currentTime += 1;
+        this.currentTime += globalThis.constantManager.getDelta();
         
       } else {
         this.remove();

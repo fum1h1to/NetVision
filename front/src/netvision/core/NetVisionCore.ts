@@ -14,10 +14,12 @@ export class NetVisionCore {
   private renderer: THREE.WebGLRenderer;
   private light: THREE.Light;
   private networkPlanet: NetworkPlanet;
-  private frame: number;
+
+  private timeStep: number = 0;
+  private lastFrameTime: number = 0;
+  private currentFrameTime: number = 0;
 
   constructor(outputEle: HTMLElement) {
-    this.frame = 0;
     this.rootEle = outputEle;
 
     // 幅と高さの取得
@@ -53,6 +55,8 @@ export class NetVisionCore {
 
     // クリックマネージャーの設定
     globalThis.clickManager = new ClickManager(outputEle, this.camera);
+
+    this.timeStep = 1000 / globalThis.constantManager.getMAX_FPS();
   }
 
   public init() {
@@ -75,14 +79,18 @@ export class NetVisionCore {
   }
 
   public start() {
+    this.lastFrameTime = performance.now();
+
     this.update();
   }
 
   private update() {
     requestAnimationFrame(() => this.update());
-    this.frame += 1;
-    this.frame %= 60;
-    if (this.frame % Math.floor(60 / globalThis.constantManager.getMAX_FPS()) === 1) return;
+
+    this.currentFrameTime = performance.now();
+    if (this.currentFrameTime - this.lastFrameTime < this.timeStep) return;
+    globalThis.constantManager.setDelta((this.currentFrameTime - this.lastFrameTime) / 1000);
+    this.lastFrameTime = this.currentFrameTime;
     
     clickManager.checkClickedObject();
 
