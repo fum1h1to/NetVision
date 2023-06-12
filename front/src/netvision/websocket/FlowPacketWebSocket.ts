@@ -5,8 +5,11 @@ export class FlowPacketWebSocket {
   private isNewFlowPacketList: boolean = false;
   private flowPacketList: PacketData[] = [];
   private websocketURL: string = "";
+  private timeout: number;
 
   constructor() {
+    this.timeout = -1;
+
     fetch("/data/server.json")
     .then((response) => response.json()).then((data) => {
       this.websocketURL = `ws://${data.server.host}:${data.server.port}/${data.server.websocket_path}`
@@ -20,6 +23,7 @@ export class FlowPacketWebSocket {
 
     ws.onopen = () => {
       this.isOpen = true;
+      if (this.timeout !== -1) clearTimeout(this.timeout);
     }
 
     ws.onmessage = (event) => {
@@ -29,7 +33,7 @@ export class FlowPacketWebSocket {
     
     ws.onclose = () => {
       this.isOpen = false;
-      setTimeout(() => {
+      this.timeout = setTimeout(() => {
         this.connect();
       }, globalThis.constantManager.getWEBSOCKET_RECONNECT_INTERVAL());
     }

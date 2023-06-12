@@ -4,6 +4,7 @@ import { LatLng } from '../../models/LatLng';
 import { PacketData } from '../../models/PacketData';
 import { easeOutQuart } from '../../util/easing';
 import { latlng2Cartesian } from '../../util/coordinates';
+import { FlowModelManager } from './FlowModelManager';
 
 export class Flow {
   private LINE_SEGMENT_NUM: number = 20;
@@ -15,11 +16,9 @@ export class Flow {
   private goal: LatLng;
   private goalCartesian: THREE.Vector3;
   private height: number;
-  private addTo: THREE.Scene;
-  private packetGeometry: THREE.BoxGeometry;
-  private packetMaterial: THREE.MeshStandardMaterial;
-  private packetMesh: THREE.Mesh;
-  private lineMaterial: THREE.LineBasicMaterial;
+  private parentScene: THREE.Scene;
+  private flowModelManager: FlowModelManager;
+  private packetGroup: THREE.Group;
   private lineMesh: THREE.Line;
   private aliveTime: number;
   private currentTime: number;
@@ -36,12 +35,10 @@ export class Flow {
   constructor(
     id: number,
     scene: THREE.Scene,
-    packetGeometry: THREE.BoxGeometry,
-    packetMaterial: THREE.MeshStandardMaterial,
-    lineMaterial: THREE.LineBasicMaterial,
-    start: LatLng, 
+    flowModelManager: FlowModelManager,
+    start: LatLng,
     goal: LatLng,
-    radius: number, 
+    radius: number,
     height: number,
     duration: number,
     packetData: PacketData,
@@ -49,10 +46,8 @@ export class Flow {
     onGoal: (packet: Flow) => void,
   ) {
     this.id = id;
-    this.addTo = scene;
-    this.packetGeometry = packetGeometry;
-    this.packetMaterial = packetMaterial.clone();
-    this.lineMaterial = lineMaterial.clone();
+    this.parentScene = scene;
+    this.flowModelManager = flowModelManager;
     this.start = start;
     this.goal = goal;
     this.radius = radius;
@@ -98,33 +93,67 @@ export class Flow {
     return points;
   }
 
+  private createDefaultPacket(type: "normal" | "abuseipdb" | "spamhaus" | "blocklistde") {
+    // 3dモデルが設定されていないときのパケットの生成
+    const packetMesh = new THREE.Mesh(this.flowModelManager.getPacketGeometry(), this.flowModelManager.getPacketMaterial());
+    const packetCount = this.packetData.packetCount < globalThis.constantManager.getMAX_SCALE_PACKET_COUNT() ? this.packetData.packetCount : globalThis.constantManager.getMAX_SCALE_PACKET_COUNT();
+    const scaleSize = remap(packetCount, 1, globalThis.constantManager.getMAX_SCALE_PACKET_COUNT(), 1, globalThis.constantManager.getMAX_PACKET_SCALE());
+    packetMesh.scale.set(scaleSize, scaleSize, scaleSize);
+
+    if (type === "abuseipdb") {
+      // @ts-ignore
+      (packetMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getABUSEIPDB_IP_COLOR());
+    } else if (type === "spamhaus") {
+      // @ts-ignore
+      (packetMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getSPAMHAUS_IP_COLOR());
+    } else if (type === "blocklistde") {
+      // @ts-ignore
+      (packetMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getBLOCKLIST_DE_IP_COLOR());
+    }
+
+    return packetMesh;
+
+  }
+
   public create() {
 
     this.startCartesian = latlng2Cartesian(this.radius, this.start.lat, this.start.lng);
     this.goalCartesian = latlng2Cartesian(this.radius, this.goal.lat, this.goal.lng);
     const orbitPointsLine = this.createOrbitPoints(this.LINE_SEGMENT_NUM);
 
-    // パケットの生成
-    this.packetMesh = new THREE.Mesh(this.packetGeometry, this.packetMaterial);
-    const packetCount = this.packetData.packetCount < globalThis.constantManager.getMAX_SCALE_PACKET_COUNT() ? this.packetData.packetCount : globalThis.constantManager.getMAX_SCALE_PACKET_COUNT();
-    const scaleSize = remap(packetCount, 1, globalThis.constantManager.getMAX_SCALE_PACKET_COUNT(), 1, globalThis.constantManager.getMAX_PACKET_SCALE());
-    this.packetMesh.scale.set(scaleSize, scaleSize, scaleSize);
-    if (this.packetData.isSpamhausContain) {
-      // @ts-ignore
-      (this.packetMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getSPAMHAUS_IP_COLOR());
-    }
-    if (this.packetData.isBlocklistDeContain) {
-      // @ts-ignore
-      (this.packetMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getBLOCKLIST_DE_IP_COLOR());
-    }
     if (this.packetData.abuseIPScore >= globalThis.constantManager.getTHRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE()) {
-      // @ts-ignore
-      (this.packetMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getABUSEIPDB_IP_COLOR());
+      const model = this.flowModelManager.getAbuseIPDBPacketGroup()
+      if (model) {
+        this.packetGroup = model;
+      } else {
+        this.packetGroup = new THREE.Group().add(this.createDefaultPacket("abuseipdb"));
+      }
+    } else if (this.packetData.isBlocklistDeContain) {
+      const model = this.flowModelManager.getBlocklistDePacketGroup()
+      if (model) {
+        this.packetGroup = model;
+      } else {
+        this.packetGroup = new THREE.Group().add(this.createDefaultPacket("blocklistde"));
+      }
+    } else if (this.packetData.isSpamhausContain) {
+      const model = this.flowModelManager.getSpamhausPacketGroup()
+      if (model) {
+        this.packetGroup = model;
+      } else {
+        this.packetGroup = new THREE.Group().add(this.createDefaultPacket("spamhaus"));
+      }
+    } else {
+      const model = this.flowModelManager.getNormalPacketGroup()
+      if (model) {
+        this.packetGroup = model;
+      } else {
+        this.packetGroup = new THREE.Group().add(this.createDefaultPacket("normal"));
+      }
     }
 
     // 軌道ラインの生成
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(orbitPointsLine);
-    this.lineMesh = new THREE.Line(lineGeometry, this.lineMaterial);
+    this.lineMesh = new THREE.Line(lineGeometry, this.flowModelManager.getLineMaterial());
     if (this.packetData.isSpamhausContain) {
       // @ts-ignore
       (this.lineMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getSPAMHAUS_IP_COLOR());
@@ -137,9 +166,9 @@ export class Flow {
       // @ts-ignore
       (this.lineMesh.material as THREE.Material).color.setHex(globalThis.constantManager.getABUSEIPDB_IP_COLOR());
     }
-    
-    this.addTo.add(this.packetMesh);
-    this.addTo.add(this.lineMesh);
+
+    this.parentScene.add(this.packetGroup);
+    this.parentScene.add(this.lineMesh);
 
     this.isCreated = true;
     this.onCreate(this);
@@ -170,10 +199,10 @@ export class Flow {
     if (this.isCreated) {
       if (this.currentTime < this.aliveTime) {
         const point = this.getNowPoint(this.currentTime);
-        this.packetMesh.position.set(point.x, point.y, point.z);
-  
+        this.packetGroup.position.set(point.x, point.y, point.z);
+
         this.currentTime += globalThis.constantManager.getDelta();
-        
+
       } else {
         this.remove();
 
@@ -184,11 +213,8 @@ export class Flow {
 
   private remove() {
 
-    this.addTo.remove(this.packetMesh);
-    this.addTo.remove(this.lineMesh);
-
-    (this.packetMesh.material as THREE.Material).dispose();
-    this.packetMesh.geometry.dispose();
+    this.packetGroup.removeFromParent();
+    this.parentScene.remove(this.lineMesh);
 
     (this.lineMesh.material as THREE.Material).dispose();
     this.lineMesh.geometry.dispose();
@@ -198,7 +224,7 @@ export class Flow {
     return this.start;
   }
 
-  public getPacketCount(): number { 
+  public getPacketCount(): number {
     return this.packetData.packetCount
   }
 
