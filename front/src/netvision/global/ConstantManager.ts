@@ -7,9 +7,6 @@ export class ConstantManager {
   // 何時間ごとにアプリケーションをリロードするか
   private APPLICATION_RELOAD_INTERVAL: number
 
-  // FPSの最大値
-  private MAX_FPS: number
-
   // 地球の半径
   private EARTH_RADIUS: number
 
@@ -66,10 +63,11 @@ export class ConstantManager {
   // AbuseIPからのパケットのConfidenceScoreがどの程度だったら色を変えるか（0~100）
   private THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE: number
 
+  private delta: number;
+
   constructor() {
     // デフォルト値の設定
     this.APPLICATION_RELOAD_INTERVAL = 24;
-    this.MAX_FPS = 60;
     this.EARTH_RADIUS = 8;
     this.EARTH_ROTATE = false;
     this.WEBSOCKET_RECONNECT_INTERVAL = 10000;
@@ -89,6 +87,8 @@ export class ConstantManager {
     this.SPAMHAUS_IP_COLOR = 0x800080;
     this.BLOCKLIST_DE_IP_COLOR = 0xffff00;
     this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE = 50;
+
+    this.delta = 0;
   }
 
   public async init() {
@@ -96,7 +96,6 @@ export class ConstantManager {
     await fetch("/data/setting.json")
     .then((response) => response.json()).then((data) => {
       this.APPLICATION_RELOAD_INTERVAL = data.APPLICATION_RELOAD_INTERVAL
-      this.MAX_FPS = data.MAX_FPS
       this.EARTH_RADIUS = data.EARTH_RADIUS
       this.EARTH_ROTATE = data.EARTH_ROTATE
       this.WEBSOCKET_RECONNECT_INTERVAL = data.WEBSOCKET_RECONNECT_INTERVAL
@@ -129,10 +128,6 @@ export class ConstantManager {
   
   public getAPPLICATION_RELOAD_INTERVAL(): number {
     return this.APPLICATION_RELOAD_INTERVAL;
-  }
-
-  public getMAX_FPS(): number {
-    return this.MAX_FPS;
   }
 
   public getEARTH_RADIUS(): number {
@@ -218,6 +213,14 @@ export class ConstantManager {
 
   public getTHRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE(): number {
     return this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE;
+  }
+
+
+  public setDelta(delta: number) {
+    this.delta = delta;
+  }
+  public getDelta(): number {
+    return this.delta;
   }
 
 }

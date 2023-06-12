@@ -16,7 +16,6 @@ type Config struct {
 	ServerAutoOpenBrowser bool `yaml:"SERVER_AUTO_OPEN_BROWSER"`
 
 	ApplicationReloadInterval int `yaml:"APPLICATION_RELOAD_INTERVAL"`
-	MaxFps int `yaml:"MAX_FPS"`
 	WebsocketReconnectInterval int `yaml:"WEBSOCKET_RECONNECT_INTERVAL"`
 
 	GeoipDbOutputPath string `yaml:"GEOIP_DB_OUTPUT_PATH"`
@@ -93,9 +92,6 @@ func GetServerAutoOpenBrowser() bool {
 
 func GetApplicationReloadInterval() int {
 	return data.ApplicationReloadInterval
-}
-func GetMaxFps() int {
-	return data.MaxFps
 }
 func GetWebsocketReconnectInterval() int {
 	return data.WebsocketReconnectInterval

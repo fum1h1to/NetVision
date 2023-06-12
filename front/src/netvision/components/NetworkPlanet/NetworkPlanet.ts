@@ -45,9 +45,9 @@ export class NetworkPlanet {
       globalThis.constantManager.getEARTH_RADIUS()
     );
     
-    // setInterval(() => {
-    //   console.log(this.flowPacketList);
-    // }, 1000);
+    setInterval(() => {
+      console.log(`FPS: ${(1000 / globalThis.constantManager.getDelta()) / 1000}`);
+    }, 1000);
   }
 
   private createFlow(packetData: PacketData) {
