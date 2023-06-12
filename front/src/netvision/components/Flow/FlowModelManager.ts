@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 export class FlowModelManager {
   private d_flowpacketGeometry: THREE.BoxGeometry;
@@ -7,7 +7,7 @@ export class FlowModelManager {
   private d_flowlineMaterial: THREE.LineBasicMaterial;
 
   private loader: GLTFLoader;
-  private normalFlowModel: THREE.group;
+  private normalFlowModel: any;
 
   constructor() {
     this.loader = new GLTFLoader();
@@ -51,7 +51,7 @@ export class FlowModelManager {
     return this.d_flowlineMaterial.clone();
   }
 
-  public getNormalPacketGroup(): THREE.group {
+  public getNormalPacketGroup(): THREE.Group | null {
     const clone = this.normalFlowModel.scene.clone();
     if (clone) {
       // clone.traverse((node: THREE.Object3D) => {
@@ -65,15 +65,15 @@ export class FlowModelManager {
     }
   }
 
-  public getAbuseIPDBPacketGroup(): THREE.group {
+  public getAbuseIPDBPacketGroup(): THREE.Group | null {
     return null;
   }
 
-  public getBlocklistDePacketGroup(): THREE.group {
+  public getBlocklistDePacketGroup(): THREE.Group | null {
     return null;
   }
 
-  public getSpamhausPacketGroup(): THREE.group {
+  public getSpamhausPacketGroup(): THREE.Group | null {
     return null;
   }
 
