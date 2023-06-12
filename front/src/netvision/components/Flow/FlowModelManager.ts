@@ -7,7 +7,10 @@ export class FlowModelManager {
   private d_flowlineMaterial: THREE.LineBasicMaterial;
 
   private loader: GLTFLoader;
-  private normalFlowModel: any;
+  private normalPacketModel: any;
+  private abuseIPDBPacketModel: any;
+  private spamhausPacketModel: any;
+  private blocklistDePacketModel: any;
 
   constructor() {
     this.loader = new GLTFLoader();
@@ -33,10 +36,56 @@ export class FlowModelManager {
 
   private async loadModel() {
     await this.loadNormalModel();
+    await this.loadAbuseIPDBModel();
+    await this.loadSpamhausModel();
+    await this.loadBlocklistDeModel();
   }
 
   private async loadNormalModel() {
-    this.normalFlowModel = await this.loader.loadAsync('/model3d/apple.glb');
+    if (globalThis.constantManager.getDEFAULT_PACKET_MODEL_FILE_NAME() === "") {
+      return;
+    }
+    this.normalPacketModel = await this.loader.loadAsync(`/models/${globalThis.constantManager.getDEFAULT_PACKET_MODEL_FILE_NAME()}`)
+    .catch(() => { 
+      console.log("normal model load error");
+      return null; 
+    });
+  }
+
+  private async loadAbuseIPDBModel() {
+    if (globalThis.constantManager.getABUSEIPDB_IP_MODEL_FILE_NAME() === "") {
+      return;
+    }
+
+    this.abuseIPDBPacketModel = await this.loader.loadAsync(`/models/${globalThis.constantManager.getABUSEIPDB_IP_MODEL_FILE_NAME()}`)
+    .catch(() => {
+      console.log("abuseIPDB model load error");
+      return null;
+    });
+  }
+
+  private async loadSpamhausModel() {
+    if (globalThis.constantManager.getSPAMHAUS_IP_MODEL_FILE_NAME() === "") {
+      return;
+    }
+
+    this.spamhausPacketModel = await this.loader.loadAsync(`/models/${globalThis.constantManager.getSPAMHAUS_IP_MODEL_FILE_NAME()}`)
+    .catch(() => {
+      console.log("spamhaus model load error");
+      return null;
+    });
+  }
+
+  private async loadBlocklistDeModel() {
+    if (globalThis.constantManager.getBLOCKLIST_DE_IP_MODEL_FILE_NAME() === "") {
+      return;
+    }
+
+    this.blocklistDePacketModel = await this.loader.loadAsync(`/models/${globalThis.constantManager.getBLOCKLIST_DE_IP_MODEL_FILE_NAME()}`)
+    .catch(() => {
+      console.log("blocklist_de model load error");
+      return null;
+    });
   }
 
   public getPacketGeometry(): THREE.BoxGeometry {
@@ -52,7 +101,11 @@ export class FlowModelManager {
   }
 
   public getNormalPacketGroup(): THREE.Group | null {
-    const clone = this.normalFlowModel.scene.clone();
+    if (!this.normalPacketModel) {
+      return null;
+    }
+
+    const clone = this.normalPacketModel.scene.clone();
     if (clone) {
       // clone.traverse((node: THREE.Object3D) => {
       //   if ((node as THREE.Mesh).isMesh) {
@@ -66,15 +119,57 @@ export class FlowModelManager {
   }
 
   public getAbuseIPDBPacketGroup(): THREE.Group | null {
-    return null;
-  }
+    if (!this.abuseIPDBPacketModel) {
+      return null;
+    }
 
-  public getBlocklistDePacketGroup(): THREE.Group | null {
-    return null;
+    const clone = this.abuseIPDBPacketModel.scene.clone();
+    if (clone) {
+      // clone.traverse((node: THREE.Object3D) => {
+      //   if ((node as THREE.Mesh).isMesh) {
+      //     (node as THREE.Mesh).material = ((node as THREE.Mesh).material as THREE.Material).clone();
+      //   }
+      // });
+      return clone;
+    } else {
+      return null;
+    }
   }
 
   public getSpamhausPacketGroup(): THREE.Group | null {
-    return null;
+    if (!this.spamhausPacketModel) {
+      return null;
+    }
+
+    const clone = this.spamhausPacketModel.scene.clone();
+    if (clone) {
+      // clone.traverse((node: THREE.Object3D) => {
+      //   if ((node as THREE.Mesh).isMesh) {
+      //     (node as THREE.Mesh).material = ((node as THREE.Mesh).material as THREE.Material).clone();
+      //   }
+      // });
+      return clone;
+    } else {
+      return null;
+    }
+  }
+
+  public getBlocklistDePacketGroup(): THREE.Group | null {
+    if (!this.blocklistDePacketModel) {
+      return null;
+    }
+
+    const clone = this.blocklistDePacketModel.scene.clone();
+    if (clone) {
+      // clone.traverse((node: THREE.Object3D) => {
+      //   if ((node as THREE.Mesh).isMesh) {
+      //     (node as THREE.Mesh).material = ((node as THREE.Mesh).material as THREE.Material).clone();
+      //   }
+      // });
+      return clone;
+    } else {
+      return null;
+    }
   }
 
 }

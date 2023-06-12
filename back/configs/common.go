@@ -25,14 +25,17 @@ type Config struct {
 	AbuseIPDBAPIKey string `yaml:"ABUSE_IPDB_API_KEY"`
 	AbuseIPDBBlacklistPath string `yaml:"ABUSE_IPDB_BLACKLIST_PATH"`
 	AbuseIPDBPacketColor string `yaml:"ABUSE_IPDB_PACKET_COLOR"`
+	AbuseIPDBModelFileName string `yaml:"ABUSE_IPDB_MODEL_FILE_NAME"`
 	AbuseIPDBThresholdConfidenceScore int `yaml:"ABUSE_IPDB_THRESHOLD_CONFIDENCE_SCORE"`
 
 	SpamhausDataOutputPath string `yaml:"SPAMHAUS_DATA_OUTPUT_PATH"`
 	SpamhausPacketColor string `yaml:"SPAMHAUS_PACKET_COLOR"`
+	SpamhausModelFileName string `yaml:"SPAMHAUS_MODEL_FILE_NAME"`
 	SpamhausUpdateDuration int `yaml:"SPAMHAUS_UPDATE_DURATION"`
 
 	BlocklistDeDataOutputPath string `yaml:"BLOCKLIST_DE_DATA_OUTPUT_PATH"`
 	BlocklistDePacketColor string `yaml:"BLOCKLIST_DE_PACKET_COLOR"`
+	BlocklistDeModelFileName string `yaml:"BLOCKLIST_DE_MODEL_FILE_NAME"`
 	BlocklistDeUpdateDuration int `yaml:"BLOCKLIST_DE_UPDATE_DURATION"`
 
 	TargetDeviceName string `yaml:"TARGET_DEVICENAME"`
@@ -54,6 +57,7 @@ type Config struct {
 	MaxPacketScale int `yaml:"MAX_PACKET_SCALE"`
 	MaxScalePacketCount int `yaml:"MAX_SCALE_PACKET_COUNT"`
 	DefaultPacketColor string `yaml:"DEFAULT_PACKET_COLOR"`
+	DefaultPacketModelFileName string `yaml:"DEFAULT_PACKET_MODEL_FILE_NAME"`
 	FlowCounterHeightRate float64 `yaml:"FLOW_COUNTER_HEIGHT_RATE"`
 	FlowCounterMaxHeight int `yaml:"FLOW_COUNTER_MAX_HEIGHT"`
 	DefaultFlowCounterColor string `yaml:"DEFAULT_FLOW_COUNTER_COLOR"`
@@ -117,6 +121,9 @@ func GetAbuseIPDBBlacklistPath() string {
 func GetAbuseIPDBPacketColor() string {
 	return data.AbuseIPDBPacketColor
 }
+func GetAbuseIPDBModelFileName() string {
+	return data.AbuseIPDBModelFileName
+}
 func GetAbuseIPDBThresholdConfidenceScore() int {
 	return data.AbuseIPDBThresholdConfidenceScore
 }
@@ -127,6 +134,9 @@ func GetSpamhausDataOutputPath() string {
 func GetSpamhausPacketColor() string {
 	return data.SpamhausPacketColor
 }
+func GetSpamhausModelFileName() string {
+	return data.SpamhausModelFileName
+}
 func GetSpamhausUpdateDuration() int {
 	return data.SpamhausUpdateDuration
 }
@@ -136,6 +146,9 @@ func GetBlocklistDeDataOutputPath() string {
 }
 func GetBlocklistDePacketColor() string {
 	return data.BlocklistDePacketColor
+}
+func GetBlocklistDeModelFileName() string {
+	return data.BlocklistDeModelFileName
 }
 func GetBlocklistDeUpdateDuration() int {
 	return data.BlocklistDeUpdateDuration
@@ -189,6 +202,9 @@ func GetMaxScalePacketCount() int {
 }
 func GetDefaultPacketColor() string {
 	return data.DefaultPacketColor
+}
+func GetDefaultPacketModelFileName() string {
+	return data.DefaultPacketModelFileName
 }
 func GetFlowCounterHeightRate() float64 {
 	return data.FlowCounterHeightRate

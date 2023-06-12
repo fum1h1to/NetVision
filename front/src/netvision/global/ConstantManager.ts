@@ -36,6 +36,9 @@ export class ConstantManager {
   // デフォルトのパケットの色
   private DEFAULT_PACKET_COLOR: number
 
+  // デフォルトのパケットのmodelファイル名
+  private DEFAULT_PACKET_MODEL_FILE_NAME: string
+
   // パケット出現場所に表示するオブジェクトがどの程度の割合で大きくなるか
   private FLOW_COUNTER_HEIGHT_RATE: number
 
@@ -54,11 +57,20 @@ export class ConstantManager {
   // AbuseIPDBに登録されているIPアドレスの色
   private ABUSEIPDB_IP_COLOR: number
 
+  // AbuseIPDBに登録されているIPアドレスのmodelファイル名
+  private ABUSEIPDB_IP_MODEL_FILE_NAME: string
+
   // SpamhausのDROPリストに登録されているIPアドレスの色
   private SPAMHAUS_IP_COLOR: number
 
+  // SpamhausのDROPリストに登録されているIPアドレスのmodelファイル名
+  private SPAMHAUS_IP_MODEL_FILE_NAME: string
+
   // www.blocklist.deに登録されているIPアドレスの色
   private BLOCKLIST_DE_IP_COLOR: number
+
+  // www.blocklist.deに登録されているIPアドレスのmodelファイル名
+  private BLOCKLIST_DE_IP_MODEL_FILE_NAME: string
 
   // AbuseIPからのパケットのConfidenceScoreがどの程度だったら色を変えるか（0~100）
   private THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE: number
@@ -78,14 +90,18 @@ export class ConstantManager {
     this.MAX_PACKET_SCALE = 5;
     this.MAX_SCALE_PACKET_COUNT = 100;
     this.DEFAULT_PACKET_COLOR = 0x00ff00;
+    this.DEFAULT_PACKET_MODEL_FILE_NAME = "normal.glb";
     this.FLOW_COUNTER_HEIGHT_RATE = .01;
     this.FLOW_COUNTER_MAX_HEIGHT = 5;
     this.DEFAULT_FLOW_COUNTER_COLOR = 0x0000ff;
     this.CLICKED_FLOW_COUNTER_COLOR = 0x00ff00;
     this.IS_ABUSEIPDB_USE = false;
     this.ABUSEIPDB_IP_COLOR = 0xff0000;
+    this.ABUSEIPDB_IP_MODEL_FILE_NAME = "abuseipdb.glb";
     this.SPAMHAUS_IP_COLOR = 0x800080;
+    this.ABUSEIPDB_IP_MODEL_FILE_NAME = "spamhaus.glb";
     this.BLOCKLIST_DE_IP_COLOR = 0xffff00;
+    this.ABUSEIPDB_IP_MODEL_FILE_NAME = "blocklist_de.glb";
     this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE = 50;
 
     this.delta = 0;
@@ -106,14 +122,18 @@ export class ConstantManager {
       this.MAX_PACKET_SCALE = data.MAX_PACKET_SCALE
       this.MAX_SCALE_PACKET_COUNT = data.MAX_SCALE_PACKET_COUNT
       this.DEFAULT_PACKET_COLOR = Number(data.DEFAULT_PACKET_COLOR)
+      this.DEFAULT_PACKET_MODEL_FILE_NAME = data.DEFAULT_PACKET_MODEL_FILE_NAME
       this.FLOW_COUNTER_HEIGHT_RATE = data.FLOW_COUNTER_HEIGHT_RATE
       this.FLOW_COUNTER_MAX_HEIGHT = data.FLOW_COUNTER_MAX_HEIGHT
       this.DEFAULT_FLOW_COUNTER_COLOR = Number(data.DEFAULT_FLOW_COUNTER_COLOR)
       this.CLICKED_FLOW_COUNTER_COLOR = Number(data.CLICKED_FLOW_COUNTER_COLOR)
       this.IS_ABUSEIPDB_USE = data.IS_ABUSEIPDB_USE
       this.ABUSEIPDB_IP_COLOR = Number(data.ABUSEIPDB_IP_COLOR)
+      this.ABUSEIPDB_IP_MODEL_FILE_NAME = data.ABUSEIPDB_IP_MODEL_FILE_NAME
       this.SPAMHAUS_IP_COLOR = Number(data.SPAMHAUS_IP_COLOR)
+      this.SPAMHAUS_IP_MODEL_FILE_NAME = data.SPAMHAUS_IP_MODEL_FILE_NAME
       this.BLOCKLIST_DE_IP_COLOR = Number(data.BLOCKLIST_DE_IP_COLOR)
+      this.BLOCKLIST_DE_IP_MODEL_FILE_NAME = data.BLOCKLIST_DE_IP_MODEL_FILE_NAME
       this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE = data.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE
 
     })
@@ -179,6 +199,10 @@ export class ConstantManager {
     return this.DEFAULT_PACKET_COLOR;
   }
 
+  public getDEFAULT_PACKET_MODEL_FILE_NAME(): string {
+    return this.DEFAULT_PACKET_MODEL_FILE_NAME;
+  }
+
   public getFLOW_COUNTER_HEIGHT_RATE(): number {
     return this.FLOW_COUNTER_HEIGHT_RATE;
   }
@@ -203,12 +227,24 @@ export class ConstantManager {
     return this.ABUSEIPDB_IP_COLOR;
   }
 
+  public getABUSEIPDB_IP_MODEL_FILE_NAME(): string {
+    return this.ABUSEIPDB_IP_MODEL_FILE_NAME;
+  }
+
   public getSPAMHAUS_IP_COLOR(): number {
     return this.SPAMHAUS_IP_COLOR;
   }
 
+  public getSPAMHAUS_IP_MODEL_FILE_NAME(): string {
+    return this.SPAMHAUS_IP_MODEL_FILE_NAME;
+  }
+
   public getBLOCKLIST_DE_IP_COLOR(): number {
     return this.BLOCKLIST_DE_IP_COLOR;
+  }
+
+  public getBLOCKLIST_DE_IP_MODEL_FILE_NAME(): string {
+    return this.BLOCKLIST_DE_IP_MODEL_FILE_NAME;
   }
 
   public getTHRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE(): number {
