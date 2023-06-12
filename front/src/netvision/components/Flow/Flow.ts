@@ -96,9 +96,6 @@ export class Flow {
   private createDefaultPacket(type: "normal" | "abuseipdb" | "spamhaus" | "blocklistde") {
     // 3dモデルが設定されていないときのパケットの生成
     const packetMesh = new THREE.Mesh(this.flowModelManager.getPacketGeometry(), this.flowModelManager.getPacketMaterial());
-    const packetCount = this.packetData.packetCount < globalThis.constantManager.getMAX_SCALE_PACKET_COUNT() ? this.packetData.packetCount : globalThis.constantManager.getMAX_SCALE_PACKET_COUNT();
-    const scaleSize = remap(packetCount, 1, globalThis.constantManager.getMAX_SCALE_PACKET_COUNT(), 1, globalThis.constantManager.getMAX_PACKET_SCALE());
-    packetMesh.scale.set(scaleSize, scaleSize, scaleSize);
 
     if (type === "abuseipdb") {
       // @ts-ignore
@@ -150,6 +147,10 @@ export class Flow {
         this.packetGroup = new THREE.Group().add(this.createDefaultPacket("normal"));
       }
     }
+
+    const packetCount = this.packetData.packetCount < globalThis.constantManager.getMAX_SCALE_PACKET_COUNT() ? this.packetData.packetCount : globalThis.constantManager.getMAX_SCALE_PACKET_COUNT();
+    const scaleSize = remap(packetCount, 1, globalThis.constantManager.getMAX_SCALE_PACKET_COUNT(), 1, globalThis.constantManager.getMAX_PACKET_SCALE());
+    this.packetGroup.scale.set(scaleSize, scaleSize, scaleSize);
 
     // 軌道ラインの生成
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(orbitPointsLine);
