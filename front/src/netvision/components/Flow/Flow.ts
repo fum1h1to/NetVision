@@ -200,6 +200,9 @@ export class Flow {
     if (this.isCreated) {
       if (this.currentTime < this.aliveTime) {
         const point = this.getNowPoint(this.currentTime);
+        
+        const direction = new THREE.Vector3().copy(point).normalize();
+        this.packetGroup.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
         this.packetGroup.position.set(point.x, point.y, point.z);
 
         this.currentTime += globalThis.constantManager.getDelta();
