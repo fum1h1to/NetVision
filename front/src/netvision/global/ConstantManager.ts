@@ -109,7 +109,7 @@ export class ConstantManager {
 
   public async init() {
     // setting.jsonから設定値を取得
-    await fetch("/data/setting.json")
+    await fetch("/data/setting.json", {cache: "no-store"})
     .then((response) => response.json()).then((data) => {
       this.APPLICATION_RELOAD_INTERVAL = data.APPLICATION_RELOAD_INTERVAL
       this.EARTH_RADIUS = data.EARTH_RADIUS

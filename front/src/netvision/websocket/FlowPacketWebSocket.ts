@@ -10,7 +10,7 @@ export class FlowPacketWebSocket {
   constructor() {
     this.timeout = -1;
 
-    fetch("/data/server.json")
+    fetch("/data/server.json", {cache: "no-store"})
     .then((response) => response.json()).then((data) => {
       this.websocketURL = `ws://${data.server.host}:${data.server.port}/${data.server.websocket_path}`
       this.connect();
