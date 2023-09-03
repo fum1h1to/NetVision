@@ -97,7 +97,9 @@ type clientSettingData struct {
 	ClickedFlowCounterColor           string  `json:"CLICKED_FLOW_COUNTER_COLOR"`
 	IsAbuseipdbUse										bool    `json:"IS_ABUSEIPDB_USE"`
 	AbuseipdbIPColor                  string  `json:"ABUSEIPDB_IP_COLOR"`
+	IsSpamhausUse											bool    `json:"IS_SPAMHAUS_USE"`
 	SpamhausIPColor									 	string  `json:"SPAMHAUS_IP_COLOR"`
+	IsBlocklistDeUse									bool    `json:"IS_BLOCKLIST_DE_USE"`
 	BlocklistDeIPColor								string  `json:"BLOCKLIST_DE_IP_COLOR"`
 	ThresholdAbuseipdbConfidenceScore int     `json:"THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE"`
 }
@@ -121,13 +123,23 @@ func (w *WebServer) createClientSettingData() {
 	clientSettingData.FlowCounterMaxHeight = configs.GetFlowCounterMaxHeight()
 	clientSettingData.DefaultFlowCounterColor = configs.GetDefaultFlowCounterColor()
 	clientSettingData.ClickedFlowCounterColor = configs.GetClickedFlowCounterColor()
-	if configs.GetAbuseIPDBAPIKey() == "" {
-		clientSettingData.IsAbuseipdbUse = false
-	} else {
+	if configs.GetUseAbuseIPDB() {
 		clientSettingData.IsAbuseipdbUse = true
+	} else {
+		clientSettingData.IsAbuseipdbUse = false
 	}
 	clientSettingData.AbuseipdbIPColor = configs.GetAbuseIPDBPacketColor()
+	if configs.GetUseSpamhaus() {
+		clientSettingData.IsSpamhausUse = true
+	} else {
+		clientSettingData.IsSpamhausUse = false
+	}
 	clientSettingData.SpamhausIPColor = configs.GetSpamhausPacketColor()
+	if configs.GetUseBlocklistDe() {
+		clientSettingData.IsBlocklistDeUse = true
+	} else {
+		clientSettingData.IsBlocklistDeUse = false
+	}
 	clientSettingData.BlocklistDeIPColor = configs.GetBlocklistDePacketColor()
 	clientSettingData.ThresholdAbuseipdbConfidenceScore = configs.GetAbuseIPDBThresholdConfidenceScore()
 	
