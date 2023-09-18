@@ -21,6 +21,16 @@ type BlocklistDeManager struct {
 
 func CreateBlocklistDeManager() *BlocklistDeManager {
 
+	if !configs.GetUseBlocklistDe() {
+		log.Println("no use blocklist.de")
+
+		global.SetUseBlocklistDe(false)
+		
+		return &BlocklistDeManager{
+			blackListMap: make(map[string]int),
+		}
+	}
+
 	content, err := getBlackListFromBlocklistDe()
 	if err != nil {
 		log.Println("Error get blacklist from blocklist.de. So no use blocklist.de:", err)

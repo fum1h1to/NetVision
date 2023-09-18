@@ -60,11 +60,17 @@ export class ConstantManager {
   // AbuseIPDBに登録されているIPアドレスのmodelファイル名
   private ABUSEIPDB_IP_MODEL_FILE_NAME: string
 
+  // Spamhausを使用するかどうか
+  private IS_SPAMHAUS_USE: boolean
+
   // SpamhausのDROPリストに登録されているIPアドレスの色
   private SPAMHAUS_IP_COLOR: number
 
   // SpamhausのDROPリストに登録されているIPアドレスのmodelファイル名
   private SPAMHAUS_IP_MODEL_FILE_NAME: string
+
+  // www.blocklist.deを使用するかどうか
+  private IS_BLOCKLIST_DE_USE: boolean
 
   // www.blocklist.deに登録されているIPアドレスの色
   private BLOCKLIST_DE_IP_COLOR: number
@@ -98,8 +104,10 @@ export class ConstantManager {
     this.IS_ABUSEIPDB_USE = false;
     this.ABUSEIPDB_IP_COLOR = 0xff0000;
     this.ABUSEIPDB_IP_MODEL_FILE_NAME = "abuseipdb.glb";
+    this.IS_SPAMHAUS_USE = true;
     this.SPAMHAUS_IP_COLOR = 0x800080;
     this.ABUSEIPDB_IP_MODEL_FILE_NAME = "spamhaus.glb";
+    this.IS_BLOCKLIST_DE_USE = true;
     this.BLOCKLIST_DE_IP_COLOR = 0xffff00;
     this.ABUSEIPDB_IP_MODEL_FILE_NAME = "blocklist_de.glb";
     this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE = 50;
@@ -130,8 +138,10 @@ export class ConstantManager {
       this.IS_ABUSEIPDB_USE = data.IS_ABUSEIPDB_USE
       this.ABUSEIPDB_IP_COLOR = Number(data.ABUSEIPDB_IP_COLOR)
       this.ABUSEIPDB_IP_MODEL_FILE_NAME = data.ABUSEIPDB_IP_MODEL_FILE_NAME
+      this.IS_SPAMHAUS_USE = data.IS_SPAMHAUS_USE
       this.SPAMHAUS_IP_COLOR = Number(data.SPAMHAUS_IP_COLOR)
       this.SPAMHAUS_IP_MODEL_FILE_NAME = data.SPAMHAUS_IP_MODEL_FILE_NAME
+      this.IS_BLOCKLIST_DE_USE = data.IS_BLOCKLIST_DE_USE
       this.BLOCKLIST_DE_IP_COLOR = Number(data.BLOCKLIST_DE_IP_COLOR)
       this.BLOCKLIST_DE_IP_MODEL_FILE_NAME = data.BLOCKLIST_DE_IP_MODEL_FILE_NAME
       this.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE = data.THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE
@@ -231,12 +241,20 @@ export class ConstantManager {
     return this.ABUSEIPDB_IP_MODEL_FILE_NAME;
   }
 
+  public getIS_SPAMHAUS_USE(): boolean {
+    return this.IS_SPAMHAUS_USE;
+  }
+
   public getSPAMHAUS_IP_COLOR(): number {
     return this.SPAMHAUS_IP_COLOR;
   }
 
   public getSPAMHAUS_IP_MODEL_FILE_NAME(): string {
     return this.SPAMHAUS_IP_MODEL_FILE_NAME;
+  }
+  
+  public getIS_BLOCKLIST_DE_USE(): boolean {
+    return this.IS_BLOCKLIST_DE_USE;
   }
 
   public getBLOCKLIST_DE_IP_COLOR(): number {

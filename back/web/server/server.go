@@ -99,8 +99,10 @@ type clientSettingData struct {
 	IsAbuseipdbUse										bool    `json:"IS_ABUSEIPDB_USE"`
 	AbuseipdbIPColor                  string  `json:"ABUSEIPDB_IP_COLOR"`
 	AbuseipdbIPModelFileName					string  `json:"ABUSEIPDB_IP_MODEL_FILE_NAME"`
+	IsSpamhausUse											bool    `json:"IS_SPAMHAUS_USE"`
 	SpamhausIPColor									 	string  `json:"SPAMHAUS_IP_COLOR"`
 	SpamhausIPModelFileName						string  `json:"SPAMHAUS_IP_MODEL_FILE_NAME"`
+	IsBlocklistDeUse									bool    `json:"IS_BLOCKLIST_DE_USE"`
 	BlocklistDeIPColor								string  `json:"BLOCKLIST_DE_IP_COLOR"`
 	BlocklistDeIPModelFileName 				string  `json:"BLOCKLIST_DE_IP_MODEL_FILE_NAME"`
 	ThresholdAbuseipdbConfidenceScore int     `json:"THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE"`
@@ -126,15 +128,25 @@ func (w *WebServer) createClientSettingData() {
 	clientSettingData.FlowCounterMaxHeight = configs.GetFlowCounterMaxHeight()
 	clientSettingData.DefaultFlowCounterColor = configs.GetDefaultFlowCounterColor()
 	clientSettingData.ClickedFlowCounterColor = configs.GetClickedFlowCounterColor()
-	if configs.GetAbuseIPDBAPIKey() == "" {
-		clientSettingData.IsAbuseipdbUse = false
-	} else {
+	if configs.GetUseAbuseIPDB() {
 		clientSettingData.IsAbuseipdbUse = true
+	} else {
+		clientSettingData.IsAbuseipdbUse = false
 	}
 	clientSettingData.AbuseipdbIPColor = configs.GetAbuseIPDBPacketColor()
 	clientSettingData.AbuseipdbIPModelFileName = configs.GetAbuseIPDBModelFileName()
+	if configs.GetUseSpamhaus() {
+		clientSettingData.IsSpamhausUse = true
+	} else {
+		clientSettingData.IsSpamhausUse = false
+	}
 	clientSettingData.SpamhausIPColor = configs.GetSpamhausPacketColor()
 	clientSettingData.SpamhausIPModelFileName = configs.GetSpamhausModelFileName()
+	if configs.GetUseBlocklistDe() {
+		clientSettingData.IsBlocklistDeUse = true
+	} else {
+		clientSettingData.IsBlocklistDeUse = false
+	}
 	clientSettingData.BlocklistDeIPColor = configs.GetBlocklistDePacketColor()
 	clientSettingData.BlocklistDeIPModelFileName = configs.GetBlocklistDeModelFileName()
 	clientSettingData.ThresholdAbuseipdbConfidenceScore = configs.GetAbuseIPDBThresholdConfidenceScore()

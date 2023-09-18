@@ -36,6 +36,16 @@ type AbuseIPChecker struct {
 
 func CreateAbuseIPChecker() *AbuseIPChecker {
 
+	if !configs.GetUseAbuseIPDB() {
+		log.Println("no use abuseIPDB")
+		global.SetUseAbuseIPDB(false)
+		
+		return &AbuseIPChecker{
+			abuseIPBlackList: nil,
+			blackListMap: make(map[string]int),
+		}
+	}
+
 	if configs.GetAbuseIPDBAPIKey() == "" {
 		
 		log.Println("no use abuseIPDB")

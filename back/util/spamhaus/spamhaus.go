@@ -23,6 +23,16 @@ type SpamhausManager struct {
 
 func CreateSpamhausManager() *SpamhausManager {
 
+	if !configs.GetUseSpamhaus() {
+		log.Println("no use Spamhaus")
+
+		global.SetUseSpamhaus(false)
+		
+		return &SpamhausManager{
+			blackListMap: make([]net.IPNet, 0),
+		}
+	}
+
 	content, err := getBlackListFromSpamhaus()
 	if err != nil {
 		log.Println("Error get blacklist from Spamhaus. So no use Spamhaus:", err)
