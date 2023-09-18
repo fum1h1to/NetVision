@@ -15,22 +15,26 @@
           </td>
         </tr>` : ``
         }
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+        ${globalThis.constantManager.getIS_BLOCKLIST_DE_USE() ? 
+        `<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" style="color: ${this.attackColor}">
             -----
           </th>
           <td class="px-6 py-4">
             From Attacked IP
           </td>
-        </tr>
-        <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+        </tr>` : ``
+        }
+        ${globalThis.constantManager.getIS_SPAMHAUS_USE() ? 
+        `<tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
           <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" style="color: ${this.spamColor}">
             -----
           </th>
           <td class="px-6 py-4">
             From Spam IP
           </td>
-        </tr>
+        </tr>` : ``
+        }
         <tr class="bg-white dark:bg-gray-800">
           <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white" style="color: ${this.defualtColor}">
             -----

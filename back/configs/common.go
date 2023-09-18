@@ -21,16 +21,19 @@ type Config struct {
 	GeoipDbOutputPath string `yaml:"GEOIP_DB_OUTPUT_PATH"`
 	GeoipDbPath string `yaml:"GEOIP_DB_PATH"`
 
+	UseAbuseIPDB bool `yaml:"USE_ABUSE_IPDB"`
 	AbuseIPDBUpdateDuration int `yaml:"ABUSE_IPDB_UPDATE_DURATION"`
 	AbuseIPDBAPIKey string `yaml:"ABUSE_IPDB_API_KEY"`
 	AbuseIPDBBlacklistPath string `yaml:"ABUSE_IPDB_BLACKLIST_PATH"`
 	AbuseIPDBPacketColor string `yaml:"ABUSE_IPDB_PACKET_COLOR"`
 	AbuseIPDBThresholdConfidenceScore int `yaml:"ABUSE_IPDB_THRESHOLD_CONFIDENCE_SCORE"`
 
+	UseSpamhaus bool `yaml:"USE_SPAMHAUS"`
 	SpamhausDataOutputPath string `yaml:"SPAMHAUS_DATA_OUTPUT_PATH"`
 	SpamhausPacketColor string `yaml:"SPAMHAUS_PACKET_COLOR"`
 	SpamhausUpdateDuration int `yaml:"SPAMHAUS_UPDATE_DURATION"`
 
+	UseBlocklistDe bool `yaml:"USE_BLOCKLIST_DE"`
 	BlocklistDeDataOutputPath string `yaml:"BLOCKLIST_DE_DATA_OUTPUT_PATH"`
 	BlocklistDePacketColor string `yaml:"BLOCKLIST_DE_PACKET_COLOR"`
 	BlocklistDeUpdateDuration int `yaml:"BLOCKLIST_DE_UPDATE_DURATION"`
@@ -105,6 +108,9 @@ func GetGeoipDbPath() string {
 	return data.GeoipDbPath
 }
 
+func GetUseAbuseIPDB() bool {
+	return data.UseAbuseIPDB
+}
 func GetAbuseIPDBAPIKey() string {
 	return data.AbuseIPDBAPIKey
 }
@@ -121,6 +127,9 @@ func GetAbuseIPDBThresholdConfidenceScore() int {
 	return data.AbuseIPDBThresholdConfidenceScore
 }
 
+func GetUseSpamhaus() bool {
+	return data.UseSpamhaus
+}
 func GetSpamhausDataOutputPath() string {
 	return data.SpamhausDataOutputPath
 }
@@ -131,6 +140,9 @@ func GetSpamhausUpdateDuration() int {
 	return data.SpamhausUpdateDuration
 }
 
+func GetUseBlocklistDe() bool {
+	return data.UseBlocklistDe
+}
 func GetBlocklistDeDataOutputPath() string {
 	return data.BlocklistDeDataOutputPath
 }

@@ -36,6 +36,9 @@ GEOIP_DB_PATH:
 #---------------------------------
 # AbuseIPの設定
 #---------------------------------
+# Abuse IPDBを使用するかどうか
+USE_ABUSE_IPDB: false
+
 # Abuse IPDBのAPI KEY
 ABUSE_IPDB_API_KEY: 
 
@@ -55,6 +58,9 @@ ABUSE_IPDB_THRESHOLD_CONFIDENCE_SCORE: 50
 #---------------------------------
 # Spamhausの設定
 #---------------------------------
+# Spamhausを使用するかどうか
+USE_SPAMHAUS: true
+
 # Spamhausのデータをダウンロードしてきた後に出力するパス
 SPAMHAUS_DATA_OUTPUT_PATH: "./resources/Spamhaus/"
 
@@ -68,6 +74,9 @@ SPAMHAUS_UPDATE_DURATION: 24
 #---------------------------------
 # www.blocklist.deの設定
 #---------------------------------
+# www.blocklist.deを使用するかどうか
+USE_BLOCKLIST_DE: true
+
 # www.blocklist.deのデータをダウンロードしてきた後に出力するパス
 BLOCKLIST_DE_DATA_OUTPUT_PATH: "./resources/blocklist-de/"
 
