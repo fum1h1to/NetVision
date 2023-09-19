@@ -150,7 +150,7 @@ export class Flow {
 
     const packetCount = this.packetData.packetCount < globalThis.constantManager.getMAX_SCALE_PACKET_COUNT() ? this.packetData.packetCount : globalThis.constantManager.getMAX_SCALE_PACKET_COUNT();
     const scaleSize = remap(packetCount, 1, globalThis.constantManager.getMAX_SCALE_PACKET_COUNT(), 1, globalThis.constantManager.getMAX_PACKET_SCALE());
-    this.packetGroup.scale.set(scaleSize, scaleSize, scaleSize);
+    this.packetGroup.scale.multiplyScalar(scaleSize);
 
     // 軌道ラインの生成
     const lineGeometry = new THREE.BufferGeometry().setFromPoints(orbitPointsLine);

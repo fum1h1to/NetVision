@@ -41,6 +41,20 @@ export class FlowModelManager {
     await this.loadBlocklistDeModel();
   }
 
+  private normalizeGLTFModel(model: THREE.Group): THREE.Group {
+    
+    const boundingBox = new THREE.Box3().setFromObject(model);
+
+    const boundingBoxSize = boundingBox.getSize(new THREE.Vector3());
+
+    const maxAxis = Math.max(boundingBoxSize.x, boundingBoxSize.y, boundingBoxSize.z);
+    const scale = .1 / maxAxis;
+
+    model.scale.set(scale, scale, scale);
+
+    return model;
+  }
+
   private async loadNormalModel() {
     if (globalThis.constantManager.getDEFAULT_PACKET_MODEL_FILE_NAME() === "") {
       return;
@@ -50,6 +64,11 @@ export class FlowModelManager {
       console.log("normal model load error");
       return null; 
     });
+
+    if (this.normalPacketModel) {
+
+      this.normalPacketModel.scene = this.normalizeGLTFModel(this.normalPacketModel.scene.clone());
+    }
   }
 
   private async loadAbuseIPDBModel() {
