@@ -201,8 +201,24 @@ export class Flow {
       if (this.currentTime < this.aliveTime) {
         const point = this.getNowPoint(this.currentTime);
         
+        // 地球の垂線方向が上になるようにする
         const direction = new THREE.Vector3().copy(point).normalize();
         this.packetGroup.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), direction);
+
+        // 目的地に進行方向が向くようにする
+        const pointDir = new THREE.Vector3().copy(point).normalize();
+        const endDir = new THREE.Vector3().copy(this.o_endVec).normalize();
+
+        const pointQuaternion = new THREE.Quaternion();
+        pointQuaternion.setFromUnitVectors(pointDir, new THREE.Vector3(0, 1, 0));
+
+        endDir.applyQuaternion(pointQuaternion);
+
+        const angle = Math.atan2(endDir.x, endDir.z);
+
+        this.packetGroup.rotateOnWorldAxis(direction, angle - Math.PI / 2);
+
+        // パケットの位置を更新
         this.packetGroup.position.set(point.x, point.y, point.z);
 
         this.currentTime += globalThis.constantManager.getDelta();
