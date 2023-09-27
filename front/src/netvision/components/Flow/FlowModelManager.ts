@@ -81,6 +81,11 @@ export class FlowModelManager {
       console.log("abuseIPDB model load error");
       return null;
     });
+
+    if (this.abuseIPDBPacketModel) {
+      this.abuseIPDBPacketModel.scene = this.normalizeGLTFModel(this.abuseIPDBPacketModel.scene.clone());
+    }
+
   }
 
   private async loadSpamhausModel() {
@@ -93,6 +98,10 @@ export class FlowModelManager {
       console.log("spamhaus model load error");
       return null;
     });
+
+    if (this.spamhausPacketModel) {
+      this.spamhausPacketModel.scene = this.normalizeGLTFModel(this.spamhausPacketModel.scene.clone());
+    }
   }
 
   private async loadBlocklistDeModel() {
@@ -105,6 +114,10 @@ export class FlowModelManager {
       console.log("blocklist_de model load error");
       return null;
     });
+
+    if (this.blocklistDePacketModel) {
+      this.blocklistDePacketModel.scene = this.normalizeGLTFModel(this.blocklistDePacketModel.scene.clone());
+    }
   }
 
   public getPacketGeometry(): THREE.BoxGeometry {

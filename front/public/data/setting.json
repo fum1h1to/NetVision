@@ -20,7 +20,7 @@
   "CLICKED_FLOW_COUNTER_COLOR": "0x00ff00",
   "IS_ABUSEIPDB_USE": true,
   "ABUSEIPDB_IP_COLOR": "0xff0000",
-  "ABUSEIPDB_IP_MODEL_FILE_NAME": "abuseipdb.glb",
+  "ABUSEIPDB_IP_MODEL_FILE_NAME": "packet-abuse.glb",
   "IS_SPAMHAUS_USE": true,
   "SPAMHAUS_IP_COLOR": "0x800080",
   "SPAMHAUS_IP_MODEL_FILE_NAME": "spamhaus.glb",
