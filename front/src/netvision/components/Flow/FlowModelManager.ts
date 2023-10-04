@@ -66,6 +66,14 @@ export class FlowModelManager {
     });
 
     if (this.normalPacketModel) {
+      this.normalPacketModel.scene.traverse((node: THREE.Object3D) => {
+        if ((node as THREE.Mesh).isMesh) {
+          // @ts-ignore
+          (node as THREE.Mesh).material.emissive.lerp(new THREE.Color(0xFFFFFF), 0.1);
+          // @ts-ignore
+          (node as THREE.Mesh).material.needsUpdate = true;
+        }
+      });
 
       this.normalPacketModel.scene = this.normalizeGLTFModel(this.normalPacketModel.scene.clone());
     }
@@ -83,6 +91,15 @@ export class FlowModelManager {
     });
 
     if (this.abuseIPDBPacketModel) {
+      this.abuseIPDBPacketModel.scene.traverse((node: THREE.Object3D) => {
+        if ((node as THREE.Mesh).isMesh) {
+          // @ts-ignore
+          (node as THREE.Mesh).material.emissive.lerp(new THREE.Color(0xFFFFFF), 0.2);
+          // @ts-ignore
+          (node as THREE.Mesh).material.needsUpdate = true;
+        }
+      });
+
       this.abuseIPDBPacketModel.scene = this.normalizeGLTFModel(this.abuseIPDBPacketModel.scene.clone());
     }
 
@@ -100,6 +117,15 @@ export class FlowModelManager {
     });
 
     if (this.spamhausPacketModel) {
+      this.spamhausPacketModel.scene.traverse((node: THREE.Object3D) => {
+        if ((node as THREE.Mesh).isMesh) {
+          // @ts-ignore
+          (node as THREE.Mesh).material.emissive.lerp(new THREE.Color(0xFFFFFF), 0.2);
+          // @ts-ignore
+          (node as THREE.Mesh).material.needsUpdate = true;
+        }
+      });
+
       this.spamhausPacketModel.scene = this.normalizeGLTFModel(this.spamhausPacketModel.scene.clone());
     }
   }
@@ -116,6 +142,15 @@ export class FlowModelManager {
     });
 
     if (this.blocklistDePacketModel) {
+      this.blocklistDePacketModel.scene.traverse((node: THREE.Object3D) => {
+        if ((node as THREE.Mesh).isMesh) {
+          // @ts-ignore
+          (node as THREE.Mesh).material.emissive.lerp(new THREE.Color(0xFFFFFF), 0.2);
+          // @ts-ignore
+          (node as THREE.Mesh).material.needsUpdate = true;
+        }
+      });
+
       this.blocklistDePacketModel.scene = this.normalizeGLTFModel(this.blocklistDePacketModel.scene.clone());
     }
   }
@@ -138,16 +173,7 @@ export class FlowModelManager {
     }
 
     const clone = this.normalPacketModel.scene.clone();
-    if (clone) {
-      // clone.traverse((node: THREE.Object3D) => {
-      //   if ((node as THREE.Mesh).isMesh) {
-      //     (node as THREE.Mesh).material = ((node as THREE.Mesh).material as THREE.Material).clone();
-      //   }
-      // });
-      return clone;
-    } else {
-      return null;
-    }
+    return clone;
   }
 
   public getAbuseIPDBPacketGroup(): THREE.Group | null {
@@ -156,16 +182,7 @@ export class FlowModelManager {
     }
 
     const clone = this.abuseIPDBPacketModel.scene.clone();
-    if (clone) {
-      // clone.traverse((node: THREE.Object3D) => {
-      //   if ((node as THREE.Mesh).isMesh) {
-      //     (node as THREE.Mesh).material = ((node as THREE.Mesh).material as THREE.Material).clone();
-      //   }
-      // });
-      return clone;
-    } else {
-      return null;
-    }
+    return clone;
   }
 
   public getSpamhausPacketGroup(): THREE.Group | null {
@@ -174,16 +191,7 @@ export class FlowModelManager {
     }
 
     const clone = this.spamhausPacketModel.scene.clone();
-    if (clone) {
-      // clone.traverse((node: THREE.Object3D) => {
-      //   if ((node as THREE.Mesh).isMesh) {
-      //     (node as THREE.Mesh).material = ((node as THREE.Mesh).material as THREE.Material).clone();
-      //   }
-      // });
-      return clone;
-    } else {
-      return null;
-    }
+    return clone;
   }
 
   public getBlocklistDePacketGroup(): THREE.Group | null {
@@ -192,16 +200,7 @@ export class FlowModelManager {
     }
 
     const clone = this.blocklistDePacketModel.scene.clone();
-    if (clone) {
-      // clone.traverse((node: THREE.Object3D) => {
-      //   if ((node as THREE.Mesh).isMesh) {
-      //     (node as THREE.Mesh).material = ((node as THREE.Mesh).material as THREE.Material).clone();
-      //   }
-      // });
-      return clone;
-    } else {
-      return null;
-    }
+    return clone;
   }
 
 }
