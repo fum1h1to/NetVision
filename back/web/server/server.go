@@ -91,16 +91,20 @@ type clientSettingData struct {
 	MaxPacketScale                    int     `json:"MAX_PACKET_SCALE"`
 	MaxScalePacketCount               int     `json:"MAX_SCALE_PACKET_COUNT"`
 	DefaultPacketColor                string  `json:"DEFAULT_PACKET_COLOR"`
+	DefaultPacketModelFileName				string  `json:"DEFAULT_PACKET_MODEL_FILE_NAME"`
 	FlowCounterHeightRate             float64 `json:"FLOW_COUNTER_HEIGHT_RATE"`
 	FlowCounterMaxHeight              int     `json:"FLOW_COUNTER_MAX_HEIGHT"`
 	DefaultFlowCounterColor           string  `json:"DEFAULT_FLOW_COUNTER_COLOR"`
 	ClickedFlowCounterColor           string  `json:"CLICKED_FLOW_COUNTER_COLOR"`
 	IsAbuseipdbUse										bool    `json:"IS_ABUSEIPDB_USE"`
 	AbuseipdbIPColor                  string  `json:"ABUSEIPDB_IP_COLOR"`
+	AbuseipdbIPModelFileName					string  `json:"ABUSEIPDB_IP_MODEL_FILE_NAME"`
 	IsSpamhausUse											bool    `json:"IS_SPAMHAUS_USE"`
 	SpamhausIPColor									 	string  `json:"SPAMHAUS_IP_COLOR"`
+	SpamhausIPModelFileName						string  `json:"SPAMHAUS_IP_MODEL_FILE_NAME"`
 	IsBlocklistDeUse									bool    `json:"IS_BLOCKLIST_DE_USE"`
 	BlocklistDeIPColor								string  `json:"BLOCKLIST_DE_IP_COLOR"`
+	BlocklistDeIPModelFileName 				string  `json:"BLOCKLIST_DE_IP_MODEL_FILE_NAME"`
 	ThresholdAbuseipdbConfidenceScore int     `json:"THRESHOLD_ABUSEIPDB_CONFIDENCE_SCORE"`
 }
 
@@ -119,6 +123,7 @@ func (w *WebServer) createClientSettingData() {
 	clientSettingData.MaxPacketScale = configs.GetMaxPacketScale()
 	clientSettingData.MaxScalePacketCount = configs.GetMaxScalePacketCount()
 	clientSettingData.DefaultPacketColor = configs.GetDefaultPacketColor()
+	clientSettingData.DefaultPacketModelFileName = configs.GetDefaultPacketModelFileName()
 	clientSettingData.FlowCounterHeightRate = configs.GetFlowCounterHeightRate()
 	clientSettingData.FlowCounterMaxHeight = configs.GetFlowCounterMaxHeight()
 	clientSettingData.DefaultFlowCounterColor = configs.GetDefaultFlowCounterColor()
@@ -129,18 +134,21 @@ func (w *WebServer) createClientSettingData() {
 		clientSettingData.IsAbuseipdbUse = false
 	}
 	clientSettingData.AbuseipdbIPColor = configs.GetAbuseIPDBPacketColor()
+	clientSettingData.AbuseipdbIPModelFileName = configs.GetAbuseIPDBModelFileName()
 	if configs.GetUseSpamhaus() {
 		clientSettingData.IsSpamhausUse = true
 	} else {
 		clientSettingData.IsSpamhausUse = false
 	}
 	clientSettingData.SpamhausIPColor = configs.GetSpamhausPacketColor()
+	clientSettingData.SpamhausIPModelFileName = configs.GetSpamhausModelFileName()
 	if configs.GetUseBlocklistDe() {
 		clientSettingData.IsBlocklistDeUse = true
 	} else {
 		clientSettingData.IsBlocklistDeUse = false
 	}
 	clientSettingData.BlocklistDeIPColor = configs.GetBlocklistDePacketColor()
+	clientSettingData.BlocklistDeIPModelFileName = configs.GetBlocklistDeModelFileName()
 	clientSettingData.ThresholdAbuseipdbConfidenceScore = configs.GetAbuseIPDBThresholdConfidenceScore()
 	
 	jsonData, err := json.Marshal(clientSettingData)

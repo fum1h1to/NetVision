@@ -48,8 +48,12 @@ ABUSE_IPDB_UPDATE_DURATION: 24
 # Abuse IPDBのblacklistファイルのパス（json形式）
 ABUSE_IPDB_BLACKLIST_PATH: ./resources/AbuseIPDB/blacklist.json
 
-# AbuseIPDBに登録されているIPアドレスの色
+# AbuseIPDBに登録されているIPアドレスの時の色
 ABUSE_IPDB_PACKET_COLOR: "0xff0000"
+
+# AbuseIPDBに登録されているIPアドレスだった時のパケットのmodelデータのファイル名（存在しない、または、空文字の場合は、デフォルトのモデルが使用される）
+# html/models配下に格納する。ファイル形式は、glb形式, gltf形式のいずれか。
+ABUSE_IPDB_MODEL_FILE_NAME: "packet-abuse.glb"
 
 # AbuseIPからのパケットのConfidenceScoreがどの程度だったら色を変えるか（0~100）
 ABUSE_IPDB_THRESHOLD_CONFIDENCE_SCORE: 50
@@ -64,8 +68,12 @@ USE_SPAMHAUS: true
 # Spamhausのデータをダウンロードしてきた後に出力するパス
 SPAMHAUS_DATA_OUTPUT_PATH: "./resources/Spamhaus/"
 
-# Spamhausの設定に登録されているIPアドレスの色
+# Spamhausに登録されているIPアドレスの時の色
 SPAMHAUS_PACKET_COLOR: "0x800080"
+
+# Spamhausに登録されているIPアドレスだった時のパケットのmodelデータのファイル名。（存在しない、または、空文字の場合は、デフォルトのモデルが使用される）
+# html/models配下に格納する。ファイル形式は、glb形式, gltf形式のいずれか。
+SPAMHAUS_MODEL_FILE_NAME: "packet-spamhaus.glb"
 
 # 何時間おきにSpamhausのDROPリストを更新するか
 SPAMHAUS_UPDATE_DURATION: 24
@@ -82,6 +90,10 @@ BLOCKLIST_DE_DATA_OUTPUT_PATH: "./resources/blocklist-de/"
 
 # www.blocklist.deに登録されているIPアドレスの色
 BLOCKLIST_DE_PACKET_COLOR: "0xffff00"
+
+# www.blocklist.deに登録されているIPアドレスだった時のパケットのmodelデータのファイル名。（存在しない、または、空文字の場合は、デフォルトのモデルが使用される）
+# html/models配下に格納する。ファイル形式は、glb形式, gltf形式のいずれか。
+BLOCKLIST_DE_MODEL_FILE_NAME: "packet-blocklistde.glb"
 
 # 何時間おきにwww.blocklist.deのリストを更新するか
 BLOCKLIST_DE_UPDATE_DURATION: 24
@@ -136,6 +148,10 @@ MAX_SCALE_PACKET_COUNT: 5
 
 # デフォルトのパケットの色
 DEFAULT_PACKET_COLOR: "0x00ff00"
+
+# パケットのmodelデータのファイル名。（存在しない、または、空文字の場合は、デフォルトのモデルが使用される）
+# html/models配下に格納する。ファイル形式は、glb形式, gltf形式のいずれか。
+DEFAULT_PACKET_MODEL_FILE_NAME: "packet-base.glb"
 
 # パケット出現場所に表示するオブジェクトがどの程度の割合で大きくなるか
 FLOW_COUNTER_HEIGHT_RATE: 0.01

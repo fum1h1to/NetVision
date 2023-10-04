@@ -13,6 +13,7 @@ export class NetVisionCore {
   private controls: OrbitControls;
   private renderer: THREE.WebGLRenderer;
   private light: THREE.Light;
+
   private networkPlanet: NetworkPlanet;
 
   private lastFrameTime: number = 0;
@@ -59,7 +60,13 @@ export class NetVisionCore {
   public init() {
     window.addEventListener('resize', () => this.resize());
 
+    setInterval(() => {
+      console.log(`FPS: ${(1000 / globalThis.constantManager.getDelta()) / 1000}`);
+    }, 1000);
+
     this.networkPlanet = new NetworkPlanet(this.scene);
+    this.networkPlanet.init();
+
     // const axesHelper = new THREE.AxesHelper( 10 );
     // this.scene.add( axesHelper );
   }
