@@ -7,3 +7,5 @@ docker create --name netvision-builder fum1h1to/net-vision-builder:build
 docker cp netvision-builder:/build ./
 docker cp netvision-builder:/build/NOTICE.txt ./
 docker rm netvision-builder
+cp ./LICENSE ./build/windows
+cp ./LICENSE ./build/linux
