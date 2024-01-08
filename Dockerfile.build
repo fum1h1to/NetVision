@@ -4,6 +4,7 @@ RUN apt install -y libpcap-dev
 WORKDIR /go/src
 ADD ./back /go/src
 RUN go mod tidy
+RUN go install github.com/Songmu/gocredits/cmd/gocredits@v0.3.0
 RUN make build
 
 FROM node:16.17.1 as front-builder
@@ -15,10 +16,13 @@ RUN yarn build
 
 FROM alpine:3.14.2
 RUN apk add --no-cache ca-certificates
+RUN mkdir -p /tmp/{back,front}
+COPY --from=back-builder /go/src/dist /tmp/back
+COPY --from=front-builder /code/dist /tmp/front
+RUN cat /tmp/back/NOTICE.txt /tmp/front/NOTICE.txt > /tmp/NOTICE.txt
+RUN rm /tmp/back/NOTICE.txt /tmp/front/NOTICE.txt
 RUN mkdir -p /build/windows/html
 RUN mkdir -p /build/linux/html
-WORKDIR /build
-COPY --from=back-builder /go/src/dist/windows /build/windows
-COPY --from=back-builder /go/src/dist/linux /build/linux
-COPY --from=front-builder /code/dist /build/windows/html
-COPY --from=front-builder /code/dist /build/linux/html
+RUN echo /build /build/windows/ /build/linux/ | xargs -n 1 cp /tmp/NOTICE.txt
+RUN cp -r /tmp/back/windows /tmp/back/linux /build/
+RUN echo /build/windows/html/ /build/linux/html/ | xargs -n 1 cp -v -r -T /tmp/front

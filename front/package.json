@@ -4,8 +4,9 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
+    "generate_notice": "yarn licenses generate-disclaimer --production > dist/NOTICE.txt",
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build && yarn generate_notice",
     "preview": "vite preview"
   },
   "devDependencies": {

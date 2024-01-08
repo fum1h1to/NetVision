@@ -21,3 +21,5 @@ build:
 	mkdir -p $(BUILD_OUTPUT_DIR_LINUX)/resources/GeoIP
 	cp config_example.yaml $(BUILD_OUTPUT_DIR_WINDOWS)/config.yaml
 	cp config_example.yaml $(BUILD_OUTPUT_DIR_LINUX)/config.yaml
+
+	gocredits -skip-missing > $(BUILD_OUTPUT_DIR)/NOTICE.txt
