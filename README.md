@@ -3,7 +3,7 @@
 
 あなたのパソコンのネットワーク通信を3Dグラフィックス上で直感的に可視化します。
 
-![image-01](https://github.com/fum1h1to/230220_NetVision/blob/readme-images/md_images/image-01.png?raw=true)
+![image-01](./docs/readme_imgs/img-01.png)
 
 # 使用方法
 1. NetVisionのダウンロード
