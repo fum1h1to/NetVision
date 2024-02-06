@@ -1,26 +1,19 @@
 package main
 
 import (
-	// "fmt"
-	"encoding/json"
+	"log"
 
-	"NetVision/network"
-	"NetVision/web/server"
+	"NetVision/presentation/dependency"
 )
 
 func main() {
-	webserver := server.CreateServer()
-	go webserver.StartServer()
 	
-	packetDataOutputChan := make(chan []*network.PacketData)
-	packetCapture := network.CreatePacketCapture(packetDataOutputChan)
-	go packetCapture.StartCapturing()
-
-	for {
-		select {
-		case packetData := <- packetDataOutputChan:
-			json_data, _ := json.Marshal(packetData)
-			webserver.Hub.BroadcastCh <- json_data
-		}
+	container, err := dependency.InitContainer()
+	if err != nil {
+		log.Printf("Error: %s", err)
 	}
+
+	// webserver := container.Presentation.ServerController
+	// webserver.StartServer()
+
 }

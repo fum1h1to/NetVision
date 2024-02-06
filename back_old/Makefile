@@ -5,14 +5,11 @@ BUILD_OUTPUT_DIR_WINDOWS = $(BUILD_OUTPUT_DIR)/windows
 BUILD_OUTPUT_DIR_LINUX = $(BUILD_OUTPUT_DIR)/linux
 
 develop:
-	wire gen
 	go build -o $(DEV_OUTPUT_DIR)/net_vision ./cmd/net_vision/main.go
 	go build -o $(DEV_OUTPUT_DIR)/find_device ./cmd/find_device/main.go
 
 build:
 	rm -rf $(BUILD_OUTPUT_DIR)
-
-	wire gen
 
 	GOOS=windows GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR_WINDOWS)/NetVision_windows_amd64.exe ./cmd/net_vision/main.go
 	GOOS=windows GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR_WINDOWS)/find_device_windows_amd64.exe ./cmd/find_device/main.go
