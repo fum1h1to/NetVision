@@ -2,13 +2,11 @@ package main
 
 import (
 	"log"
-
-	"NetVision/presentation/dependency"
 )
 
 func main() {
 	
-	container, err := dependency.InitContainer()
+	container, err := InitContainer("./config.yaml")
 	if err != nil {
 		log.Printf("Error: %s", err)
 	}

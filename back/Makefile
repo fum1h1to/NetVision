@@ -5,19 +5,19 @@ BUILD_OUTPUT_DIR_WINDOWS = $(BUILD_OUTPUT_DIR)/windows
 BUILD_OUTPUT_DIR_LINUX = $(BUILD_OUTPUT_DIR)/linux
 
 develop:
-	wire gen
-	go build -o $(DEV_OUTPUT_DIR)/net_vision ./cmd/net_vision/main.go
+	wire gen ./cmd/net_vision/wire.go
+	go build -o $(DEV_OUTPUT_DIR)/net_vision ./cmd/net_vision/main.go ./cmd/net_vision/wire_gen.go
 	go build -o $(DEV_OUTPUT_DIR)/find_device ./cmd/find_device/main.go
 
 build:
 	rm -rf $(BUILD_OUTPUT_DIR)
 
-	wire gen
+	wire gen ./cmd/net_vision/wire.go
 
-	GOOS=windows GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR_WINDOWS)/NetVision_windows_amd64.exe ./cmd/net_vision/main.go
+	GOOS=windows GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR_WINDOWS)/NetVision_windows_amd64.exe ./cmd/net_vision/main.go ./cmd/net_vision/wire_gen.go
 	GOOS=windows GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR_WINDOWS)/find_device_windows_amd64.exe ./cmd/find_device/main.go
 
-	GOOS=linux GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR_LINUX)/NetVision_linux_amd64 ./cmd/net_vision/main.go
+	GOOS=linux GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR_LINUX)/NetVision_linux_amd64 ./cmd/net_vision/main.go ./cmd/net_vision/wire_gen.go
 	GOOS=linux GOARCH=amd64 go build -o $(BUILD_OUTPUT_DIR_LINUX)/find_device_linux_amd64 ./cmd/find_device/main.go
 
 	mkdir -p $(BUILD_OUTPUT_DIR_WINDOWS)/resources/GeoIP
