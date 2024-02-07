@@ -4,6 +4,12 @@ import (
 
 )
 
+type ThreatDBSetting struct {
+	AbuseIP AbuseIPSetting
+	Spamhaus SpamhausSetting
+	BlocklistDe BlocklistDeSetting
+}
+
 type ThreatDBSettingBase struct {
 	UseDB bool
 	DataOutputPath string
@@ -20,6 +26,6 @@ type SpamhausSetting struct {
 	ThreatDBSettingBase
 }
 
-type BlocklistDe struct {
+type BlocklistDeSetting struct {
 	ThreatDBSettingBase
 }

@@ -2,7 +2,7 @@
 # Serverの設定
 #---------------------------------
 # サーバのIPアドレス
-SERVER_IP: localhost
+SERVER_IP: 127.0.0.1
 
 # サーバのポート番号
 SERVER_PORT: 8080
@@ -49,7 +49,10 @@ ABUSE_IPDB_UPDATE_DURATION: 24
 ABUSE_IPDB_BLACKLIST_PATH: ./resources/AbuseIPDB/blacklist.json
 
 # AbuseIPDBに登録されているIPアドレスの時の色
-ABUSE_IPDB_PACKET_COLOR: "0xff0000"
+ABUSE_IPDB_PACKET_COLOR: 
+  R: 255
+  G: 0
+  B: 0
 
 # AbuseIPDBに登録されているIPアドレスだった時のパケットのmodelデータのファイル名（存在しない、または、空文字の場合は、デフォルトのモデルが使用される）
 # html/models配下に格納する。ファイル形式は、glb形式, gltf形式のいずれか。
@@ -69,7 +72,10 @@ USE_SPAMHAUS: true
 SPAMHAUS_DATA_OUTPUT_PATH: "./resources/Spamhaus/"
 
 # Spamhausに登録されているIPアドレスの時の色
-SPAMHAUS_PACKET_COLOR: "0x800080"
+SPAMHAUS_PACKET_COLOR: 
+  R: 128
+  G: 0
+  B: 128
 
 # Spamhausに登録されているIPアドレスだった時のパケットのmodelデータのファイル名。（存在しない、または、空文字の場合は、デフォルトのモデルが使用される）
 # html/models配下に格納する。ファイル形式は、glb形式, gltf形式のいずれか。
@@ -89,7 +95,10 @@ USE_BLOCKLIST_DE: true
 BLOCKLIST_DE_DATA_OUTPUT_PATH: "./resources/blocklist-de/"
 
 # www.blocklist.deに登録されているIPアドレスの色
-BLOCKLIST_DE_PACKET_COLOR: "0xffff00"
+BLOCKLIST_DE_PACKET_COLOR: 
+  R: 255
+  G: 255
+  B: 0
 
 # www.blocklist.deに登録されているIPアドレスだった時のパケットのmodelデータのファイル名。（存在しない、または、空文字の場合は、デフォルトのモデルが使用される）
 # html/models配下に格納する。ファイル形式は、glb形式, gltf形式のいずれか。
@@ -147,7 +156,10 @@ MAX_PACKET_SCALE: 5
 MAX_SCALE_PACKET_COUNT: 5
 
 # デフォルトのパケットの色
-DEFAULT_PACKET_COLOR: "0x00ff00"
+DEFAULT_PACKET_COLOR: 
+  R: 0
+  G: 255
+  B: 0
 
 # パケットのmodelデータのファイル名。（存在しない、または、空文字の場合は、デフォルトのモデルが使用される）
 # html/models配下に格納する。ファイル形式は、glb形式, gltf形式のいずれか。
@@ -160,7 +172,13 @@ FLOW_COUNTER_HEIGHT_RATE: 0.01
 FLOW_COUNTER_MAX_HEIGHT: 5
 
 # パケット出現場所に表示するオブジェクトの色
-DEFAULT_FLOW_COUNTER_COLOR: "0x0000ff"
+DEFAULT_FLOW_COUNTER_COLOR: 
+  R: 0
+  G: 0
+  B: 255
 
 # パケット出現場所に表示するオブジェクトをクリックした時の色
-CLICKED_FLOW_COUNTER_COLOR: "0x00ff00"
+CLICKED_FLOW_COUNTER_COLOR: 
+  R: 0
+  G: 255
+  B: 0

@@ -9,11 +9,7 @@ type AppConfiguration struct {
 	Frontend components.FrontendSetting
 	Geoip components.GeoipSetting
 	Network components.NetworkSetting
-	ThreatDB struct {
-		AbuseIP components.AbuseIPSetting
-		Spamhaus components.SpamhausSetting
-		BlocklistDe components.BlocklistDe
-	}
+	ThreatDB components.ThreatDBSetting
 	Visualization components.VisualizationSetting
 }
 

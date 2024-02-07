@@ -6,4 +6,5 @@ ADD ./go.mod /go/src
 RUN go mod tidy
 RUN go install github.com/cosmtrek/air@v1.29.0
 RUN go install github.com/Songmu/gocredits/cmd/gocredits@v0.3.0
+RUN go install github.com/google/wire/cmd/wire@latest
 CMD ["./docker/dev-startup.sh"]

@@ -6,7 +6,7 @@ import (
 
 func main() {
 	
-	container, err := InitContainer("./config.yaml")
+	_, err := InitContainer("./config.yaml")
 	if err != nil {
 		log.Printf("Error: %s", err)
 	}

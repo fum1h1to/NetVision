@@ -18,12 +18,14 @@ type VisualizationSetting struct {
 	DefaultFlowCounterColor model.Color
 	ClickedFlowCounterColor model.Color
 
-	PacketVisualization struct {
-		Default DefaultPacketVisualizationSetting
-		AbuseIP AbuseIPPacketVisualizationSetting
-		Spamhaus SpamhausPacketVisualizationSetting
-		BlocklistDe BlacklistDePacketVisualizationSetting
-	}
+	PacketVisualization PacketVisualizationSetting
+}
+
+type PacketVisualizationSetting struct {
+	Default DefaultPacketVisualizationSetting
+	AbuseIP AbuseIPPacketVisualizationSetting
+	Spamhaus SpamhausPacketVisualizationSetting
+	BlocklistDe BlacklistDePacketVisualizationSetting
 }
 
 type PacketVisualizationSettingBase struct {
