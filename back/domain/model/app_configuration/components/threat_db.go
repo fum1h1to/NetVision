@@ -19,7 +19,6 @@ type ThreatDBSettingBase struct {
 type AbuseIPSetting struct {
 	ThreatDBSettingBase
 	APIKey string
-	ThresholdConfidenceScore int
 }
 
 type SpamhausSetting struct {

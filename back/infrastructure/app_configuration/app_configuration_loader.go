@@ -157,7 +157,6 @@ func LoadAppConfig(filePath string) *app_configuration_model.AppConfiguration {
 					DBUpdateDuration: appConfigInput.AbuseIPDBUpdateDuration,
 				},
 				APIKey: appConfigInput.AbuseIPDBAPIKey,
-				ThresholdConfidenceScore: appConfigInput.AbuseIPDBThresholdConfidenceScore,
 			},
 			Spamhaus: app_configuration_components.SpamhausSetting{
 				ThreatDBSettingBase: app_configuration_components.ThreatDBSettingBase{
@@ -218,6 +217,7 @@ func LoadAppConfig(filePath string) *app_configuration_model.AppConfiguration {
 						},
 						ModelFileName: appConfigInput.AbuseIPDBModelFileName,
 					},
+					ThresholdConfidenceScore: appConfigInput.AbuseIPDBThresholdConfidenceScore,
 				},
 				Spamhaus: app_configuration_components.SpamhausPacketVisualizationSetting{
 					PacketVisualizationSettingBase: app_configuration_components.PacketVisualizationSettingBase{

@@ -7,8 +7,12 @@
 package main
 
 import (
+	"NetVision/domain/model"
 	app_configuration2 "NetVision/domain/model/app_configuration"
+	"NetVision/domain/service"
 	"NetVision/infrastructure/app_configuration"
+	"NetVision/infrastructure/configuration"
+	"NetVision/infrastructure/factory"
 	"NetVision/presentation/capture"
 	"NetVision/presentation/server"
 	"github.com/google/wire"
@@ -19,7 +23,11 @@ import (
 func InitContainer(filePath string) (*Container, error) {
 	appConfiguration := app_configuration.LoadAppConfig(filePath)
 	captureController := capture.NewCaptureController()
-	serverController := server.NewServerController()
+	serverConfigurationMarshal := configuration.NewServerConfigurationMarshal(appConfiguration)
+	clientConfigurationMarshal := configuration.NewClientConfigurationMarshal(appConfiguration)
+	fileFactory := factory.NewFileFactory()
+	configurationGenerateService := service.NewConfigurationGenerateService(appConfiguration, serverConfigurationMarshal, clientConfigurationMarshal, fileFactory)
+	serverController := server.NewServerController(configurationGenerateService)
 	container := &Container{
 		AppConfig:         appConfiguration,
 		CaptureController: captureController,
@@ -31,7 +39,10 @@ func InitContainer(filePath string) (*Container, error) {
 // wire.go:
 
 // infrastructure
-var infrastructureSet = wire.NewSet(app_configuration.LoadAppConfig)
+var infrastructureSet = wire.NewSet(app_configuration.LoadAppConfig, configuration.NewServerConfigurationMarshal, wire.Bind(new(service.IServerConfigurationMarshal), new(*configuration.ServerConfigurationMarshal)), configuration.NewClientConfigurationMarshal, wire.Bind(new(service.IClientConfigurationMarshal), new(*configuration.ClientConfigurationMarshal)), factory.NewFileFactory, wire.Bind(new(model.IFileFactory), new(*factory.FileFactory)))
+
+// domain service
+var domainServiceSet = wire.NewSet(service.NewConfigurationGenerateService)
 
 // presentation
 var presentationSet = wire.NewSet(capture.NewCaptureController, server.NewServerController)

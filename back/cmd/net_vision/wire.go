@@ -9,13 +9,25 @@ import (
 		"NetVision/presentation/capture"
 		"NetVision/presentation/server"
 		app_configuration_model "NetVision/domain/model/app_configuration"
+		domain_model "NetVision/domain/model"
+
+		domain_service "NetVision/domain/service"
+
 		app_configuration_loader "NetVision/infrastructure/app_configuration"
+		infra_configuration "NetVision/infrastructure/configuration"
+		infra_factory "NetVision/infrastructure/factory"
 
 )
 
 // infrastructure
 var infrastructureSet = wire.NewSet(
 	app_configuration_loader.LoadAppConfig,
+	infra_configuration.NewServerConfigurationMarshal,
+	wire.Bind(new(domain_service.IServerConfigurationMarshal), new(*infra_configuration.ServerConfigurationMarshal)),
+	infra_configuration.NewClientConfigurationMarshal,
+	wire.Bind(new(domain_service.IClientConfigurationMarshal), new(*infra_configuration.ClientConfigurationMarshal)),
+	infra_factory.NewFileFactory,
+	wire.Bind(new(domain_model.IFileFactory), new(*infra_factory.FileFactory)),
 )
 
 // repository
@@ -27,6 +39,11 @@ var infrastructureSet = wire.NewSet(
 // var usecaseSet = wire.NewSet(
 //     usecase.NewActivityUsecase,
 // )
+
+// domain service
+var domainServiceSet = wire.NewSet(
+	domain_service.NewConfigurationGenerateService,
+)
 
 // presentation
 var presentationSet = wire.NewSet(
@@ -43,6 +60,7 @@ type Container struct {
 func InitContainer(filePath string) (*Container, error) {
 	wire.Build(
 		infrastructureSet,
+		domainServiceSet,
 		presentationSet,
 		wire.Struct(new(Container), "*"),
 	)

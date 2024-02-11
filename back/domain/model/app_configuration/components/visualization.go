@@ -39,6 +39,7 @@ type DefaultPacketVisualizationSetting struct {
 
 type AbuseIPPacketVisualizationSetting struct {
 	PacketVisualizationSettingBase
+	ThresholdConfidenceScore int
 }
 
 type SpamhausPacketVisualizationSetting struct {
