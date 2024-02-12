@@ -39,7 +39,7 @@ var domainServiceSet = wire.NewSet(
 
 // application
 var applicationSet = wire.NewSet(
-	application.NewServerApplicaitonService,
+	application.NewServerApplicationService,
 )
 
 // presentation
@@ -52,7 +52,6 @@ type Container struct {
 	AppConfig *configuration_model.AppConfiguration
 	CaptureController *capture.CaptureController
 	ServerController *server.ServerController
-	ServerApplicaitonService *application.ServerApplicaitonService
 }
 
 func InitContainer(filePath string) (*Container, error) {

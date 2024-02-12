@@ -23,17 +23,16 @@ import (
 func InitContainer(filePath string) (*Container, error) {
 	appConfiguration := configuration.LoadAppConfig(filePath)
 	captureController := capture.NewCaptureController()
-	serverController := server.NewServerController()
 	serverConfigurationMarshal := configuration.NewServerConfigurationMarshal(appConfiguration)
 	clientConfigurationMarshal := configuration.NewClientConfigurationMarshal(appConfiguration)
 	fileFactory := factory.NewFileFactory()
 	configurationService := service.NewConfigurationService(appConfiguration, serverConfigurationMarshal, clientConfigurationMarshal, fileFactory)
-	serverApplicaitonService := application.NewServerApplicaitonService(appConfiguration, configurationService)
+	serverApplicationService := application.NewServerApplicationService(appConfiguration, configurationService)
+	serverController := server.NewServerController(serverApplicationService)
 	container := &Container{
-		AppConfig:                appConfiguration,
-		CaptureController:        captureController,
-		ServerController:         serverController,
-		ServerApplicaitonService: serverApplicaitonService,
+		AppConfig:         appConfiguration,
+		CaptureController: captureController,
+		ServerController:  serverController,
 	}
 	return container, nil
 }
@@ -47,14 +46,13 @@ var infrastructureSet = wire.NewSet(configuration.LoadAppConfig, configuration.N
 var domainServiceSet = wire.NewSet(service.NewConfigurationService)
 
 // application
-var applicationSet = wire.NewSet(application.NewServerApplicaitonService)
+var applicationSet = wire.NewSet(application.NewServerApplicationService)
 
 // presentation
 var presentationSet = wire.NewSet(capture.NewCaptureController, server.NewServerController)
 
 type Container struct {
-	AppConfig                *configuration2.AppConfiguration
-	CaptureController        *capture.CaptureController
-	ServerController         *server.ServerController
-	ServerApplicaitonService *application.ServerApplicaitonService
+	AppConfig         *configuration2.AppConfiguration
+	CaptureController *capture.CaptureController
+	ServerController  *server.ServerController
 }

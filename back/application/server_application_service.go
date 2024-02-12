@@ -5,27 +5,27 @@ import (
 	"NetVision/domain/service"
 )
 
-type ServerApplicaitonService struct {
+type ServerApplicationService struct {
 	appConfig *configuration.AppConfiguration
 	configurationService *service.ConfigurationService
 }
 
-func NewServerApplicaitonService(
+func NewServerApplicationService(
 	appConfig *configuration.AppConfiguration,
 	configurationService *service.ConfigurationService,
-) *ServerApplicaitonService {
-	return &ServerApplicaitonService{
+) *ServerApplicationService {
+	return &ServerApplicationService{
 		appConfig: appConfig,
 		configurationService: configurationService,
 	}
 }
 
-func (s *ServerApplicaitonService) SetupServer() {
+func (s *ServerApplicationService) SetupServer() {
 	s.configurationService.GenerateServerConfig()
 	s.configurationService.GenerateClientConfig()
 }
 
-func (s *ServerApplicaitonService) StartServer() {
+func (s *ServerApplicationService) StartServer() {
 	
 }
 

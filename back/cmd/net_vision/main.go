@@ -11,7 +11,7 @@ func main() {
 		log.Printf("Error: %s", err)
 	}
 
-	webserver := container.ServerApplicaitonService
+	webserver := container.ServerController
 	webserver.SetupServer()
 
 }
