@@ -34,7 +34,7 @@ var infrastructureSet = wire.NewSet(
 
 // domain service
 var domainServiceSet = wire.NewSet(
-	domain_service.NewConfigurationGenerateService,
+	domain_service.NewConfigurationService,
 )
 
 // application

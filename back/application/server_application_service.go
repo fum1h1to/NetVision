@@ -7,12 +7,12 @@ import (
 
 type ServerApplicaitonService struct {
 	appConfig *configuration.AppConfiguration
-	configuration_generate_service *service.ConfigurationGenerateService
+	configuration_generate_service *service.ConfigurationService
 }
 
 func NewServerApplicaitonService(
 	appConfig *configuration.AppConfiguration,
-	configuration_generate_service *service.ConfigurationGenerateService,
+	configuration_generate_service *service.ConfigurationService,
 ) *ServerApplicaitonService {
 	return &ServerApplicaitonService{
 		appConfig: appConfig,

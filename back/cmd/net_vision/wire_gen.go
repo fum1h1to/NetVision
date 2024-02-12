@@ -27,8 +27,8 @@ func InitContainer(filePath string) (*Container, error) {
 	serverConfigurationMarshal := configuration.NewServerConfigurationMarshal(appConfiguration)
 	clientConfigurationMarshal := configuration.NewClientConfigurationMarshal(appConfiguration)
 	fileFactory := factory.NewFileFactory()
-	configurationGenerateService := service.NewConfigurationGenerateService(appConfiguration, serverConfigurationMarshal, clientConfigurationMarshal, fileFactory)
-	serverApplicaitonService := application.NewServerApplicaitonService(appConfiguration, configurationGenerateService)
+	configurationService := service.NewConfigurationService(appConfiguration, serverConfigurationMarshal, clientConfigurationMarshal, fileFactory)
+	serverApplicaitonService := application.NewServerApplicaitonService(appConfiguration, configurationService)
 	container := &Container{
 		AppConfig:                appConfiguration,
 		CaptureController:        captureController,
@@ -44,7 +44,7 @@ func InitContainer(filePath string) (*Container, error) {
 var infrastructureSet = wire.NewSet(configuration.LoadAppConfig, configuration.NewServerConfigurationMarshal, wire.Bind(new(service.IServerConfigurationMarshal), new(*configuration.ServerConfigurationMarshal)), configuration.NewClientConfigurationMarshal, wire.Bind(new(service.IClientConfigurationMarshal), new(*configuration.ClientConfigurationMarshal)), factory.NewFileFactory, wire.Bind(new(model.IFileFactory), new(*factory.FileFactory)))
 
 // domain service
-var domainServiceSet = wire.NewSet(service.NewConfigurationGenerateService)
+var domainServiceSet = wire.NewSet(service.NewConfigurationService)
 
 // application
 var applicationSet = wire.NewSet(application.NewServerApplicaitonService)
