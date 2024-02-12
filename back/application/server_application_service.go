@@ -7,22 +7,22 @@ import (
 
 type ServerApplicaitonService struct {
 	appConfig *configuration.AppConfiguration
-	configuration_generate_service *service.ConfigurationService
+	configurationService *service.ConfigurationService
 }
 
 func NewServerApplicaitonService(
 	appConfig *configuration.AppConfiguration,
-	configuration_generate_service *service.ConfigurationService,
+	configurationService *service.ConfigurationService,
 ) *ServerApplicaitonService {
 	return &ServerApplicaitonService{
 		appConfig: appConfig,
-		configuration_generate_service: configuration_generate_service,
+		configurationService: configurationService,
 	}
 }
 
 func (s *ServerApplicaitonService) SetupServer() {
-	s.configuration_generate_service.GenerateServerConfig()
-	s.configuration_generate_service.GenerateClientConfig()
+	s.configurationService.GenerateServerConfig()
+	s.configurationService.GenerateClientConfig()
 }
 
 func (s *ServerApplicaitonService) StartServer() {
