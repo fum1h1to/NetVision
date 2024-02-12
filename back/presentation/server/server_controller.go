@@ -1,23 +1,28 @@
 package server
 
 import (
-	"NetVision/domain/service"
+	// "NetVision/application"
 )
 
 type ServerController struct {
-	configuration_service *service.ConfigurationGenerateService
+	// TODO:
+	// ServerControllerにapplicationを持たせようとすると、wireでエラーが出る。
+	// server_application_service *application.ServerApplicationService
 }
 
 func NewServerController(
-	configuration_service *service.ConfigurationGenerateService,
+	// server_application_service *application.ServerApplicationService,
 ) *ServerController {
 	return &ServerController{
-		configuration_service: configuration_service,
+		// server_application_service: server_application_service,
 	}
 }
 
-func (s *ServerController) StartServer() {
-	s.configuration_service.GenerateServerConfig()
-	s.configuration_service.GenerateClientConfig()
-}
+// func (s *ServerController) SetupServer() {
+// 	s.server_application_service.SetupServer()
+// }
+
+// func (s *ServerController) StartServer() {
+// 	s.server_application_service.StartServer()
+// }
 
