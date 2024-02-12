@@ -3,7 +3,7 @@ package configuration
 import (
 	"encoding/json"
 
-	app_configuration_model "NetVision/domain/model/app_configuration"
+	"NetVision/domain/model/configuration"
 )
 
 type serverConfigurationField struct {
@@ -17,11 +17,11 @@ type serverConfigurationField struct {
 }
 
 type ServerConfigurationMarshal struct {
-	appConfig *app_configuration_model.AppConfiguration
+	appConfig *configuration.AppConfiguration
 }
 
 func NewServerConfigurationMarshal(
-	appConfig *app_configuration_model.AppConfiguration,
+	appConfig *configuration.AppConfiguration,
 ) *ServerConfigurationMarshal {
 	return &ServerConfigurationMarshal{
 		appConfig: appConfig,

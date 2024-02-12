@@ -1,17 +1,17 @@
 package application
 
 import (
-	"NetVision/domain/model/app_configuration"
+	"NetVision/domain/model/configuration"
 	"NetVision/domain/service"
 )
 
 type ServerApplicaitonService struct {
-	appConfig *app_configuration.AppConfiguration
+	appConfig *configuration.AppConfiguration
 	configuration_generate_service *service.ConfigurationGenerateService
 }
 
 func NewServerApplicaitonService(
-	appConfig *app_configuration.AppConfiguration,
+	appConfig *configuration.AppConfiguration,
 	configuration_generate_service *service.ConfigurationGenerateService,
 ) *ServerApplicaitonService {
 	return &ServerApplicaitonService{

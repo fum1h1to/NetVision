@@ -11,12 +11,11 @@ import (
 
 		"NetVision/application"
 
-		app_configuration_model "NetVision/domain/model/app_configuration"
+		configuration_model "NetVision/domain/model/configuration"
 		domain_model "NetVision/domain/model"
 
 		domain_service "NetVision/domain/service"
 
-		app_configuration_loader "NetVision/infrastructure/app_configuration"
 		infra_configuration "NetVision/infrastructure/configuration"
 		infra_factory "NetVision/infrastructure/factory"
 
@@ -24,7 +23,7 @@ import (
 
 // infrastructure
 var infrastructureSet = wire.NewSet(
-	app_configuration_loader.LoadAppConfig,
+	infra_configuration.LoadAppConfig,
 	infra_configuration.NewServerConfigurationMarshal,
 	wire.Bind(new(domain_service.IServerConfigurationMarshal), new(*infra_configuration.ServerConfigurationMarshal)),
 	infra_configuration.NewClientConfigurationMarshal,
@@ -50,7 +49,7 @@ var presentationSet = wire.NewSet(
 )
 
 type Container struct {
-	AppConfig *app_configuration_model.AppConfiguration
+	AppConfig *configuration_model.AppConfiguration
 	CaptureController *capture.CaptureController
 	ServerController *server.ServerController
 	ServerApplicaitonService *application.ServerApplicaitonService

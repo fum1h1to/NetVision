@@ -9,9 +9,8 @@ package main
 import (
 	"NetVision/application"
 	"NetVision/domain/model"
-	app_configuration2 "NetVision/domain/model/app_configuration"
+	configuration2 "NetVision/domain/model/configuration"
 	"NetVision/domain/service"
-	"NetVision/infrastructure/app_configuration"
 	"NetVision/infrastructure/configuration"
 	"NetVision/infrastructure/factory"
 	"NetVision/presentation/capture"
@@ -22,7 +21,7 @@ import (
 // Injectors from wire.go:
 
 func InitContainer(filePath string) (*Container, error) {
-	appConfiguration := app_configuration.LoadAppConfig(filePath)
+	appConfiguration := configuration.LoadAppConfig(filePath)
 	captureController := capture.NewCaptureController()
 	serverController := server.NewServerController()
 	serverConfigurationMarshal := configuration.NewServerConfigurationMarshal(appConfiguration)
@@ -42,7 +41,7 @@ func InitContainer(filePath string) (*Container, error) {
 // wire.go:
 
 // infrastructure
-var infrastructureSet = wire.NewSet(app_configuration.LoadAppConfig, configuration.NewServerConfigurationMarshal, wire.Bind(new(service.IServerConfigurationMarshal), new(*configuration.ServerConfigurationMarshal)), configuration.NewClientConfigurationMarshal, wire.Bind(new(service.IClientConfigurationMarshal), new(*configuration.ClientConfigurationMarshal)), factory.NewFileFactory, wire.Bind(new(model.IFileFactory), new(*factory.FileFactory)))
+var infrastructureSet = wire.NewSet(configuration.LoadAppConfig, configuration.NewServerConfigurationMarshal, wire.Bind(new(service.IServerConfigurationMarshal), new(*configuration.ServerConfigurationMarshal)), configuration.NewClientConfigurationMarshal, wire.Bind(new(service.IClientConfigurationMarshal), new(*configuration.ClientConfigurationMarshal)), factory.NewFileFactory, wire.Bind(new(model.IFileFactory), new(*factory.FileFactory)))
 
 // domain service
 var domainServiceSet = wire.NewSet(service.NewConfigurationGenerateService)
@@ -54,7 +53,7 @@ var applicationSet = wire.NewSet(application.NewServerApplicaitonService)
 var presentationSet = wire.NewSet(capture.NewCaptureController, server.NewServerController)
 
 type Container struct {
-	AppConfig                *app_configuration2.AppConfiguration
+	AppConfig                *configuration2.AppConfiguration
 	CaptureController        *capture.CaptureController
 	ServerController         *server.ServerController
 	ServerApplicaitonService *application.ServerApplicaitonService

@@ -5,7 +5,7 @@ import (
 	"path/filepath"
 
 	"NetVision/domain/model"
-	"NetVision/domain/model/app_configuration"
+	"NetVision/domain/model/configuration"
 )
 
 type IServerConfigurationMarshal interface {
@@ -17,14 +17,14 @@ type IClientConfigurationMarshal interface {
 }
 
 type ConfigurationGenerateService struct {
-	appConfig *app_configuration.AppConfiguration
+	appConfig *configuration.AppConfiguration
 	serverConfigurationGenerator IServerConfigurationMarshal
 	clientConfigurationGenerator IClientConfigurationMarshal
 	fileFactory model.IFileFactory
 }
 
 func NewConfigurationGenerateService(
-	appConfig *app_configuration.AppConfiguration,
+	appConfig *configuration.AppConfiguration,
 	serverConfigurationGenerator IServerConfigurationMarshal,
 	clientConfigurationGenerator IClientConfigurationMarshal,
 	fileFactory model.IFileFactory,

@@ -3,15 +3,15 @@ package configuration
 import (
 	"encoding/json"
 
-	app_configuration_model "NetVision/domain/model/app_configuration"
+	"NetVision/domain/model/configuration"
 )
 
 type ClientConfigurationMarshal struct {
-	appConfig *app_configuration_model.AppConfiguration
+	appConfig *configuration.AppConfiguration
 }
 
 func NewClientConfigurationMarshal(
-	appConfig *app_configuration_model.AppConfiguration,
+	appConfig *configuration.AppConfiguration,
 ) *ClientConfigurationMarshal {
 	return &ClientConfigurationMarshal{
 		appConfig: appConfig,
